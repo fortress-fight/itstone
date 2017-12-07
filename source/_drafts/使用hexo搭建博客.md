@@ -1,12 +1,13 @@
 ---
 title: 使用hexo搭建博客
 categories:
-- other
-tags: 
-- hexo
-- blog
-- 博客
-- GitHubPage
+  - other
+tags:
+  - hexo
+  - blog
+  - 博客
+  - GitHubPage
+abbrlink: fc5a12fc
 ---
 
 <!-- TOC -->
@@ -33,3 +34,11 @@ tags:
 10. [图床神器](http://mpic.lzhaofu.cn/)
 
 ## hexo 使用
+
+https://www.npmjs.com/package/hexo-abbrlink
+https://segmentfault.com/a/1190000005799711
+
+http://www.joryhe.com/2016-06-06-hexo_wordcount_setting_your_post.html
+
+https://github.com/willin/hexo-wordcount
+https://github.com/rozbo/hexo-abbrlink

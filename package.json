@@ -8,6 +8,7 @@
   "dependencies": {
     "algoliasearch": "^3.24.7",
     "hexo": "^3.2.0",
+    "hexo-abbrlink": "^2.0.4",
     "hexo-algolia": "^0.2.0",
     "hexo-deployer-git": "^0.3.1",
     "hexo-generator-archive": "^0.1.4",
@@ -18,6 +19,7 @@
     "hexo-renderer-marked": "^0.3.0",
     "hexo-renderer-stylus": "^0.3.1",
     "hexo-server": "^0.2.0",
+    "hexo-wordcount": "^3.0.2",
     "p-each-series": "^1.0.0"
   }
 }

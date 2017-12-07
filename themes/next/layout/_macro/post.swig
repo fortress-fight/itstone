@@ -261,6 +261,27 @@
               </div>
           {% endif %}
 
+          {### 以下部分为：字数统计、阅读时长插入代码 ###}
+          <span class="post-time">
+            &nbsp; | &nbsp;
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">字数统计:</span>
+            <span class="post-count">{{ wordcount(post.content) }}(字)</span>
+
+          </span>
+
+          <span class="post-time">
+            &nbsp; | &nbsp;
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">阅读时长:</span>
+            <span class="post-count">{{ min2read(post.content) }}(分)</span>
+
+          </span>
+          {### 以上部分为：字数统计、阅读时长插入代码 ###}
         </div>
       </header>
     {% endif %}
