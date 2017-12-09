@@ -1,5 +1,5 @@
 # Hexo Configuration
-## Docs: https://hexo.io/docs/configuration.html
+## Docs: https://hexo.io/zh-cn/docs/configuration.html
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
@@ -37,6 +37,7 @@ render_drafts: false
 post_asset_folder: false
 relative_link: false
 future: true
+auto_spacing: true
 highlight:
   enable: true
   line_number: true

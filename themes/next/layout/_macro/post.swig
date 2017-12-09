@@ -86,7 +86,7 @@
                 <span class="post-meta-item-text">{{ __('post.modified') }}&#58;</span>
               {% endif %}
               <time title="{{ __('post.modified') }}" itemprop="dateModified" datetime="{{ moment(post.updated).format() }}">
-                {{ date(post.updated, config.date_format) }}
+                {{ date(post.updated, 'YYYY-MM-DD HH:mm') }}
               </time>
             {% endif %}
           </span>
