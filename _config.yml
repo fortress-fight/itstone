@@ -16,6 +16,7 @@ url: https://fortress-fight.github.io/itstone
 root: /itstone/
 permalink: posts/:abbrlink/
 permalink_defaults:
+  folder: 未分类
 
 # Directory
 source_dir: source
@@ -28,7 +29,7 @@ i18n_dir: :lang
 skip_render: README.md
 
 # Writing
-new_post_name: :year-:month-:day-:title.md # File name of new posts
+new_post_name: :folder/:year-:month-:day-:title.md # File name of new posts
 default_layout: draft
 titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
