@@ -28,7 +28,9 @@
       {#################}
       <div class="post-body{% if theme.han %} han-init-context{% endif %}{% if page.direction && page.direction.toLowerCase() === 'rtl' %} rtl{% endif %}">
         {# tagcloud page support #}
-        {% if page.type === "tags" %}
+        {% if page.type === "photo" %}
+          你好，这里是图片页面
+        {% elif page.type === "tags" %}
           <div class="tag-cloud">
             <div class="tag-cloud-title">
                 {{ _p('counter.tag_cloud', site.tags.length) }}

@@ -297,11 +297,13 @@
           {% set COLUMN_NUMBER = 3 %}
           {% for photo in post.photos %}
             {% if loop.index0 % COLUMN_NUMBER === 0 %}<div class="post-gallery-row">{% endif %}
+              {% if is_index %}
               <a class="post-gallery-img fancybox"
                  href="{{ url_for(photo) }}" rel="gallery_{{ post._id }}"
                  itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
                 <img src="{{ url_for(photo) }}" itemprop="contentUrl"/>
               </a>
+              {% endif %}
             {% if loop.index0 % COLUMN_NUMBER === 2 %}</div>{% endif %}
           {% endfor %}
 
@@ -377,7 +379,7 @@
       {% if post.tags and post.tags.length and not is_index %}
         <div class="post-tags">
           {% for tag in post.tags %}
-            <a href="{{ url_for(tag.path) }}" rel="tag"># {{ tag.name }}</a>
+            <a href="{{ url_for(tag.path) }}" rel="tag"><i class="fa fa-tag"></i> {{ tag.name }}</a>
           {% endfor %}
         </div>
       {% endif %}

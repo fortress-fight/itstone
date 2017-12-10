@@ -91,7 +91,7 @@ menu:
   archives: /archives/ || archive
   schedule: /schedule/ || calendar
   sitemap: /sitemap.xml || sitemap
-  commonweal: /404/ || heartbeat
+  图片: /photo/ || th
 
 # Enable/Disable menu icons.
 menu_icons:
