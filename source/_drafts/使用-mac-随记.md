@@ -93,3 +93,16 @@ Ctrl + u | 清除当前行
 pwd | 输出当前活动区路径
 mkdir 文件夹名称 | 在当前文件夹下创建新的文件夹
 touch 文件名称 | 在当前文件夹下创建新的文件 
+
+******
+
+## MAC 快捷键
+
+快捷键 | 描述
+----|---
+F11 | 显示桌面
+Command + Shift + 3 | 对整个屏幕进行截图
+Command + Shift + 4 | 对部分区域进行截图
+Command + Shift + 4 + Space | 对选中窗口截图
+Command + Control + Shift + 3 | 将截取的窗口保存的粘贴板（其余的直接保存到了桌面）
+Command + M | 将当前窗口最小化
