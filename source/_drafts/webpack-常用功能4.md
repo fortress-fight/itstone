@@ -1,0 +1,331 @@
+---
+title: webpack-常用功能4
+abbrlink: f21fbc33
+date: 2017-12-16 16:54:02
+tags:
+photo: /xmind/webpack/webpack-常用功能04.png
+---
+
+这次主要学习 webpack 对 JS 的简单处理
+
+<!-- more -->
+
+{% img /xmind/webpack/webpack-常用功能04.detail.png %}
+
+# webpack
+
+基于 webpack 3.* 的学习
+
+******
+
+## 基本部署
+
+```c tree
+    .
+    ├── dist
+    │   ├── bundle.js
+    │   ├── css
+    │   │   └── style.css
+    │   ├── img
+    │   │   └── c841c1357ae08329349b22bdd3dbc886.png
+    │   └── index.html
+    ├── entry.js
+    ├── package.json
+    ├── postcss.config.js
+    ├── src
+    │   ├── css
+    │   │   └── style.css
+    │   ├── img
+    │   │   └── 62kb.png
+    │   ├── index.html
+    │   ├── js
+    │   │   └── script.js
+    │   └── sass
+    │       └── style.scss
+    └── webpack.config.js
+```
+
+安装的依赖包括
+
+```json
+  "devDependencies": {
+    "autoprefixer": "^7.2.3",
+    "css-loader": "^0.28.7",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.6",
+    "html-webpack-plugin": "^2.30.1",
+    "html-withimg-loader": "^0.1.16",
+    "node-sass": "^4.7.2",
+    "postcss": "^6.0.14",
+    "postcss-loader": "^2.0.9",
+    "purify-css": "^1.2.5",
+    "purifycss-webpack": "^0.7.0",
+    "sass-loader": "^6.0.6",
+    "scss-loader": "^0.0.1",
+    "style-loader": "^0.19.1",
+    "uglifyjs-webpack-plugin": "^1.1.4",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.9.7"
+  }
+```
+
+******
+
+## 使用 babel
+
+babel 是一个将 ES6 => ES5 的一个插件，目前虽然 浏览器对于 ES6 已经支持的很不错了，但是在书写的过程中难免会因考虑兼容性而分心，有了 babel 的帮助，我们可以专心思考功能的实现，使用 ES6 带来的便利；
+
+使用 babel 需要以下依赖：
+
+1. babel-core -- babel 的核心
+2. babel-core -- babel-loader webpack 插件
+3. babel-preset-es2015 -- 转换 ES6 到 ES5 所需要的插件，但是在安装的过程中会有以下提示
+    {% blockquote %}
+        Thanks for using Babel: we recommend using babel-preset-env now: please read babeljs.io/env to update!
+        建议使用 babel-preset-env 而不是 babel-preset-es2015
+    {% endblockquote %}
+4. babel-preset-env
+5. babel-preset-react -- 编译 react 项目中 JS 所需要的插件 
+
+### 使用 babel 转换 JS
+
+1. 安装依赖
+
+2. 配置 webpack.config.js
+
+    ```js webpack.config.js
+        {
+            test: /\.(jsx|js)$/,
+            use: {
+                loader: 'babel-loader',
+                options: {
+                    presets: ["env"]
+                },
+            },
+            exclude: /node_modules/
+        }
+        // 这里多了一个 exclude 属性，是为了排除 `node_modules` 文件夹，
+        // 以免 babel 对 `node_modules` 下的 JS 文件进行编译
+    ```
+
+    babel 是个功能强大的插件，为了便于配置可以使用外部文件管理配置项
+
+3. 配置 `.babelrc`
+
+    在根目录下新建文件 `.babelrc`
+    
+    ```json .babelrc
+        {
+            "presets": ["env"]
+        }
+    ```
+
+    修改 webpack.config.js
+
+    ```js webpack.config.js
+        {
+            test: /\.(jsx|js)$/,
+            use: {
+                loader: 'babel-loader'
+            },
+            exclude: /node_modules/
+        }
+        // 这里省去了 `babel-loader` 的 options 配置参数，
+        // 所以在运行时 babel 会在根目录下查找 .babel 文件，使用其作为他的配置项
+    ```
+
+4. 使用
+    我们在 `entry.js` 中添加 
+
+    ```js entry.js
+        const babel = 'ceshi'
+    ```
+
+    运行
+
+    ```shell shell
+        webpack
+    ```
+
+    我们可以看到在 输出的 `bundle.js` 中，被转换的代码
+
+    ```js bundle.js
+        ...
+            var babel = 'ceshi';
+        ...
+    ```
+
+******
+
+## webpack -- devtool 调试代码
+
+webpack 中存在对 js 调试的辅助工具, 通过属性 `devtool` 对其进行配置；
+
+### devtool 
+
+devtool 的配置选项也十分简单
+
+1. source-map 打包慢 独立 map 文件
+2. cheap-module-source-map 独立文件，但是信息简单。不包含完整的位置信息
+3. eval-source-map 打包快，但是存在安全隐患，无独立调试文件
+4. cheap-module-eval-source-map
+
+### 设置 devtool
+
+devtool 属性是 一级属性；
+
+```js webpack.config.js
+    module.exports = {
+        devtool: 'eval-source-map',
+        entry: {
+            ...
+        },
+        module: {
+            ...
+        },
+        plugins: [
+            ...
+        ],
+        devServer: {
+            ...
+        }
+    }
+```
+
+设置了 devtool 后，在代码出现错误的时候，就会有准确的调试信息帮助我们对代码进行调试；
+
+******
+
+# 总结
+
+## 安装的依赖
+
+```json package.json
+    ...
+    "devDependencies": {
+        "autoprefixer": "^7.2.3",
+        "babel-core": "^6.26.0",
+        "babel-loader": "^7.1.2",
+        "babel-preset-env": "^1.6.1",
+        "babel-preset-es2015": "^6.24.1",
+        "css-loader": "^0.28.7",
+        "extract-text-webpack-plugin": "^3.0.2",
+        "file-loader": "^1.1.6",
+        "html-webpack-plugin": "^2.30.1",
+        "html-withimg-loader": "^0.1.16",
+        "node-sass": "^4.7.2",
+        "postcss": "^6.0.14",
+        "postcss-loader": "^2.0.9",
+        "purify-css": "^1.2.5",
+        "purifycss-webpack": "^0.7.0",
+        "sass-loader": "^6.0.6",
+        "scss-loader": "^0.0.1",
+        "style-loader": "^0.19.1",
+        "uglifyjs-webpack-plugin": "^1.1.4",
+        "url-loader": "^0.6.2",
+        "webpack": "^3.10.0",
+        "webpack-dev-server": "^2.9.7"
+    }
+    ...
+```
+
+## 基本配置
+
+```js webpack.config.js
+    const path = require('path'),
+        glob = require('glob'),
+        htmlWebpack = require('html-webpack-plugin'),
+        uglifyJS = require('uglifyjs-webpack-plugin'),
+        extractcss = require('extract-text-webpack-plugin'),
+        purifycss = require('purifycss-webpack');
+
+    const websit = {
+        pablicPath: path.resolve(__dirname, 'dist/')
+    }
+
+    module.exports = {
+        devtool: 'eval-source-map',
+        entry: {
+            entry: './entry',
+        },
+        output: {
+            path: path.resolve(__dirname, 'dist'),
+            filename: 'bundle.js',
+            publicPath: websit.pablicPath
+        },
+        module: {
+            rules: [{
+                test: /\.css$/,
+                use: extractcss.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader', 'postcss-loader']
+                })
+            }, {
+                test: /\.(png|jpg|gif)$/,
+                use: [{
+                    loader: 'url-loader',
+                    options: {
+                        limit: 500,
+                        outputPath: 'img/'
+                    }
+                }]
+            },{
+                test: /\.html$/,
+                use: [{
+                    loader: 'html-withimg-loader'
+                }]
+            },{
+                test: /\.(scss|sass)$/,
+                use: extractcss.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader', 'postcss-loader', 'sass-loader']
+                })
+            }, {
+                test: /\.(jsx|js)$/,
+                use: {
+                    loader: 'babel-loader'
+                },
+                exclude: /node_modules/
+            }]
+        },
+        plugins: [
+            new extractcss('css/style.css'),
+            new htmlWebpack({
+                minify: {
+                    removeAttributeQuotes: true
+                },
+                hash: true,
+                template: './src/index.html'
+            }),
+            // new uglifyJS(),
+            new purifycss({
+                paths: glob.sync(path.join(__dirname, 'src/*.html'))
+            })
+        ],
+        devServer: {
+            contentBase: path.resolve(__dirname, 'dist'),
+            port: 8080,
+            compress: true,
+            host: '192.168.31.104'
+        }
+    }
+```
+
+## postcss 配置
+
+```js postcss.config.js
+    module.exports = {
+        plugin: [
+            require('autoprefixer')
+        ]
+    }
+```
+
+## babel 配置
+
+```eval .babelr
+    {
+        "presets": ["env"]
+    }
+```
