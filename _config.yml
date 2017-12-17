@@ -85,8 +85,7 @@ deploy:
 
 algolia:
   applicationID: 'IASW46ACW2'
-  apiKey: 'aef22f1baeeceebacfd6383a90cb4fc5'
-  adminApiKey: '7536d5a863ee0099feb425b4e207b269'
+  apiKey: 'cd16c8536fb611cc7a6ed0983d53dd3a'
   indexName: 'ffstone'
   chunkSize: 5000
 
