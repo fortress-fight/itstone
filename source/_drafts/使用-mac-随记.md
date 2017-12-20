@@ -22,7 +22,7 @@ categories:
 
 [官网](https://brew.sh/index_zh-cn.html)
 
-```cmd shell 安装 brew 命令
+```cmd bash 安装 brew 命令
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
