@@ -1,0 +1,247 @@
+---
+title: ES6基础 函数
+abbrlink: 1ebdbb14
+date: 2017-12-27 23:57:47
+tags:
+---
+
+ES6基础-函数
+
+<!-- more -->
+
+# ES6 函数
+
+函数是所有编程语言的重要组成部分，在 ES6 中，更新了一些函数的特性，让 JavaScript 的函数变得更加灵活
+
+## 函数形参的默认参数
+
+场景一：
+
+```js learn04-01
+    // 01
+
+    function example (name) {
+        name = name || '01';
+        console.log(name);
+    }
+
+    example(); // 01
+    example(undefined) // 01
+```
+
+这里是设置 `name` 的默认值为 `01`; 如果没有传入参数将使用默认值；
+缺陷：缺乏严格的验证，如果传入的是一个假值，也会使用默认值；
+
+改进：
+
+```js learn04-02
+    // 02
+
+    function example (name) {
+        name = (typeof name !== 'undefined') ? name : '01';
+        console.log(name);
+    }
+
+    example(); // 01
+    example(0) // 0
+```
+
+缺点：实现的方式较为复杂
+
+ES6:
+
+```js learn04-03
+    // 03
+
+    function example (name = '01')  {
+        console.log(name);
+    }
+
+    example(); // 01
+    example(0); // 0
+```
+
+通过 ES6 语法实现参数默认值最为简单，只有当传入的相应参数为 `undefined` 时，才会使用默认参数；
+
+除了直接使用默认值，我们还可以使用表达式来建立默认值；
+
+```js learn04-06
+    // 06
+
+    function getValue() {
+        return 24;
+    }
+    function getAge (age = getValue()) {
+        console.log(age);
+    }
+
+    getAge(); // 24
+    getAge(12); // 12
+```
+
+{% blockquote %}
+这里我们需要注意：getValue 函数并不是直接执行，而是当执行 `getAge` 并且没有传入 `age` 参数的时候才会执行； 
+{% endblockquote %}
+
+### 默认参数的暂存死区
+
+场景一：
+
+```js learn04-07
+
+    function example(first, sec = first) {
+    console.log(first, sec);
+    }
+
+    example(1); // 1 1
+
+    function example2(first = sec, sec) {
+    console.log(first, sec);
+    }
+
+    example2(1); // 1 undefinded
+    example2(undefined, 1); // sec is not defined
+```
+
+这里体现了一个问题，参数在前的先声明；而在声明之前都属于暂存死区；所有在第二个示例中，`first = sec` 此时 `sec` 还没有进行声明，所以抛出错误；
+
+> 函数参数具有自己的作用域和临时死区，其余函数体的作用域是各自独立的
+
+### 默认参数对 arguments 对象的影响
+
+ES5：
+
+```js learn04-04
+    // 04
+
+    function example (first, sec) {
+
+        console.log(arguments);
+        
+        first = 'change';
+        sec = 'change';
+        
+        console.log(arguments);
+    }
+
+    example('one', 'two');
+
+    // { '0': 'one', '1': 'two' }
+    // { '0': 'change', '1': 'change' }
+```
+
+我们可以看出在 ES5 非严格模式下，命名参数的变化会同步更新到 `arguments` 的对象上；这样看来 `arguments` 就不能代表传入的参数了；在严格模式先，命名参数的变化就不会同步到 `arguments` 对象上了；
+
+ES6
+
+```js learn04-05
+    // 05
+
+    function example(name, age = 24) {
+    console.log(arguments);
+
+    name = "change";
+    age = "change";
+
+    console.log(arguments);
+    }
+
+    example('05');
+
+    // { '0': '05' }
+    // { '0': '05' }
+
+    example('05', 5);
+
+    // { '0': '05', '1': 5 }
+    // { '0': '05', '1': 5 }
+```
+
+这里说明，只要函数中使用了默认参数，arguments 的行为就会和 ES5 中的严格模式一样
+
+## 无名参数
+
+场景一：提取一个对象中的**任意数量的**指定属性到一个新的对象中；
+
+```js learn04-08
+    // 08
+    function pick(object) {
+        let result = Object.create(null);
+        
+        for (let i = 1, len = arguments.length; i < len; i++ ) {
+            result[arguments[i]] = object[arguments[i]];
+        }
+        return result;
+    }
+
+    let person = {
+        name: '小明',
+        age: 24,
+        job: 'student'
+    };
+
+    let personInfor = pick(person, 'age', 'job'); 
+    console.log(personInfor); // { age: 24, job: 'student' }
+```
+
+这里存在几个问题：
+
+1. 我们无法一眼看出，这个函数可以接受多个参数
+2. 循环的时候要避开 `arguments` 的第一个参数
+
+ES6:
+
+```js learn04-09
+    // 09
+
+    function pick (object, ...attr) {
+
+        let result = new Object(null);
+        for (let i = 0, len = attr.length; i < len; i++) {
+            result[attr[i]] = object[attr[i]];
+        }
+        return result;
+    }
+
+    let person = {
+        name: '小明',
+        age: 24,
+        job: 'student'
+    };
+
+    let personInfor = pick(person, 'age', 'job'); 
+    console.log(personInfor); // { age: 24, job: 'student' }
+```
+
+这里我们可以看出代码简化了不少；
+上述例子中，使用了**不定参数**的概念
+
+### 不定参数
+
+不定参数是在函数的命名参数前，添加 `...` 构成的，表示这个参数是一个包含之后传入的所有参数的数组
+
+> 由于函数的 `length` 属性，统计的是函数的有名参数的个数，所以不定参数不影响函数的 `length` 属性；
+
+```js
+    console.log(pick.length); // 1
+```
+
+### 不定参数的使用限制
+
+1. 每一个函数只能使用一个不定参数，而且必须是最后一位参数；
+2. 不定参数不能用于对象字面量 setter 之中
+
+### 不定参数与 arguments
+
+示例
+
+```js learn04-10
+    function example(first, ...arr) {
+    console.log(arr.length);
+    console.log(arguments.length);
+    }
+
+    example(1, 2, 3, 4, 5, 6); // 5 6
+```
+
+可以看出无论是否使用了不定参数，`arguments` 对象依旧会包含所有传入函数的参数；
