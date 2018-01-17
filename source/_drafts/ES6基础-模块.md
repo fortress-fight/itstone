@@ -1,0 +1,293 @@
+---
+title: ES6基础-模块
+abbrlink: cf3579b2
+date: 2018-01-16 23:18:07
+tags:
+photos: /xmind/ES6/ES6-模块.png
+---
+
+******
+
+<!-- more -->
+
+{% img /xmind/ES6/ES6-模块.detail.png %}
+
+# ES6基础--模块
+
+在 ECMAScript 6 之前，在应用程序中的每一个 JavaScript 中定义的一切都是共享同一个全局作用域。但是随着项目复杂度的提升，共享作用域会引起一系列的问题。在 ESCMAScript 6 中提供了模块的方式来解决作用域的问题；
+
+## 模块
+
+模块是自动运行在严格模式下并且没有办法退出运行的 JavaScript 代码。
+
+特点：
+
+1. 模块中顶部创建的变量不会自动被添加到全局共享作用域，这个变量仅仅在模块的顶级作用域中存在，并且模块必须导出一些外部代码可以访问的元素，如：变量或函数；
+2. 在模块顶部 `this` 的值是 `undefined`
+3. 模块不支持 HTML 风格的代码注释
+
+模块的好处在于仅导出和导入你需要的绑定，而不是将所有东西都放在一个文件中；
+
+### 模块的导出 -- export
+
+我们可以通过将 `export` 关键字放到任何变量、函数或者类声明的前面，以将一部分已发布的代码暴露给其他的模块。
+
+示例：
+
+```js
+    // 导出变量
+    export var color = 'red';
+
+    // 导出函数
+    export function example () {
+        console.log('this is a expamle fn')
+    }
+
+    // 导出类
+    export class example2 {
+        constructor () {
+            console.log('this is a class fn')
+        }
+    }
+
+    function sum (num1, num2) {
+        return num1 + num2;
+    }
+
+    export {sum as add};
+
+```
+
+需要被导出的函数和类声明都需要一个名称（除非使用 default 关键字）
+
+### 模块的引入 -- import
+
+从模块中导出的功能可以通过 `import` 关键字在另一个模块中访问，`import` 的基本形式如下：
+
+```js
+    import { identifier1, identifier2 } from "./path.js";
+```
+
+注：
+
+1. `import` 后面的大括号表示从给定模块导入的绑定，关键字 `from` 表示从哪个模块导入给定的绑定
+2. 在浏览器使用的路径格式与传给 `script` 元素的相同，需要带上文件扩展名
+3. Node 则遵循基于文件系统前缀去人本地文件和包的管理，例如：`example` 代表一个包而 `example.js` 代表一个本地文件
+4. 当从一个模块中导入一个绑定时，就像是通过 `const` 定义了一个变量
+
+示例：
+
+> 由于目前浏览器对 import 语法支持较差，Node 也不支持 import 语法，建议使用 webpack 完成打包的过程；
+
+1. 导入绑定
+
+    我们可以导入标识符来完成导入行为
+    
+    ```js exports.js
+        // 导出变量
+        export var color = 'red';
+
+        // 导出函数
+        export function example () {
+            console.log('this is a expamle fn')
+        }
+
+        // 导出类
+        export class example2 {
+            constructor () {
+                console.log('this is a class fn')
+            }
+        }
+    ```
+
+    ```js learn01.js
+        import { color, example } from './export.js';
+
+        console.log(color, example);
+
+        // red function example() {
+        //     console.log('this is a expamle fn')
+        // }
+    ```
+
+    虽然 `export.js` 中导出的了多个绑定，但是我们可以通过标识符来引入指定的绑定
+
+2. 导入整个模块
+
+    特殊情况下，我们可以直接导入整个模块作为一个单一的对象，然后所有的导出都可以作为这个对象的属性使用；
+
+    ```js learn02.js
+        import * as example from './export.js';
+
+        console.log(example);
+
+        // { color: [Getter],
+        //     example: [Function: example],
+        //     example2: [Function: example2] }
+    ```
+
+    {% blockquote %}
+        不管在 `import` 语句中吧一个模块写了多少次，该模块都只会执行一次；导入模块的代码在执行后，示例过得模块被保存在内存中，当再次引用的时候就会重复使用它；  
+        `import` & `export` 都必须在顶层使用，不允许出现在 `if` 语句中，不允许存在任何方式的动态导出；并且 `import` 必须在顶部使用  
+        标识符只能在被导出的模块中进行修改，在导入的模块中不允许修改，也无法修改其绑定值 ；
+    {% endblockquote %}
+
+******
+
+## 导入导出的重命名
+
+我们可以通过 `as` 关键字来确定函数在模块外应该被称作什么 `修改前的名 as 修改后`
+
+1. 控住导出
+
+    ```js export.js
+        ...
+        function sum (num1, num2) {
+            return num1 + num2;
+        }
+
+        export {sum as add};
+    ```
+
+    ```js learn03.js
+        import { add } from './export.js';
+
+        console.log(add);
+
+        // [Function: sum]
+    ```
+
+2. 控制导入
+
+    ```js export.js
+        import { add } from './export.js';
+        import { example as fn} from './export.js';
+
+        console.log(add);
+        // [Function: sum]
+
+        console.log(fn)
+        // [Function: example]
+    ```
+
+## 模块默认值导入导出
+
+我们可以通过 `default` 关键字来来指定模块默认的导出值；
+
+> 默认值值存在一个，如果指定多个默认值，将会抛出语法错误
+
+示例：
+
+```js export2.js
+
+    export default function (num1, num2) {
+        return num1 + num2;
+    }
+
+```
+
+```js learn04.js
+
+    import sum from './export2';
+
+    console.log(sum(1,2)); // 3
+
+```
+
+{% blockquote %}
+
+    1. 这里由于输出的是一个默认值，所以可以不写 function 的 name
+    2. 也可以在 export default 后，添加默认导出值的标识符：`export default sum`
+    3. 通过重命名导出时标识符，同样可以添加默认导出值得标识符：`export { sum as default}`
+    4. 通过这种方式引入的时候无需 `{}` ，相当于 `{ default as sum }`: sum 作为 default 值输出，然后在输入文件中将 default 作为 sum 使用;
+    
+{% endblockquote %}
+
+我们可以通过一次引入，同时引入默认值以及标识符
+
+```js export2.js
+    export let example = 'haha';
+
+    export default function (num1, num2) {
+        return num1 + num2;
+    };
+```
+
+```js learn04.js
+    import sum, { example } from './export2';
+
+    console.log(sum(1,2)); // 3
+    console.log(example); // haha
+```
+
+{% blockquote %}
+
+    1. 使用逗号将默认的本地名称与大括号包裹的非默认值分隔开，并且需要保证默认值需要排在第一位
+    2. 也可以通过引入时重命名的方式来绑定 default， 例如：`import {color, default as sum} from './exprot'`
+    
+{% endblockquote %}
+
+******
+
+## 其它
+
+### 重新导出一个绑定
+
+如果需要将导入的值进行导出，例如：
+
+```js sum.js
+    function sum (num1, num2) {
+        return rum1 + rum2;
+    }
+
+    console.log('sum.js')
+
+    export {sum as default};
+```
+
+```js sumadd.js
+    import sum from './sum.js';
+
+    console.log(sum);
+    function mul (num1, num2) {
+        return num1 * num2;
+    }
+
+    export { sum };
+    export { mul };
+```
+
+```js learn05
+    import * as mm from './sumadd.js';
+
+    console.log(mm.mul);
+
+    // [Function: sum]
+    // [Function: mul]
+```
+
+引入和输出的过程也可以简化成：
+
+```js
+    export { sum } from './sum.js'
+```
+
+输出和一般的输出方式相同：
+
+```js
+    export { sum as add } from './sum.js';
+```
+
+或者输出所有
+
+```js
+    export * from './sum.js'
+```
+
+### 无绑定的导入
+
+某些模块可能不需要导出任何东西，而只用于修改或者添加全局作用域中的对象；这段代码既可以用作模块可以用作脚本；引入时也无需导入任何绑定，例如：
+
+```js
+    import './sum.js'
+```
