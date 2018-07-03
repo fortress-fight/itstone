@@ -13,3 +13,17 @@
 6. `open -a iTerm ./` 使用 iTerm 打开路径文件
 
 7. hexo new draft "ES6基础-类"
+
+## 部署方式
+
+1. 页面文件部署到 git master 分支上
+2. 构建文件部署到 git hexo 分支上
+
+## 迁移
+
+如果需要在新的电脑上部署
+
+1. git clone 下载
+2. 切到 hexo 分支
+3. `cnpm i -g hexo-cli`
+4. `cnpm i`

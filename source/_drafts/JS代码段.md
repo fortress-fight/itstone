@@ -1,0 +1,178 @@
+---
+title: JS代码段
+abbrlink: 9f2501ad
+date: 2018-07-03 10:34:41
+tags: 
+    - 代码段
+    - JavaScript
+category:
+    - 速查表
+---
+
+******
+
+<!-- more -->
+
+# JS代码段记录
+
+名称 | 简介 | 备注
+---|----|---
+<a href='#formateTime'>简易时间格式化</a> | 时间格式化工具 | 在 Date 对象上扩展了 Format 方法对时间进行格式化
+<a href='#forbidRight'>禁止鼠标右键默认行为</a> | 禁止鼠标右键默认行为
+<a href='#mouseDirection'>判断鼠标移动方向</a> | 判断鼠标移动方向
+<a href='#getDOMEv'>获取元素上绑定的事件</a> | 判断鼠标移动方向 | `$._data($('#mm-blocker')[0],'events');`
+<a href='#simpleModuleLoad'>简易模块加载</a> | 简易模块加载
+
+## 详情
+
+1. <span id='formateTime'>简易时间格式化</span>
+
+    ```js
+        Date.prototype.Format = function (fmt) {
+            var o = {
+                "y+": this.getFullYear(),
+                "M+": this.getMonth() + 1, //月份
+                "d+": this.getDate(), //日
+                "h+": this.getHours(), //小时
+                "m+": this.getMinutes(), //分
+                "s+": this.getSeconds(), //秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                "S+": this.getMilliseconds() //毫秒
+            };
+            for (var k in o) {
+                if (new RegExp("(" + k + ")").test(fmt)) {
+                    if (k == "y+") {
+                        fmt = fmt.replace(RegExp.$1, ("" + o[k]).substr(4 - RegExp.$1.length));
+                    } else if (k == "S+") {
+                        var lens = RegExp.$1.length;
+                        lens = lens == 1 ? 3 : lens;
+                        fmt = fmt.replace(RegExp.$1, ("00" + o[k]).substr(("" + o[k]).length - 1, lens));
+                    } else {
+                        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                    }
+                }
+            }
+            return fmt;
+        };
+    ```
+
+2. <span id='forbidRight'>禁止鼠标右键默认行为</span>
+
+    ```js
+
+        $(function () {
+
+            // if (window.Event) document.captureEvents(Event.MOUSEUP);
+            $(document).on({
+                'contextmenu': function () {
+                    return false;
+                },
+                'mousedown': function (ev) {
+                    if (window.Event) {
+                        if (ev.which == 2 || ev.which == 3) {
+
+                            return false;
+                        }
+                    } else if (ev.button == 2 || ev.button == 3) {
+                        return false;
+                    }
+                }
+            });
+        })
+    ```
+
+3. <span id='mouseDirection'>判断鼠标移动方向</span>
+
+    ```js
+        function getMouseDirection (element,event){
+            var w = $(element).width();
+            var h = $(element).height();
+            
+            var x = (event.pageX - element.offsetLeft - (w/2)) * ( w > h ? (h/w) : 1 );
+            var y = (event.pageY - element.offsetTop  - (h/2)) * ( h > w ? (w/h) : 1 );
+            
+            var dirDetail = Math.round((((Math.atan2(y, x) * (180 / Math.PI)) + 180 ) / 90 ) + 3 )  % 4,
+                dir;
+
+            switch(dirDetail) {
+                case 0:
+                    dir = 'top';
+                /** animations from the TOP **/
+                break;
+                case 1:
+                    dir = 'right'
+                /** animations from the RIGHT **/
+                break;
+                case 2:
+                    dir = 'bottom'
+                /** animations from the BOTTOM **/
+                break;
+                case 3:
+                    dir = 'left'
+                /** animations from the LEFT **/
+                break;
+            };
+    
+            return dirDetail;
+        }
+
+    ```
+
+4. <span id='simpleModuleLoad'>简易模块加载</span>
+
+    ```js
+        var MyModule = (function Manager (){
+
+            var modules = {};
+
+            function define (name, deps, impl){
+                
+                for (var i = 0; i < deps.length; i++) {
+                    
+                    console.log(modules[deps[i]]);
+                    deps[i] = modules[deps[i]];
+                }
+                modules[name] = impl.apply( impl, deps);
+            }
+
+            function get (name){
+                return modules[name];
+            }
+
+            return {
+                define: define,
+                get: get
+            };
+        })();
+
+        MyModule.define('bar', [], function (){
+            function hello (who){
+
+                return 'Let me introduce:' + who;
+            }
+
+            return {
+                hello: hello
+            };
+        });
+
+        MyModule.define ('foo', ['bar'], function (bar){
+
+            var hungry ='hippo';
+
+            function awesome (){
+
+                console.log(bar.hello(hungry).toUpperCase());
+            }
+
+            return {
+                awesome: awesome
+            };
+        });
+
+        var bar = MyModule.get('bar');
+        var foo = MyModule.get('foo');
+
+        console.log(bar.hello('hippo'));
+        foo.awesome();
+    ```
