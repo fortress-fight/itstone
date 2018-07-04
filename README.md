@@ -14,7 +14,7 @@
 
 7. hexo new draft "ES6基础-类"
 
-8. 发布 draft  `hexo publish [layout] <filename>`
+8. 发布文章  `hexo generate --deploy` (只是进行编译执行 `hexo generate`)
 
 ## 部署方式
 
