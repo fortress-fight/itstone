@@ -14,6 +14,8 @@
 
 7. hexo new draft "ES6基础-类"
 
+8. 发布 draft  `hexo publish [layout] <filename>`
+
 ## 部署方式
 
 1. 页面文件部署到 git master 分支上
