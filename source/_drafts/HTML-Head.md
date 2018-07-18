@@ -23,6 +23,29 @@ HTML-Head 里面都有什么
 > [中文：gethead](https://github.com/Amery2010/HEAD)
 > [MDN-meta](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/meta)
 
+建议 HEAD
+
+```html
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 此内容*可能*被用作搜索引擎结果的一部分。 -->
+    <!--
+        上面两个 meta 标签需要在其余 head 元素之前，以确保正确的文档呈现
+    -->
+    <meta name="description" content="一个页面描述">
+    <!-- 禁用自动检测和格式化可能的电话号码 -->
+    <meta name="format-detection" content="telephone=no">
+    <!-- 360 选择渲染引擎  选择渲染引擎 -->
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <!-- 强制 IE 8/9/10 使用其最新的渲染引擎 -->
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <!-- 禁用翻译提示 -->
+    <meta name="google" content="notranslate">
+    <link rel="icon" sizes="192x192" href="/path/to/icon.png">
+    <title>Document</title>
+```
+
 ## 最小推荐
 
 ```html
@@ -169,7 +192,105 @@ HTML-Head 里面都有什么
 
 
     <!-- 控制搜索引擎的抓取和索引行为 -->
+    <!-- index 从首先抓取 follow 沿着链接抓取 -->
     <meta name="robots" content="index,follow"><!-- 所有搜索引擎 -->
     <meta name="googlebot" content="index,follow"><!-- 仅对 Google 有效 -->
 
+```
+
+2. 功能
+
+```html
+    <!-- 禁用自动检测和格式化可能的电话号码 -->
+    <meta name="format-detection" content="telephone=no">
+```
+
+## link
+
+这里只个人认为比较有意义的几个：
+
+```html
+    <!-- 针对 IE 10 及以下版本 -->
+    <!-- 如果将 `favicon.ico` 放在根目录下，则无需标签 -->
+
+    <!-- 我们目前需要提供的最大的网站图标尺寸 -->
+    <link rel="icon" sizes="192x192" href="/path/to/icon.png">
+
+    <!-- Apple 触摸图标 (尺寸同样是 192x192) -->
+    <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png">
+
+    <!-- Safari 固定选项卡图标 -->
+    <link rel="mask-icon" href="/path/to/icon.svg" color="blue">
+```
+
+## 社交
+
+有一些社交插件可以通过 meta 对其进行管理
+
+## 浏览器
+
+### 360 浏览器
+
+```html
+    <!--<!-- 选择渲染引擎  选择渲染引擎 -->
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+```
+
+### QQ浏览器
+
+```html
+    <!-- 在指定方向上锁定屏幕（锁定横/竖屏） -->
+    <meta name="x5-orientation" content="landscape/portrait">
+    <!-- 全屏显示此页面 -->
+    <meta name="x5-fullscreen" content="true">
+    <!-- 页面将以“应用模式”显示（全屏等）-->
+    <meta name="x5-page-mode" content="app">
+```
+
+### IE
+
+```html
+    <!-- 强制 IE 8/9/10 使用其最新的渲染引擎 -->
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <!-- 通过 Skype Toolbar 浏览器扩展功能禁用自动检测和格式化可能的电话号码 -->
+    <meta name="skype_toolbar" content="skype_toolbar_parser_compatible">
+
+    <!-- Windows 磁贴 -->
+    <meta name="msapplication-config" content="/browserconfig.xml">
+```
+
+### Chrome
+
+```html
+    <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/APP_ID">
+
+    <!-- 禁用翻译提示 -->
+    <meta name="google" content="notranslate">
+```
+
+### UC
+
+```html
+
+<!--<!-- 在指定方向上锁定屏幕（锁定横/竖屏）  在指定方向上锁 -->
+    <meta name="screen-orientation" content="landscape/portrait">
+
+    <!-- 全屏显示此页面 -->
+    <meta name="full-screen" content="yes">
+
+    <!-- 即使在“文本模式”下，UC 浏览器也会显示图片 -->
+    <meta name="imagemode" content="force">
+
+    <!-- 页面将以“应用模式”显示（全屏、禁止手势等） -->
+    <meta name="browsermode" content="application">
+
+    <!-- 在此页面禁用 UC 浏览器的“夜间模式” -->
+    <meta name="nightmode" content="disable">
+
+    <!-- 简化页面，减少数据传输 -->
+    <meta name="layoutmode" content="fitscreen">
+
+    <!-- 禁用的 UC 浏览器的功能，“当此页面中有较多文本时缩放字体” -->
+    <meta name="wap-font-scale" content="no">
 ```
