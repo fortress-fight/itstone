@@ -12,6 +12,8 @@ categories:
 
 # HTTP 访问控制 (CORS)
 
+CORS 需要浏览器和服务器同时支持。目前，所有浏览器都支持该功能，IE浏览器不能低于IE10。
+
 ******
 
 参考：
@@ -144,19 +146,179 @@ CORS 使用场景:
     }
 ```
 
+由于请求中携带自定义首部字段以及请求的 Content-Type 为 application/xml 因此，该请求需要首先发起 '预检请求'
+
 ![预检测请求](http://i1.bvimg.com/650755/cc10ac2d4c9c023a.png)
 
-由于请求中携带自定义首部字段以及请求的 Content-Type 为 application/xml 因此，该请求需要首先发起 '预检请求'
+预检请求：
+
+```http
+    OPTIONS /resources/post-here/ HTTP/1.1
+    Host: bar.other
+    User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.1b3pre) Gecko/20081130 Minefield/3.1b3pre
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+    Accept-Language: en-us,en;q=0.5
+    Accept-Encoding: gzip,deflate
+    Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+    Connection: keep-alive
+    Origin: http://foo.example
+    Access-Control-Request-Method: POST
+    Access-Control-Request-Headers: X-PINGOTHER, Content-Type
+```
+
+上面的报文发送了一个使用 OPTIONS 方法的“预检请求”。 OPTIONS 是 HTTP/1.1 协议中定义的方法，用以从服务器获取更多信息。该方法不会对服务器资源产生影响。 预检请求中同时携带了下面两个首部字段：
+
+```http
+    Access-Control-Request-Method: POST
+    Access-Control-Request-Headers: X-PINGOTHER, Content-Type
+```
+
+首部字段 Access-Control-Request-Method 告知服务器，实际请求将使用 POST 方法。首部字段 Access-Control-Request-Headers 告知服务器，实际请求将携带两个自定义请求首部字段：X-PINGOTHER 与 Content-Type。服务器据此决定，该实际请求是否被允许。
+
+预检测响应报文：
+
+```http
+    HTTP/1.1 200 OK
+    Date: Mon, 01 Dec 2008 01:15:39 GMT
+    Server: Apache/2.0.61 (Unix)
+    Access-Control-Allow-Origin: http://foo.example
+    Access-Control-Allow-Methods: POST, GET, OPTIONS
+    Access-Control-Allow-Headers: X-PINGOTHER, Content-Type
+    Access-Control-Max-Age: 86400
+    Vary: Accept-Encoding, Origin
+    Content-Encoding: gzip
+    Content-Length: 0
+    Keep-Alive: timeout=2, max=100
+    Connection: Keep-Alive
+    Content-Type: text/plain
+```
+
+上述报文中：
+
+首部字段 Access-Control-Allow-Methods 表明服务器允许客户端使用 POST, GET 和 OPTIONS 方法发起请求。该字段与 HTTP/1.1 Allow: response header 类似，但仅限于在需要访问控制的场景中使用。
+
+首部字段 Access-Control-Allow-Headers 表明服务器允许请求中携带字段 X-PINGOTHER 与 Content-Type。与 Access-Control-Allow-Methods 一样，Access-Control-Allow-Headers 的值为逗号分割的列表。
+
+最后，首部字段 Access-Control-Max-Age 表明该响应的有效时间为 86400 秒，也就是 24 小时。在有效时间内，浏览器无须为同一请求再次发起预检请求。请注意，浏览器自身维护了一个最大有效时间，如果该首部字段的值超过了最大有效时间，将不会生效。
+
+## 附带身份凭证的请求
+
+Fetch 与 CORS 可以基于 HTTP Cookies 和 HTTP 认证信息发送身份凭证，一般来说，对于 XMLHttpRequest 或者 Fetch 请求，浏览器不会发送身份凭证信息，如要携带身份凭证信息时，需要设置 XMLHttpRequest 中的标志 `withCredentials = true`；同时服务器不得设置 `Access-Control-Allow-Origin` 的值为 `*`，否则请求将会失败，服务端也需要将 `Access-Control-Allow-Credentials = true`，否则响应内容不会返回给请求的发起者。
+
+### 附带身份凭证的请求示例
+
+发送请求：
+
+```js
+    var invocation = new XMLHttpRequest();
+    var url = 'http://bar.other/resources/credentialed-content/';
+        
+    function callOtherDomain(){
+        if(invocation) {
+            invocation.open('GET', url, true);
+            invocation.withCredentials = true;
+            invocation.onreadystatechange = handler;
+            invocation.send(); 
+        }
+    }
+```
+
+请求报文：
+
+```http
+    GET /resources/access-control-with-credentials/ HTTP/1.1
+    Host: bar.other
+    User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.1b3pre) Gecko/20081130 Minefield/3.1b3pre
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+    Accept-Language: en-us,en;q=0.5
+    Accept-Encoding: gzip,deflate
+    Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+    Connection: keep-alive
+    Referer: http://foo.example/examples/credential.html
+    Origin: http://foo.example
+    Cookie: pageAccess=2
+```
+
+响应报文：
+
+```http
+    HTTP/1.1 200 OK
+    Date: Mon, 01 Dec 2008 01:34:52 GMT
+    Server: Apache/2.0.61 (Unix) PHP/4.4.7 mod_ssl/2.0.61 OpenSSL/0.9.7e mod_fastcgi/2.4.2 DAV/2 SVN/1.4.2
+    X-Powered-By: PHP/5.2.6
+    Access-Control-Allow-Origin: http://foo.example
+    Access-Control-Allow-Credentials: true
+    Cache-Control: no-cache
+    Pragma: no-cache
+    Set-Cookie: pageAccess=3; expires=Wed, 31-Dec-2008 01:34:53 GMT
+    Vary: Accept-Encoding, Origin
+    Content-Encoding: gzip
+    Content-Length: 106
+    Keep-Alive: timeout=2, max=100
+    Connection: Keep-Alive
+    Content-Type: text/plain
+```
+
+> Set-Cookie -- 服务端尝试对 Cookie 进行修改。如果操作失败，将会抛出异常。
 
 ## 补充
 
-- HTTP 方法 <span id='#httpMethods'></span>：
-    - GET
-    - POST
-    - HEAD
-    - OPTIONS (用于获取目的资源所支持的通信选项)
-    - PUT (用于新增资源或者使用请求中的有效负载替换目标资源的表现形式，与 POST 的不同在于，PUT 调用一次和连续调用多次是等价的，而使用 POST 的联系调用可能会重复提交)
-    - [TRACE](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/TRACE) (实行了向目标资源的沿路径的消息环回测试)
-    - PATCH  用于对资源进行部分修改。
-    - DELETE 用于删除指定的资源
-    - CONNECT 可以开启一个客户端与所请求资源之间的双向沟通的通道。它可以用来创建隧道（tunnel）。
+### HTTP 方法 <span id='#httpMethods'></span>
+
+- GET
+- POST
+- HEAD
+- OPTIONS (用于获取目的资源所支持的通信选项)
+- PUT (用于新增资源或者使用请求中的有效负载替换目标资源的表现形式，与 POST 的不同在于，PUT 调用一次和连续调用多次是等价的，而使用 POST 的联系调用可能会重复提交)
+- [TRACE](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/TRACE) (实行了向目标资源的沿路径的消息环回测试)
+- PATCH  用于对资源进行部分修改。
+- DELETE 用于删除指定的资源
+- CONNECT 可以开启一个客户端与所请求资源之间的双向沟通的通道。它可以用来创建隧道（tunnel）。
+
+### HTTP 请求首部字段
+
+- Origin 首部字段表明预检请求或实际请求的源站。
+- Access-Control-Request-Method  首部字段用于预检请求。其作用是，将实际请求所使用的 HTTP 方法告诉服务器。
+- Access-Control-Request-Headers 首部字段用于预检请求。其作用是，将实际请求所携带的首部字段告诉服务器。
+
+### HTTP 响应首部字段
+
+- Access-Control-Allow-Origin 
+
+    origin 参数的值指定了允许访问该资源的外域 URI。对于不需要携带身份凭证的请求，服务器可以指定该字段的值为通配符，表示允许来自所有域的请求。
+- Access-Control-Expose-Headers
+
+    在跨域访问时，XMLHttpRequest对象的getResponseHeader()方法只能拿到一些最基本的响应头，Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma，如果要访问其他头，则需要服务器设置本响应头。
+- Access-Control-Max-Age 
+
+    指定了preflight请求的结果能够被缓存多久，请参考本文在前面提到的preflight例子。
+- Access-Control-Allow-Credentials
+
+    指定了当浏览器的credentials设置为true时是否允许浏览器读取response的内容。如果对此类请求的响应中不包含该字段，这个响应将被忽略掉，并且浏览器也不会将相应内容返回给网页。
+- Access-Control-Allow-Methods 
+
+    首部字段用于预检请求的响应。其指明了实际请求所允许使用的 HTTP 方法。
+- Access-Control-Allow-Headers
+
+    首部字段用于预检请求的响应。其指明了实际请求中允许携带的首部字段。
+
+### withCredentials 在 jQuery 中的使用
+
+```js
+    $.ajax({
+        url: a_cross_domain_url,
+        xhrFields: {
+            withCredentials: true
+        }
+    });
+```
+
+可以通过 $.ajaxSetup() 的方式将携带身份凭证作为默认行为
+
+```js
+    $.ajaxSetup({
+        xhrFields: {
+            widthCredentials: true
+        }
+    })
+```
