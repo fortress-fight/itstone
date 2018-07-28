@@ -1,14 +1,18 @@
 module.exports = {
     root: true,
-    parser: 'babel-eslint',
+    parser: "babel-eslint",
     parserOptions: {
-        sourceType: 'module'
+        sourceType: "module",
+        ecmaVersion: 6
     },
     env: {
         es6: true,
         browser: true,
         node: true
     },
-    extends: ['standard'],
-    rules: {}
-}
+    plugins: ["eslint-plugin-html", "prettier"],
+    extends: ["standard", "prettier"],
+    rules: {
+        "prettier/prettier": "error"
+    }
+};
