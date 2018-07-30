@@ -1,12 +1,13 @@
 ---
 title: read-axios-0.1.0
-date: 2018-07-29 22:39:44
 floder: axios-源码阅读
 tags:
-    - r-code
-    - axios
+  - r-code
+  - axios
 category:
-    - r-code
+  - r-code
+abbrlink: '9e042148'
+date: 2018-07-29 22:39:44
 ---
 
 基于 Promise 的 HTTP 客户端工具，可以用于浏览器和 node.js
