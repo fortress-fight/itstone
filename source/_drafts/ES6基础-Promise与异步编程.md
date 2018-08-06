@@ -1,0 +1,333 @@
+---
+title: ES6基础-Promise与异步编程
+date: 2018-08-04 17:37:31
+floder: ES6
+tags:
+    - JavaScript
+    - ES6
+    - Promise
+category:
+    - JavaScript
+---
+
+---
+
+<!-- more -->
+
+## 异步编程
+
+异步编程是 JavaScript 中强大的功能之一，在浏览器中主要是通过事件和回调函数来响应异步的用户交互。
+在 NodeJS 中，使用回调函数代替了事件。但是随着异步编程在 JavaScript 领域中更加流行，不同的异步回调已经不能满足开发者的使用。而 Promise 提供了更好的解决方案
+
+Promise
+
+1.  可以向事件和回调函数一样指定稍后执行的代码。
+2.  可以明确指示 diam 是否成功执行，基于这些成功或者失败的状态，可以让代码更容易理解和调试
+3.  可以链式编写 Promise
+
+异步编程
+
+1.  JavaScript 引擎是基于 **单线程** 事件循环的概念设计的，在同一时刻只允许一个代码块在执行
+2.  JavaScript 引擎统一时刻只能执行一个代码，所以需要跟踪即将运行的代码，那些代码被放在一个 **任务队列** 中，每当一段代码准备执行时，就会被添加到任务代码中
+3.  每当 JavaScript 引擎中的一段代码结束执行时， **事件循环** 会执行队列的下一个任务
+
+> 事件循环是 JavaScript 引擎中的一段程序，负责监控代码执行并管理任务队列，队列中的任务会从第一个一直执行到最后一个
+
+### 事件模型
+
+每当用户触发 `onclick` 这样的事件，它会向事件队列中添加一个新的任务来响应用户的操作。这种异步回调会在代码执行时，添加新的任务，且执行执行上下文与定义时相同。
+
+事件模式只是用于处理简单的交互，将多个独立的异步调用链接在一起回事程序更加复杂，因为需要跟踪每个事件的事件目标；
+
+### 回调模式
+
+NodeJS 通过普及回调函数来改进异步编程模式，回调模式和事件模式类似都是在未来的某个时刻执行，但是回调模式中被调用的函数是作为参数传入的；
+
+```js
+const fs = require("fs");
+fs.readFile(__dirname + "/test.txt", function(err, contents) {
+    if (err) {
+        throw err;
+    }
+
+    console.log(contents.toString());
+});
+
+console.log("hi");
+```
+
+在 NodeJS 中，回调风格是遵循错误优先，`readFile` 函数读取磁盘上的某个文件，读取结束后执行回调函数。如果出现错误，错误对象会被赋值给回调函数的 `err` 参数，如果一切正常，文件内容会以 Buffer 字符串的形式被赋值给 `contents` 参数。
+
+如果使用了回调模式，`readFile()` 函数立即开始执行，当读取文件时，`readFile()` 会暂停执行，当结束后会将后面的任务添加到任务队列中去。
+
+所以上述示例中的执行顺序是：先执行 `console.log('hi')` 等待 `readFile()` 读取文件，当读取文件结束后执行函数任务
+
+> 回调模式比事件模式更灵活
+
+但是如果嵌套了很多的层就会形成回调地狱，是代码难以维护；如果需要实现更复杂的功能，回调函数的局限性就会显露出来：
+
+1.  同时执行两个回调操作，需要当两个都结束时，通知你
+2.  同时进行两个异步操作，只取优先完成的操作结果
+
+使用普通的方式解决这些问题，我们需要同时跟踪多个回调函数并清理这些操作，而 Promise 就是可以更好的改进这种情况
+
+## Promise
+
+Promise 相当于异步操作的一个占位符，它不会订阅一个事件，依然不会传递一个回调函数给目标函数，而是让函数返回一个 Promise：
+
+### 声明周期
+
+每个 Promise 都会经历一个短暂的生命周期：
+
+1.  进行中
+    此时操作并未处理
+2.  已处理
+    操作结束后， Promise 可能会进入到两种状态；
+    -   `Fulfilled` -- Promise 异步操作成功完成，
+    -   `Rejected` -- 由于程序错误或者一些其他原因，Promise 异步操作未能成功执行
+
+内部属性 `[[PromiseState]]` 用来表示 Promise 的 3 中状态：`pending`、`fulfilled`、`rejected`；这个属性并不暴露在 Promise 对象上，只能通过 `then()` 方式来采取特定的行动；
+
+所有 Promise 都有 `then` 和 `catch` 方法；
+
+`then` 接受两个参数：
+
+1.  Promise 的状态变为 `fulfilled` 的时候需要调用的函数
+2.  Promise 的状态变为 `rejected` 的时候需要调用的函数
+
+> 如果一个对象实现了上述 `then` 的方法，那边这个对象就是 `thenable` 对象，所有的 Promise 都是 `thenable` 对象。
+
+`catch` 相当于只给其传入的拒绝处理程序的 `then` 方法，能够捕获到 Promise 以及链式 Promise 中的错误，
+
+`then` 方法和 `catch` 方法一起使用才能更好的处理异步操作结果，在 Promise 中如果没有添加拒绝处理程序，那么所有的失败就自动忽略了，所以一定要添加拒绝处理程序；
+
+示例:
+
+```js
+const fs = require("fs");
+fs.readFile(__dirname + "/test.txt", function(err, contents) {
+    if (err) {
+        throw err;
+    }
+
+    console.log(contents.toString());
+});
+
+console.log("hi");
+
+let promise = new Promise((resolve, reject) => {
+    fs.readFile(__dirname + "/test.txt", (err, contents) => {
+        if (err) {
+            reject(err);
+        }
+        resolve(contents);
+    });
+});
+
+promise.then(
+    function(contents) {
+        console.log(contents.toString());
+    },
+    err => {
+        console.log(err);
+    }
+);
+// 等价于
+promise
+    .then(function(contents) {
+        console.log(contents.toString());
+    })
+    .catch(err => {
+        console.log(err);
+    });
+```
+
+如果一个 Promise 处于已处理的状态，那么在这之后添加到任务队列中的处理程序仍将执行
+
+示例：
+
+```js
+promise = new Promise((resolve, reject) => {
+    fs.readFile(__dirname + "/test.txt", (err, contents) => {
+        if (err) {
+            reject(err);
+        }
+        resolve(contents);
+    });
+});
+
+promise.then(function(contents) {
+    console.log(contents.toString());
+    promise.then(function(contents) {
+        console.log(contents.toString());
+    });
+});
+```
+
+这里虽然，promise 在第一次执行 `then` 的时候，就已经变成了已处理的状态了，但是在第二次执行 `then` 的时候，依旧可以执行完成处理程序；
+
+> 每次调用 `then()` 的方法或者 `catch()` 方法都会创建一个新的任务，当 Promise 被解决时执行，这些任务最终会被加入到一个为 Promise 量身定制的独立队列中
+
+### 创建未完成的 Promise
+
+我们可以通过 `new Promise()` 来构建新的 Promise
+
+示例：
+
+```js
+function readFile(filename) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(
+            filename,
+            {
+                encoding: "utf-8"
+            },
+            (err, contents) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(contents);
+            }
+        );
+    });
+}
+
+promise = readFile(__dirname + "/test.txt");
+
+promise.then(
+    contents => {
+        console.log(contents);
+    },
+    err => {
+        throw err;
+    }
+);
+```
+
+当 `readFile` 方法被调用的时候，执行器会立即执行。在执行器中，无论是调用 `resolve` 还是 `reject` 都会想任务队列中添加一个任务来解决这个 Promise，并且明确指定将任务延后执行。
+
+```js
+promise = new Promise((resolve, reject) => {
+    console.log("Promise");
+    resolve();
+});
+
+promise.then(() => {
+    console.log("Resolved");
+});
+
+console.log("hi");
+```
+
+这段代码输出：
+
+```bash
+Promise
+hi
+Resolved
+```
+
+> 既是在代码中 `then` 调用位于 `console.log('hi')` 之前，但是传入的函数并没有立即执行，而是等待执行器完成后被添加到任务队列的末尾
+
+### 创建已处理的 Promise
+
+如果需要用 Promise 来表示一个已知值，可以使用特定方法创建已解决的 Promise
+
+1.  `Promise.resolve`
+
+此方法只接受一个参数并返回一个完成态的 Promise，示例：
+
+```js
+let promise = Promise.resolve("已知条件");
+
+promise.then(prom => {
+    console.log(prom);
+});
+
+console.log("Hi");
+
+/**
+ * 输出：
+ * Hi
+ * 已知条件
+ */
+```
+
+2.  `Promise.reject`
+
+此方法只接受一个参数并返回一个拒绝态的 Promise，示例：
+
+```js
+promise = Promise.reject("已经拒绝");
+
+promise.catch(error => {
+    console.log(error);
+});
+```
+
+> 如果向 `Promise.resolve` 方法和 `Promise.reject` 方法传入一个 Promise，那么这个 Promise 将会立即返回
+
+### 非 Promise 的 Thenable 对象
+
+定义：拥有 `then` 方法并且接受 `resolve` 和 `reject` 这两个参数的普通对象；
+
+如果向 `Promise.resolve` 方法和 `Promise.reject` 方法传入一个非 Promise 的 Thenable 对象作为参数。则这些方法会创建一个新的 Promise，并在 `then` 函数中调用；
+
+例如：
+
+```js
+promise = Promise.reject("已经拒绝");
+
+promise.catch(error => {
+    console.log(error);
+});
+
+let thenable = {
+    then(resolve, reject) {
+        resolve("已解决");
+    }
+};
+
+let p1 = Promise.resolve(thenable);
+
+p1.then(val => {
+    console.log(val);
+});
+```
+
+在上述示例中：`Promise.resolve()` 调用的 `thenable.then()` 所以 Promise 的状态可以被检测到，此时 Promise 的状态为 `resolve` ，然后执行 `p1.then`
+
+对于 `Promise.reject()` 同理
+
+> 有了 `Promise.resolve` 和 `Promise.reject` 我们可以更加轻松的处理非 `Promise` 对象
+
+### 执行器错误
+
+如果执行器内部抛出一个错误，则 Promise 的拒绝程序就会被执行；
+
+```js
+promise = new Promise(function(resolve, reject) {
+    throw new Error("explosion");
+});
+
+promise.catch(error => {
+    console.log(error);
+});
+
+// 等价于
+
+promise = new Promise(function(res, rej) {
+    try {
+        throw new Error("Explosion!");
+    } catch (ex) {
+        rej(ex);
+    }
+});
+
+promise.catch(error => {
+    console.log(error);
+});
+```
+
+执行器会捕获所有的抛出的错误，但只有拒绝处理程序在，才会记录执行器中抛出的错误，否则将不发生任何事情；后来 JavaScript 环境提供了一些捕获已拒绝的 `Promise` 的钩子函数来解决这个问题
