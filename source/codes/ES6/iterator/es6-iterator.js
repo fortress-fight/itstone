@@ -78,3 +78,18 @@ for (let x of collection) {
 // 1：迭代
 // 2：迭代
 // 3：迭代
+
+let ages = [10, 9, 12, 14];
+
+let iterator2 = ages.entries();
+console.log(iterator2.next());
+console.log(iterator2.next());
+console.log(iterator2.next());
+console.log(iterator2.next());
+console.log(iterator2.next());
+console.log(iterator2.next());
+
+let color = ['red', 'blue', 'origin'];
+for (const v of color.entries()) {
+    console.log(v)
+}

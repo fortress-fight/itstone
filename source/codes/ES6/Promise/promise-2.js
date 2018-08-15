@@ -78,3 +78,18 @@ p11.then((content) => {
     console.log(content);
     console.log(new Date);
 })
+
+let p12 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        resolve('res')
+    })
+})
+
+p12.then(res => {
+    console.log(res);
+    return new Promise((res, err) => {
+        res('then')
+    }, 1000)
+}).then(res => {
+    console.log(res)
+})
