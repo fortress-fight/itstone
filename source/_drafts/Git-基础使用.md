@@ -77,16 +77,23 @@ Git 的基础使用包含：
     将暂存区内的文件提交到提交区域（将会打开文本编辑用于输入提交说明），文件状态变为已提交，建议在提交前，查看 `status`；
     如果希望快速提交可以：`git commit -m <String|Message>`
 
-    `git commit -v` 可以将修改的信息放到文本中作为提示
+    -   `git commit -v` 可以将修改的信息放到文本中作为提示
 
-    提交后它会告诉你，当前是在哪个分支（master）提交的，本次提交的完整 SHA-1 校验和是什么（463dc4f），以及在本次提交中，有多少文件修订过，多少行添加和删改过。
+        提交后它会告诉你，当前是在哪个分支（master）提交的，本次提交的完整 SHA-1 校验和是什么（463dc4f），以及在本次提交中，有多少文件修订过，多少行添加和删改过。
 
-    ```bash
-        [master 04da3f4] commit project
-        1 file changed, 3 insertions(+)
-    ```
+        ```bash
+            [master 04da3f4] commit project
+            1 file changed, 3 insertions(+)
+        ```
 
-    `git commit -a` Git 就会自动把所有已经跟踪过的文件暂存起来一并提交，从而跳过 git add 步骤：
+    -   `git commit -a` Git 就会自动把所有已经跟踪过的文件暂存起来一并提交，从而跳过 git add 步骤：
+    
+    -   `git commit --amend` 如果在提交完成后，发现存在一些已修改的文件由于没有放入暂存区，导致没有一起提交，可以使用下面的方法来补充提交：
+        ```bash
+            git add <forgot fileName>
+            git commit --amend
+        ```
+        这样只会存在一次提交，第二次提交会把第一次提交覆盖
 
 ### 忽略文件
 
@@ -101,6 +108,8 @@ Git 的基础使用包含：
 5.  要忽略指定模式以外的文件或目录，可以在模式前加上惊叹号（!）取反。
 
 所谓的 glob 模式是指 shell 所使用的简化了的正则表达式。 星号（\_）匹配零个或多个任意字符；[abc] 匹配任何一个列在方括号中的字符（这个例子要么匹配一个 a，要么匹配一个 b，要么匹配一个 c）；问号（?）只匹配一个任意字符；如果在方括号中使用短划线分隔两个字符，表示所有在这两个字符范围内的都可以匹配（比如 [0-9] 表示匹配所有 0 到 9 的数字）。 使用两个星号（\_) 表示匹配任意中间目录，比如`a/**/z` 可以匹配 a/z, a/b/z 或 `a/b/c/z`等。
+
+## 文件相关操作
 
 ### 文件修改了什么
 
@@ -132,3 +141,122 @@ Git 的基础使用包含：
         `mv <filename> <filename>`
         `git rm <filename>`
         `git add <filename>`
+
+## 提交历史
+
+-   `git log`
+    默认不用任何参数的话，git log 会按提交时间列出所有的更新，最近的更新排在最上面。（使用 `q` 退出查看状态）
+
+    ```bash
+        commit 3764fa65c5170004a5cccab5f10dbaa461d31e50 (HEAD -> master)
+        Author: ******
+        Date:   Wed Sep 5 14:25:32 2018 +0800
+
+            mv.md
+    ```
+
+    正如你所看到的，这个命令会列出每个提交的 SHA-1 校验和、作者的名字和电子邮件地址、提交时间以及提交说明。
+
+    [git log 参数](#gitLog)
+
+## Git 撤销操作
+
+### 取消暂存的文件
+
+1.  `git reset HEAD <file>` 将暂存区的文件移除，避免提交
+
+    `git reset HEAD --hrad` 可能会覆盖掉本地的修改
+
+### 取消本地的修改
+
+将修改的本地文件还原成上次提交时（暂存）的样子
+
+1.  `git checkout -- <fileName>`
+
+    撤销的时候，将会先查找暂存区是否存在该文件，如果存在就还原成暂存区文件，如果暂存区没有就还原成为上次提交的样子。总之就是撤销本次修改
+    
+    >   git checkout -- [file] 是一个危险的命令，这很重要。 **你对那个文件做的任何修改都会消失** - 你只是拷贝了另一个文件来覆盖它。 除非你确实清楚不想要那个文件了，否则不要使用这个命令。
+
+## 补充
+
+### <span id='#gitLog'>git log 参数</span>
+
+git log 有许多选项可以帮助你搜寻你所要找的提交， 接下来我们介绍些最常用的。
+
+1.  `git log -<num>` -- 用于显示提交的个数
+2.  `git log -p` -- 用于显示每次提交的内容差异
+
+    ```bash
+        commit 3764fa65c5170004a5cccab5f10dbaa461d31e50 (HEAD -> master)
+        Author: ******
+        Date:   Wed Sep 5 14:25:32 2018 +0800
+
+            mv.md
+
+        diff --git a/del.md b/mv.md
+        similarity index 100%
+        rename from del.md
+        rename to mv.md
+    ```
+
+3.  `git log --status` -- 每次提交的简略的统计信息
+
+    ```bash
+        commit 3764fa65c5170004a5cccab5f10dbaa461d31e50 (HEAD -> master)
+        Author: ******
+        Date:   Wed Sep 5 14:25:32 2018 +0800
+
+            mv.md
+
+        del.md => mv.md | 0
+        1 file changed, 0 insertions(+), 0 deletions(-)
+    ```
+
+4.  `git log --shortstat` -- 只显示 --stat 中最后的行数修改添加移除统计。
+
+5.  `git log --name-only` 仅在提交信息后显示已修改的文件清单。
+6.  `git log --name-status` 显示新增、修改、删除的文件清单。
+7.  `git log --abbrev-commit` 仅显示 SHA-1 的前几个字符，而非所有的 40 个字符。
+8.  `git log --relative-date` 使用较短的相对时间显示（比如，“2 weeks ago”）。
+9.  `git log --pretty` -- 这个选项可以指定使用不同于默认格式的方式展示提交历史
+
+    这个选项有一些内建的子选项供你使用:
+
+    -   `git log --pretty=oneline`
+    -   `git log --pretty=short`
+    -   `git log --pretty=full`
+    -   `git log --pretty=fuller`
+    -   `git log --pretty=formate` 使用占位符如：`git log --pretty=formate:"%h - %s"`
+
+        | 选项 | 说明                             |
+        | ---- | -------------------------------- |
+        | %H   | 提交对象（commit）的完整哈希字串 |
+        | %h | 提交对象的简短哈希字串
+        | %T | 树对象（tree）的完整哈希字串
+        | %t | 树对象的简短哈希字串
+        | %P | 父对象（parent）的完整哈希字串
+        | %p | 父对象的简短哈希字串
+        | %an | 作者（author）的名字
+        | %ae | 作者的电子邮件地址
+        | %ad | 作者修订日期（可以用 --date= 选项定制格式）
+        | %ar | 作者修订日期，按多久以前的方式显示
+        | %cn | 提交者（committer）的名字
+        | %ce | 提交者的电子邮件地址
+        | %cd | 提交日期
+        | %cr | 提交日期，按多久以前的方式显示
+        | %s | 提交说明
+
+10.  `git log --graph` 这个选项添加了一些 ASCII 字符串来形象地展示你的分支、合并历史：
+11.  `git log <filename>`  查看某些文件或者目录的历史提交
+
+#### 筛选输出
+
+| 选项                                    | 说明                |
+|---------------------------------------|-------------------|
+| -(n)                                  | 仅显示最近的 n 条提交      |
+| --since="<timer>", --after="<timer>"  | 仅显示指定时间之后的提交。     |
+| --until="<timer>", --before="<timer>" | 仅显示指定时间之前的提交。     |
+| --author="<authorName>"               | 仅显示指定作者相关的提交。     |
+| --committer="<committerName>"         | 仅显示指定提交者相关的提交。    |
+| --grep="<String>"                     | 仅显示含指定关键字的提交      |
+| -S="<Sting>"                          | 仅显示添加或移除了某个关键字的提交 |
