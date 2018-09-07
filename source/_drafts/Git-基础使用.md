@@ -177,6 +177,70 @@ Git 的基础使用包含：
     
     >   git checkout -- [file] 是一个危险的命令，这很重要。 **你对那个文件做的任何修改都会消失** - 你只是拷贝了另一个文件来覆盖它。 除非你确实清楚不想要那个文件了，否则不要使用这个命令。
 
+## Git 打标签
+
+Git 可以给历史中的某一个提交打上标签，以示重要。 比较有代表性的是人们会使用这个功能来标记发布结点（v1.0 等等）。 
+
+### 打标签
+
+1.  `git tag <标签>`
+    轻量标签本质上是将提交校验和存储到一个文件中 - 没有保存任何其他信息。 创建轻量标签，不需要使用 -a、-s 或 -m 选项，只需要提供标签名字：
+
+2.  `git tag -a <标签> -m "<注释>"`
+    附注标签是存储在 Git 数据库中的一个完整对象。 它们是可以被校验的；其中包含打标签者的名字、电子邮件地址、日期时间；还有一个标签信息；并且可以使用 GNU Privacy Guard （GPG）签名与验证。 通常建议创建附注标签，这样你可以拥有以上所有信息；
+
+3.  `git tag -d <tag name>`
+    删除标签
+
+### 查看标签
+
+1.  `git tag` 列出 Git 中的标签
+2.  `git tag -l '<String|筛选条件>'`
+3.  `git show` 可以看到标签信息与对应的提交信息
+
+### 补打标签
+
+1.  `git tag -a <标签> <commit hash> -m "<注释>"`
+    要在那个提交上打标签，你需要在命令的末尾指定提交的校验和（或部分校验和）:
+
+### 共享标签
+
+1.  `git push origin <tag name>`
+    默认情况下，git push 命令并不会传送标签到远程仓库服务器上。 在创建完标签后你必须显式地推送标签到共享服务器上。 这个过程就像共享远程分支一样 - 你可以运行 git push origin [tagname]。
+
+2.  `git push origin --tags`
+    如果想要一次性推送很多标签，也可以使用带有 --tags 选项的 git push 命令。 这将会把所有不在远程仓库服务器上的标签全部传送到那里。
+    
+### 检出标签
+
+1.  `git checkout -b [branchname] [tagname]`
+    在特定的标签上创建一个新分支：
+
+## Git 别名
+
+Git 并不会在你输入部分命令时自动推断出你想要的命令。 如果不想每次都输入完整的 Git 命令，可以通过 git config 文件来轻松地为每一个命令设置一个别名。 这里有一些例子你可以试试：
+
+示例：
+
+```bash
+    git config --global alias.ci commit
+```
+
+这意味着，当要输入 git commit 时，只需要输入 git ci。 随着你继续不断地使用 Git，可能也会经常使用其他命令，所以创建别名时不要犹豫。
+
+```bash
+git config --global alias.unstage 'reset HEAD --'
+```
+
+这会使下面的两个命令等价：
+
+```bash
+git unstage fileA
+git reset HEAD -- fileA
+```
+
+你可能想要执行外部命令，而不是一个 Git 子命令。 如果是那样的话，可以在命令前面加入 ! 符号。 例如：`git config --global alias.visual '!gitk'`
+    
 ## 补充
 
 ### <span id='#gitLog'>git log 参数</span>
