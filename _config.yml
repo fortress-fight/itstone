@@ -80,7 +80,7 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
 	type: git
-	repository: git@github.com:fortress-fight/itstone.git
+	repository: https://github.com/fortress-fight/itstone.git
 	branch: master
 
 algolia:
