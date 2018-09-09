@@ -11,16 +11,18 @@
 <!-- Usual pull template -->
 
 ## PR Checklist
+
 **Please check if your PR fulfills the following requirements:**
 
 - [ ] The commit message follows [our guidelines](https://github.com/iissnan/hexo-theme-next/blob/master/.github/CONTRIBUTING.md).
 - [ ] Tests for the changes have been added (for bug fixes / features).
-   - [ ] Muse | Mist have been tested.
-   - [ ] Pisces | Gemini have been tested.
+  - [ ] Muse | Mist have been tested.
+  - [ ] Pisces | Gemini have been tested.
 - [ ] Docs have been added / updated (for bug fixes / features).
 
 ## PR Type
-**What kind of change does this PR introduce?**  <!-- (Check one with "x") -->
+
+**What kind of change does this PR introduce?** <!-- (Check one with "x") -->
 
 - [ ] Bugfix.
 - [ ] Feature.
@@ -32,30 +34,35 @@
 - [ ] Other... Please describe:
 
 ## What is the current behavior?
+
 <!-- Please describe the current behavior that you are modifying, or link to a relevant issue. -->
 
 Issue Number(s): N/A
 
 ## What is the new behavior?
+
 Description about this pull, in several words...
 
-* Screens with this changes: N/A
-* Link to demo site with this changes: N/A
+- Screens with this changes: N/A
+- Link to demo site with this changes: N/A
 
 ### How to use?
+
 In NexT `_config.yml`:
+
 ```yml
-...
+
 ```
 
 ## Does this PR introduce a breaking change?
+
 - [ ] Yes.
 - [ ] No.
 
 <!-- If this PR contains a breaking change, please describe the impact and migration path for existing applications below. -->
 
 <!-- BIG pull template -->
-<!-- 
+<!--
 1. xxxxxxx - commit link on modified file. Just copy this below your pull request readme.
 2. You can paste any image directly from your clipboard. Just press **Print Scr** and paste it into pull readme - link on image will generate and paste automaticly.
 -->

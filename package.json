@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "algoliasearch": "^3.24.7",
-    "hexo": "^3.2.0",
+    "hexo": "^3.7.1",
     "hexo-abbrlink": "^2.0.4",
     "hexo-algolia": "^1.2.5",
     "hexo-deployer-git": "^0.3.1",
