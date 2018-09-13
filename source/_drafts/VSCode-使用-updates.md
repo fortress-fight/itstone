@@ -99,3 +99,56 @@ Breadcrumbs 允许在符合和文件之间快读导航，可以通过 `视图 =>
 `SHIFT + ALT + 1` -- 将编辑器移动到第一组k
 `Shift + 向下` -- 列表/树中的多选：向下扩展选择
 `Shift + 向上` -- 列表/树中的多选：向上扩展选择
+
+## 2018-09-11 (1.27)
+
+### 编辑器
+
+1.  将 GUI 设置编辑器作为默认，如果需要修改 JSON 可以使用 **打开设置(JSON)** 的方式，或者通过 `workbench.settings.editor` 修改默认行为
+
+2.  Window 和 Linux 上的自定义标题栏和菜单，我们可以设置：`window.titleBarStyle:custom` 这样菜单栏可以根据 theme 进行适配。我们还可以通过设置：`window.menuBarVisibility:toggle` 来设置菜单栏的展示条件
+
+### breadcrumbs
+
+1.  运行焦点命令 `Ctrl + Shift +;` 时会自动启用面包屑。
+
+### 新的终端菜单
+
+1.  '任务' 菜单已重命名为 '终端'，并添加了一些集成终端的条目
+
+### 特定于平台的键绑定
+
+现在，您可以启用使用特定操作系统的快捷键isLinux，isMac和isWindows一个键绑定的内when子句：
+
+```json
+{
+  "key": "ctrl+o",
+  "command": "workbench.action.files.openFolder",
+  "when": "!isMac"
+},
+{
+  "key": "cmd+o",
+  "command": "workbench.action.files.openFolder",
+  "when": "isMac"
+}
+```
+
+### 其他：
+
+1.  从外部删除/重命名时，文件不再关闭 `workbench.editor.closeOnFileDelete`
+
+### 编辑
+
+1.  自动关闭和周围的字符，如：`[]`, `{}` -- `editor.autoClosingBrackets`
+
+### CSS 语言
+
+1.  `@import` 现在可以使用CSS，SCSS和Less的路径完成。SCSS部分也 `@import` 被处理。
+
+2.  跳转到CSS链接的定义 现在跳转到CSS，SCSS和Less的定义 `@import` 和 `url()` 链接。
+
+### HTML 语言
+
+HTML格式化程序已更新为JS Beautifier的 1.8.1版。
+
+1.  `HTML` 格式化程序 `html.format.wrapAttributes:aligned-multiple` 将在达到最大行长度时包装属性，并将所有包装行与第一个属性对齐
