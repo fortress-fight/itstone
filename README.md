@@ -8,7 +8,7 @@
 3.  `hexo clean` -- 清理文件
 4.  `hexo deploy post [name]` -- 部署
 
-5.  `export HEXO_ALGOLIA_INDEXING_KEY=7a6e78ad559af4c8edc847db370b42a6` `hexo algolia` -- 关联搜索
+5.  `set HEXO_ALGOLIA_INDEXING_KEY=7a6e78ad559af4c8edc847db370b42a6` / `export HEXO_ALGOLIA_INDEXING_KEY=7a6e78ad559af4c8edc847db370b42a6` `hexo algolia` -- 关联搜索
 
 6.  `open -a iTerm ./` 使用 iTerm 打开路径文件
 
