@@ -10,6 +10,7 @@ category:
 ---
 
 ---
+
 <!-- more -->
 
 ## Git-分支基础
@@ -36,7 +37,7 @@ category:
 
 ![提交对象及其父对象](https://git-scm.com/book/en/v2/images/commits-and-parents.png)
 
-#### Git-master分支
+#### Git-master 分支
 
 Git 的分支，其实本质上仅仅是指向提交对象的可变指针。 Git 的默认分支名字是 master。 在多次提交操作之后，你其实已经有一个指向最后那个提交对象的 master 分支。 它会在每次的提交操作中自动向前移动。
 
@@ -120,6 +121,7 @@ Git 的 “master” 分支并不是一个特殊分支。 它就跟其它分支�
     ```bash
         git checkout -b iss53
     ```
+
     ![创建新的分支](https://git-scm.com/book/en/v2/images/basic-branching-2.png)
 
 2.  突然接到一个电话说有个很严重的问题需要紧急修补。
@@ -130,6 +132,7 @@ Git 的 “master” 分支并不是一个特殊分支。 它就跟其它分支�
         git commit -a -m 'added a new footer [issue 53]'
         git checkout master
     ```
+
     ![在新的分支上提交](https://git-scm.com/book/en/v2/images/basic-branching-3.png)
 
     这个时候，你的工作目录和你在开始 #53 问题之前一模一样，现在你可以专心修复紧急问题了。 请牢记：当你切换分支的时候，Git 会重置你的工作目录，使其看起来像回到了你在那个分支上最后一次提交的样子。 Git 会自动添加、删除、修改文件以确保此时你的工作目录和这个分支最后一次提交时的样子一模一样。
@@ -156,7 +159,7 @@ Git 的 “master” 分支并不是一个特殊分支。 它就跟其它分支�
             index.html | 2 ++
             1 file changed, 2 insertions(+)
         ```
-        
+
         `fast-forward`: 由于当前 master 分支所指向的提交是你当前提交（有关 hotfix 的提交）的直接上游，所以 Git 只是简单的将指针向前移动。 换句话说，当你试图合并两个分支时，如果顺着一个分支走下去能够到达另一个分支，那么 Git 在合并两者的时候，**只会简单的将指针向前推进**（指针右移），因为这种情况下的合并操作没有需要解决的分歧——这就叫做 “快进（fast-forward）”。
 
         现在，最新的修改已经在 master 分支所指向的提交快照中，你可以着手发布该修复了。
@@ -220,9 +223,9 @@ Git 的 “master” 分支并不是一个特殊分支。 它就跟其它分支�
     >>>>>>> iss53:index.html
 ```
 
-为了解决冲突，你必须选择使用由 ======= 分割的两部分中的一个，或者你也可以自行合并这些内容。 
+为了解决冲突，你必须选择使用由 `=======` 分割的两部分中的一个，或者你也可以自行合并这些内容。
 
-上述的冲突解决方案仅保留了其中一个分支的修改，并且 <<<<<<< , ======= , 和 >>>>>>> 这些行被完全删除了。 在你解决了所有文件里的冲突之后，**对每个文件使用 git add 命令来将其标记为冲突已解决。 一旦暂存这些原本有冲突的文件，Git 就会将它们标记为冲突已解决**。
+上述的冲突解决方案仅保留了其中一个分支的修改，并且 `<<<<<<<` , `=======` , 和 `>>>>>>>` 这些行被完全删除了。 在你解决了所有文件里的冲突之后，**对每个文件使用 git add 命令来将其标记为冲突已解决。 一旦暂存这些原本有冲突的文件，Git 就会将它们标记为冲突已解决**。
 
 如果你想使用图形化工具来解决冲突，你可以运行 `git mergetool`，该命令会为你启动一个合适的可视化合并工具，并带领你一步一步解决这些冲突：
 
@@ -240,7 +243,7 @@ Git 的 “master” 分支并不是一个特殊分支。 它就跟其它分支�
 
 `master` 分支 -- 保留完全稳定的代码——有可能仅仅是已经发布或即将发布的代码
 `develop` `topic` 平行分支 -- 被用来做后续开发或者测试稳定性，这些分支不必保持绝对稳定，但是一旦达到稳定状态，它们就可以被合并入 master 分支了。
-`proposed` 建议更新分支 -- 它可能因包含一些不成熟的内容而不能进入 next 或者 master 分支。 这么做的目的是使你的分支具有不同级别的稳定性；当它们具有一定程度的稳定性后，再把它们合并入具有更高级别稳定性的分支中。 
+`proposed` 建议更新分支 -- 它可能因包含一些不成熟的内容而不能进入 next 或者 master 分支。 这么做的目的是使你的分支具有不同级别的稳定性；当它们具有一定程度的稳定性后，再把它们合并入具有更高级别稳定性的分支中。
 短期分支 -- 短期分支能够通过所有测试，并且不会引入更多 bug 之后，就可以合并入主干分支中，等待下一次的发布。
 
 ![流水线](https://git-scm.com/book/en/v2/images/lr-branches-2.png)
@@ -260,4 +263,120 @@ Git 的 “master” 分支并不是一个特殊分支。 它就跟其它分支�
 2.  现在，我们假设两件事情：你决定使用第二个方案来解决那个问题，即使用在 iss91v2 分支中方案；另外，你将 dumbidea 分支拿给你的同事看过之后，结果发现这是个惊人之举。 这时你可以抛弃 iss91 分支（即丢弃 C5 和 C6 提交），然后把另外两个分支合并入主干分支。 最终你的提交历史看起来像下面这个样子：
 
     ![alt](https://git-scm.com/book/en/v2/images/topic-branches-2.png)
+
+## 远程分支
+
+远程引用是对远程仓库的引用。
+
+1.  `git ls-remote <remote-name>` 来显示的获取远程引用的完整列表
+2.  `git remote show <remote>` 获取远程分支的更多信息
+
+远程跟踪分支：
+
+远程跟踪分支是远程分支状态的引用，它们是你不能移动的本地分支。它们以 [remote-name]/[branch-name] 的形式命令。例如：`'origin/master'` ; 有本地分支 `change`，对应的远程分支就是 `origin/change`
+
+> 远程仓库 `origin` 与分支名字 `master` 一样，在 Git 中并没有任何特殊的含义。都是在 `git init` 默认起始分支名字。`origin` 是当你运行 `git clone` 时默认的远程仓库名字，如果你运行 `git clone -o other` 那默认的远程分支就是 `other/master`
+
+![clone](https://git-scm.com/book/en/v2/images/remote-branches-1.png)
+
+1.  `git fetch <remote-name>` 查找 `remote-name` 是哪一个服务器，从中抓取本地没有的数据，并且更新本地数据库，移动 `origin/master` 指针指向新的、更新后的位置
+
+    当抓取到新的远程跟踪分支时，本地不会自动生成一份可编辑的副本（拷贝）。 换一句话说，这种情况下，不会有一个新的分支 - 只有一个不可以修改的 `remote-name/branch-name` 指针。
+
+    然后运行 `git merge <remote-name>/<branch-name>` 将这些工作合并到当前所在的分支。 或者 `git checkout -b <branch-name> <remote-name>/<branch-name>` 创建一个新的本地工作分支，并且起点位于 `<remote-name>/<branch-name>`
+
+    git 提供了一个便捷的操作方式：
+
+    `git checkout --track <remote-name>/<branch-name>` 该命令会创建一个 `<branch-name>` 的分支，并且跟踪对应的远程分支
+
+    -   如果希望设置/修改已有的本地分支跟踪一个刚刚拉取下来的远程分支：`git branch -u <remote-name>/<branch-name>`
+    -   在设置好上游分支后，可以通过 `@{u}` 来表示远程分支，例如：`git push @{u}`
+
+2.  `git pull` 拉取本地分支
+
+    从一个远程跟踪分支检出一个本地分支会自动创建一个叫做 **跟踪分支**（有时候也叫做 “上游分支”）。 跟踪分支是与远程分支有直接关系的本地分支。 如果在一个跟踪分支上输入 `git pull`，**Git 能自动地识别去哪个服务器上抓取、合并到哪个分支**。
+
+    `git pull` 在大多数情况下是 `git fetch` & `git merge`
     
+3.  `git branch -vv` 将所有的本地分支列出来并且包含更多的信息、
+
+    ```bash
+        $ git branch -vv
+        iss53     7e424c3 [origin/iss53: ahead 2] forgot the brackets
+        master    1ae2a45 [origin/master] deploying index fix
+        * serverfix f8674d9 [teamone/server-fix-good: ahead 3, behind 1] this should do it
+        testing   5ea463a trying something new
+    ```
+    
+    `ahead` -- 意味着本地分支有两个没有推送
+    `behind` -- 意味着远程有一次提交没有合并到本地
+
+### 推送
+
+当你想要公开分享一个分支时，需要将其推送到有写入权限的远程仓库上。 本地的分支并不会自动与远程仓库同步 - 你必须显式地推送想要分享的分支
+
+1.  `git push <remote-name> <branch-name>` 推送到远程分支
+
+    ```bash
+        $ git push origin serverfix
+        Counting objects: 24, done.
+        Delta compression using up to 8 threads.
+        Compressing objects: 100% (15/15), done.
+        Writing objects: 100% (24/24), 1.91 KiB | 0 bytes/s, done.
+        Total 24 (delta 2), reused 0 (delta 0)
+        To https://github.com/schacon/simplegit
+        * [new branch]      serverfix -> serverfix
+    ```
+
+    这里有些工作被简化了。 Git 自动将 `serverfix` 分支名字展开为 `refs/heads/serverfix:refs/heads/serverfix`，可以通过这种格式来推送本地分支到一个命名不相同的远程分支。 如果并不想让远程仓库上的分支叫做 `serverfix`，可以运行 `git push origin serverfix:awesomebranch` 来将本地的 `serverfix` 分支推送到远程仓库上的 `awesomebranch` 分支。
+
+### 密码
+
+推送到远程分支需要输入远程仓库的密码，如果希望避免每次输入密码：
+
+如果你正在使用 `HTTPS URL` 来推送，Git 服务器会询问用户名与密码。 默认情况下它会在终端中提示服务器是否允许你进行推送。
+
+如果不想在每一次推送时都输入用户名与密码，你可以设置一个 “credential cache”。 最简单的方式就是将其保存在内存中几分钟，可以简单地运行 `git config --global credential.helper cache` 来设置它，或者使用凭证储存
+
+### 删除远程分支
+
+1.  `gti push <remote-name> --delete <branch-name>` 将会在服务器上移除这个分支，Git 服务器会在保留数据一段时间直到垃圾回收运行。
+
+## rebase
+
+在 Git 中整合来自不同分支的修改有两种方式：`merge` & `rebase`
+
+`rebase` 命令和 `merge` 不同：
+
+-   `merge` 它会把两个分支的最新快照（C3 和 C4）以及二者最近的共同祖先（C2）进行三方合并，`合并的结果是生成一个新的快照（并提交）`。
+-   `rebase` 将会把提交到某一分支上的所有修改都 **移到另一分支上**，它的原理是首先找到这两个分支（当前分支和变基操作的目标基础分支）的最近的共同祖先，然后对比当前分支相对于该祖先的历次提交，**提取相应的修改并存为临时文件**，然后将当前分支指向目标基底 C3, 最后以此将之前 **另存为临时文件的修改依序应用到目标分支上**。
+-   `rebase` 和 `merge` 两种整合方法的最终结果没有任何区别，但是 `rebase` 使得提交历史更加整洁， 你在查看一个经过变基的分支的历史记录时会发现，尽管实际的开发工作是并行的，但它们看上去就像是串行的一样，提交历史是一条直线没有分叉。
+
+使用 `rebase` 是为了确保在向远程分支推手时能保证提交历史的整洁，在向其他人维护的项目贡献代码时，可以现在自己的分支里进行开发，当开发完成后现将你的代码变基到目标分支上，然后在向主项提交修改。这样维护者就不再需要进行整合工作，只要快速合并就可以了
+
+### rebase 的使用
+
+-   基础使用
+
+    ![初始项目](https://git-scm.com/book/en/v2/images/basic-rebase-1.png)
+
+    ```bash
+        git checkout experiment
+        git rebase master
+    ```
+
+    ![合并分支](https://git-scm.com/book/en/v2/images/basic-rebase-3.png)
+
+    ```bash
+        git checkout master
+        git merge experiment
+    ```
+
+-   复杂的合并情况
+
+    ![初始项目](https://git-scm.com/book/en/v2/images/interesting-rebase-1.png)
+
+    你希望将 client 中的修改合并到主分支并发布，但暂时并不想合并 server 中的修改，因为它们还需要经过更全面的测试。
+
+    `git rebase --onto master server client` -- 取出 `client` 分支，找出处于 `client` 分支和 `server` 分支的共同祖先之后的修改，然后把它们在 `master` 分支上
+
