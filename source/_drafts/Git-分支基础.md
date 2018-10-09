@@ -376,7 +376,61 @@ Git 的 “master” 分支并不是一个特殊分支。 它就跟其它分支�
 
     ![初始项目](https://git-scm.com/book/en/v2/images/interesting-rebase-1.png)
 
-    你希望将 client 中的修改合并到主分支并发布，但暂时并不想合并 server 中的修改，因为它们还需要经过更全面的测试。
+    1.  你希望将 client 中的修改合并到主分支并发布，但暂时并不想合并 server 中的修改，因为它们还需要经过更全面的测试。
 
-    `git rebase --onto master server client` -- 取出 `client` 分支，找出处于 `client` 分支和 `server` 分支的共同祖先之后的修改，然后把它们在 `master` 分支上
+        `git rebase --onto master server client` -- 取出 `client` 分支，找出处于 `client` 分支和 `server` 分支的共同祖先之后的修改，然后把它们在 `master` 分支上
 
+        ![复杂变基](https://git-scm.com/book/en/v2/images/interesting-rebase-2.png)
+
+    2.  然后快速合并 master 分支
+    
+        ```bash
+            git checkout master
+            git merge client
+        ```
+
+        ![合并](https://git-scm.com/book/en/v2/images/interesting-rebase-3.png)
+
+    3.  变基 `server` 分支
+
+        ```bash
+            git rebase master server
+        ```
+
+        ![变基](https://git-scm.com/book/en/v2/images/interesting-rebase-4.png)
+
+    4.  快速合并 `master` 分支 删除无用的分支
+
+        ```bash
+            git checkout master
+            git merge server
+            git branch -d client
+            git branch -d server
+        ```
+
+        ![最终的提交历史](https://git-scm.com/book/en/v2/images/interesting-rebase-5.png)
+        
+## 变基的风险
+
+紧记：**不要对在你的仓库外有副本的分支执行变基。**
+
+变基操作的实质是丢弃一些现有的提交，然后相应地新建一些内容一样但实际上不同的提交。 如果你已经将提交推送至某个仓库，而其他人也已经从该仓库拉取提交并进行了后续工作，此时，如果你用 git rebase 命令重新整理了提交并再次推送（覆盖了之前操作的情况下）这样就会丢失原来的提交，并且产生新的变基分支，你的同伴因此将不得不再次将他们手头的工作与你的提交进行整合，如果接下来你还要拉取并整合他们修改过的提交，事情就会变得一团糟。
+
+在这种情况下，我们还可以利用变基分支，`git rebase teamone/master` 或者使用 `git pull --rebase` Git 会：
+
+1.  检查哪些提交是我们的分支上独有的
+2.  检查其中哪些提交不是合并操作的结果
+3.  检查哪些提交在对方覆盖更新时并没有被纳入目标分支
+4.  把查到的这些提交应用在 teamone/master 上面
+
+这样可以找回部分提交的分支; 但是建议不要对在你的仓库外有副本的分支执行变基。
+
+## 变基 && 合并
+
+有一种观点认为，仓库的提交历史即是 **记录实际发生过什么**。 它是针对历史的文档，本身就有价值，不能乱改。 从这个角度看来，改变提交历史是一种亵渎，你使用_谎言_掩盖了实际发生过的事情。 如果由合并产生的提交历史是一团糟怎么办？ 既然事实就是如此，那么这些痕迹就应该被保留下来，让后人能够查阅。
+
+另一种观点则正好相反，他们认为提交历史是 **项目过程中发生的事**。 没人会出版一本书的第一版草稿，软件维护手册也是需要反复修订才能方便使用。 持这一观点的人会使用 rebase 及 filter-branch 等工具来编写故事，怎么方便后来的读者就怎么写。
+
+现在，让我们回到之前的问题上来，到底合并还是变基好？希望你能明白，这并没有一个简单的答案。 Git 是一个非常强大的工具，它允许你对提交历史做许多事情，但每个团队、每个项目对此的需求并不相同。 既然你已经分别学习了两者的用法，相信你能够根据实际情况作出明智的选择。
+
+总的原则是，**只对尚未推送或分享给别人的本地修改执行变基操作清理历史，从不对已推送至别处的提交执行变基操作**，这样，你才能享受到两种方式带来的便利。
