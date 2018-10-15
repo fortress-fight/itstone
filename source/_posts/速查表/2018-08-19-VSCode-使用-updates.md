@@ -1,13 +1,15 @@
 ---
 title: VSCode-使用-updates
-folder: 速查表
 tags:
-    - vscode
+  - vscode
+folder:
+  - 待分类
 category:
-    - 速查表
+  - 速查表
 abbrlink: 695d375b
 date: 2018-08-19 10:46:43
 ---
+
 
 熟练掌握一个编辑器，是十分重要的
 
