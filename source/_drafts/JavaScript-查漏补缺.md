@@ -76,6 +76,17 @@ category:
 
     `Object.getPrototypeOf()` 方法返回指定对象的原型（内部`[[Prototype]]`属性的值）。
     `prototypeObj.isPrototypeOf(object)` 检查 **一个对象** 是否存在于另一个对象的原型链上。
+
+        -  例如： `Error.isPrototypeOf(TypeError) // true` 就是检查 `Error` 是否存在于 `TypeError` 的原型链上: 
+
+            ```js
+                TypeError.__proto__ // ƒ Error() { [native code] }
+                TypeError.__proto__.__proto__ // ƒ () { [native code] }
+                TypeError.__proto__.__proto__.__proto__ // {...}
+                TypeError.__proto__.__proto__.__proto__.__proto__ // null
+            ```
+
+
     `instanceof` 运算符用于测试 **构造函数的 `prototype` 属性** 是否出现在对象的原型链中的任何位置
 
     1.  `instaceof` 简单使用：
@@ -131,6 +142,65 @@ category:
     由其本文涉及显示原型和隐式原型，所以下面对这两个概念作一下简单说明。在 JavaScript 原型继承结构里面，规范中用 `[[Prototype]]` 表示对象隐式的原型，在 JavaScript 中用 `__proto__` 表示，并且在 Firefox 和 Chrome 浏览器中是可以访问得到这个属性的，但是 IE 下不行。所有 JavaScript 对象都有 `__proto__` 属性，但只有 `Object.prototype.__proto__` 为 null，前提是没有在 Firefox 或者 Chrome 下修改过这个属性。这个属性指向它的原型对象。 至于显示的原型，在 JavaScript 里用 `prototype` 属性表示，这个是 JavaScript 原型继承的基础知识，在这里就不在叙述了。
 
     ![JavaScript 原型链结构](http://resources.ffstone.top/resource/image/figure1.jpg)
+
+    解释 `TypeError instanceof Error` 为 `false`
+
+    ```js
+        TypeError.__proto__ // ƒ Error() { [native code] }
+        TypeError.__proto__.__proto__ // ƒ () { [native code] }
+        TypeError.__proto__.__proto__.__proto__ // {...}
+        TypeError.__proto__.__proto__.__proto__.__proto__ // null
+
+        Error.prototype // {constructor: ƒ, name: "Error", message: "", toString: ƒ}
+    ```
+
+3.  继承的实现过程
+
+    ```js
+        class A {};
+        class B extends A{};
+        var b = new B();
+    ```
+
+    首先类的 `extends` 的实现方式如下：
+
+    ```js
+        class A {};
+        class B {};
+        Object.setPrototypeOf(B.prototype, A.prototype);
+        Object.setPrototypeOf(B, A);
+        var b = new B();
+    ```
+
+    而 `setPrototypeOf` 的实现方式如下：
+
+    ```js
+        Object.setPrototypeOf = function (obj, proto) {
+            obj.__proto__ = proto;
+            return obj;
+        }
+    ```
+
+    `new` 操作符的具体工作为：
+
+    ```js
+        b.__proto__ = B.prototype;
+        b.call(B);
+    ```
+
+    总结：
+
+    ```js
+        B.prototype // A {constructor: ƒ}
+        B.__proto__ // class A {}
+        B.__proto__.__proto__ // function () {}
+        B.__proto__.__proto__.__proto__ // {}
+
+        A.prototype // {constructor: ƒ}
+    ```
+
+    实例的原型链（`__proto__`）指向的就是其构造函数的 `prototype`
+    而继承中的父类在子类的原型链上
     
 ### 参考
 
