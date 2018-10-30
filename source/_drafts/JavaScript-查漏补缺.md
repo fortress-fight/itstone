@@ -1,11 +1,12 @@
 ---
 title: JavaScript-查漏补缺
-date: 2018-10-19 17:06:40
 tags:
-    - JavaScript
-    - 查漏补缺
+  - JavaScript
+  - 查漏补缺
 category:
-    - JavaScript
+  - JavaScript
+abbrlink: e890e06a
+date: 2018-10-19 17:06:40
 ---
 
 ---

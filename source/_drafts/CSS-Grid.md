@@ -1,12 +1,13 @@
 ---
 title: CSS-Grid
-date: 2018-09-13 16:47:45
 tags:
-    - CSS
-    - Grid
+  - CSS
+  - Grid
 category:
-    - CSS
+  - CSS
 floder: CSS
+abbrlink: cc10d1b4
+date: 2018-09-13 16:47:45
 ---
 
 ---
