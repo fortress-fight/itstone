@@ -243,3 +243,88 @@ HTML 格式化程序已更新为 JS Beautifier 的 1.8.1 版。
 | ------------------ | ----------------------------------------- | ------------------------------------------- |
 | Ctrl + K Ctrl + Q. | 导航到编辑的最后一个位置                  | workbench.action.navigateToLastEditLocation |
 | 按Ctrl + KS        | 保存文件而不运行保存参与者（格式化程序等) |                                             |
+
+## 2018-11-19 (1.29)
+
+1. 多行搜索
+
+    只有在包含\n文字的情况下，正则表达式搜索才会在多行模式下执行。“搜索”视图显示每个多行匹配旁边的提示，以及其他匹配行的数量。
+
+    `<body>[\n\s]+</body>`
+
+    相关配置项：
+
+    1.  `search.showLineNumbers` -- 该设置将在“搜索”视图中显示每个匹配的行号。
+    2.  `search.useReplacePreview` -- 允许您禁用在“搜索”视图中执行搜索/替换时显示的预览差异
+    3.  `search.useGlobalIgnoreFiles` -- 是否在搜索中使用全局.gitignore文件
+    4.  "search.usePCRE2" -- 是否使用PCRE2正则表达式引擎
+
+2. 工作台
+
+    1. macOS
+
+        `window.nativeFullScreen` -- 是否使用 macOS 全屏功能。如果设置为false，将为不使用本机macOS全屏功能的VS Code启用全屏模式
+
+    2. 配置修改
+
+        1. `file.eol`: 文件最后一行设定有一个新的默认值auto。设置auto为时，新文件的行尾字符特定于操作系统。它\r\n在Windows上，\n在macOS和Linux上。您还可以显式设置file.eol为\n或\r\n。
+        2. `workbench.editor.highlightModifiedTabs`: 只要编辑器变脏（有未保存的更改），新设置就会在编辑器选项卡顶部显示一个粗边框。这样可以更轻松地查找需要保存的文件。边框的颜色可以自定义（见下文）。
+        3. `workbench.editor.centeredLayoutAutoResize`: 现在，当打开多个编辑器组时，居中布局视图将自动调整为最大宽度。这应该使中心布局更容易使用，并且需要更少的手动切换。
+        4. `breadcrumbs.symbolSortOrder`: 有一个新设置可以控制Breadcrumbs选择器中的符号的排序方式
+            - position - 文件中的位置（默认）
+            - name - 按字母顺序
+            - type - 符号类型顺序
+        5.  工作台导航：
+            - workbench.action.nextSideBarView：转到侧栏中的下一个视图。
+            - workbench.action.previousSideBarView：转到侧栏中的上一个视图。
+            - workbench.action.nextPanelView：转到下一个面板。
+            - workbench.action.previousPanelView：转到上一个面板。
+
+            默认没有绑定快捷键，建议：
+
+            ```json
+            [
+                { "key": "cmd+]", "command": "workbench.action.nextEditor" },
+                { "key": "cmd+[", "command": "workbench.action.previousEditor" },
+                {
+                    "key": "cmd+]",
+                    "command": "workbench.action.nextSideBarView",
+                    "when": "sideBarFocus"
+                },
+                {
+                    "key": "cmd+[",
+                    "command": "workbench.action.previousSideBarView",
+                    "when": "sideBarFocus"
+                },
+                {
+                    "key": "cmd+]",
+                    "command": "workbench.action.nextPanelView",
+                    "when": "panelFocus"
+                },
+                {
+                    "key": "cmd+[",
+                    "command": "workbench.action.previousPanelView",
+                    "when": "panelFocus"
+                }
+            ]
+            ```
+
+3. 终端
+
+    1. 配置
+
+        `terminal.integrated.splitCwd` -- 在终端拆分时，添加了一个设置来控制新终端的当前工作目录
+
+        - workspaceRoot -- 以前的行为; 新的拆分终端将使用工作空间根目录作为工作目录。在多根工作空间中，提供了要使用的根文件夹的选项。
+        - initial -- 新的分割终端将使用父终端启动的工作目录。
+        - inherited -- 在macOS和Linux上，新的分割终端将使用父终端的工作目录。在Windows上，这与行为相同initial。
+
+4. 语言
+
+    1. CSS
+
+        - 悬停消息中的CSS特性
+        - 处理未知的CSS属性
+
+            使用PostCSS等CSS预处理器，您可能会使用在开发期间编译为有效属性的无效属性。该`[css/less/scss].lint.validProperties`设置阻止VS Code将这些无效属性标记为错误。
+        - CSS现在会删除CSS速记属性值中使用的零单位。例如，0px现在会发出警告：
