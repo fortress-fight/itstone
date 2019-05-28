@@ -5,6 +5,13 @@
   "hexo": {
     "version": "3.8.0"
   },
+  "scripts": {
+    "release:first": "standard-version --first-release",
+    "release:minor": "standard-version --release-as minor",
+    "release:major": "standard-version --release-as major",
+    "release:patch": "standard-version --release-as patch",
+    "release:push": " git push --follow-tags origin master"
+  },
   "dependencies": {
     "algoliasearch": "^3.24.7",
     "hexo": "^3.7.1",
@@ -21,5 +28,23 @@
     "hexo-server": "^0.2.0",
     "hexo-wordcount": "^3.0.2",
     "p-each-series": "^1.0.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^7.6.1",
+    "@commitlint/config-angular": "^7.6.0",
+    "@commitlint/config-conventional": "^7.6.0",
+    "commitizen": "^3.1.1",
+    "cz-conventional-changelog": "^2.1.0",
+    "husky": "^2.3.0"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-customizable"
+    }
   }
 }

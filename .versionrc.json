@@ -1,0 +1,28 @@
+{
+    "types": [
+        {
+            "type": "🚀  feature",
+            "section": "🚀  Features"
+        },
+        {
+            "type": "🚁 update",
+            "section": "🚁 update"
+        },
+        {
+            "type": "🚑  fix",
+            "section": "🚑  Bug Fixes"
+        },
+        {
+            "type": "🔫  test",
+            "section": "🔫  Tests"
+        },
+        {
+            "type": "📦  build",
+            "section": "📦  Build System"
+        },
+        {
+            "type": "⚙️  chore",
+            "section": "⚙️  Chore"
+        }
+    ]
+}
