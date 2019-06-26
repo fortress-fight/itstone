@@ -19,11 +19,20 @@
         "hexo-server": "^0.3.3"
     },
     "devDependencies": {
-        "cz-customizable": "^6.1.0"
+        "@commitlint/cli": "^8.0.0",
+        "@commitlint/config-angular": "^8.0.0",
+        "@commitlint/config-conventional": "^8.0.0",
+        "cz-customizable": "^6.1.0",
+        "husky": "^2.5.0"
     },
     "config": {
         "commitizen": {
             "path": "cz-customizable"
+        }
+    },
+    "husky": {
+        "hooks": {
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
         }
     }
 }
