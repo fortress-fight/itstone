@@ -37,6 +37,11 @@
 -   `./_config.yml` 中的 `algolia` 字段的 `applicationID`
 -   `./themes/next/_config.yml` 中的 `algolia` 字段的 `enable` 为 true
 
+**添加评论功能**
+
+添加评论功能可以参考： [评论系统](https://theme-next.iissnan.com/third-party-services.html#livere)
+如果需要禁止某篇文章的评论，可以在文章上设置：`comments: false` 字段
+
 ## 参考
 
 -   [Easy Hexo](https://easyhexo.com/)

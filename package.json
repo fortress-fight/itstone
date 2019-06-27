@@ -9,7 +9,8 @@
         "hexo:dev": "hexo server --draft",
         "hexo:build": "hexo clean | hexo generate",
         "hexo:deploy": "hexo clean | hexo generate --deploy",
-        "hexo:algolia": "set HEXO_ALGOLIA_INDEXING_KEY=Search-Only API key && hexo algolia"
+        "hexo:algolia": "set HEXO_ALGOLIA_INDEXING_KEY=Search-Only API key && hexo algolia",
+        "hexo:pages": "hexo new page"
     },
     "dependencies": {
         "commitizen": "^3.1.1",
