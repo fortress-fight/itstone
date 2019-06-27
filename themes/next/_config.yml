@@ -159,8 +159,8 @@ menu:
   tags: /tags/ || tags
   categories: /categories/ || th
   archives: /archives/ || archive
-  # 建议使用 trello 作为日程面板
-  schedule: /schedule/ || calendar
+  # 建议使用  trello 作为日程面板
+  schedule: https://trello.com/b/NYFXgTBS || calendar
   # sitemap: /sitemap.xml || sitemap
   commonweal: /404/ || heartbeat
 
@@ -174,9 +174,9 @@ menu_settings:
 # ---------------------------------------------------------------
 
 # Schemes
-# scheme: Muse
+#scheme: Muse
 #scheme: Mist
-#scheme: Pisces
+# scheme: Pisces
 scheme: Gemini
 
 # ---------------------------------------------------------------
@@ -635,7 +635,7 @@ valine:
 
 # LiveRe comments system
 # You can get your uid from https://livere.com/insight/myCode (General web site)
-#livere_uid: your uid
+livere_uid: MTAyMC80NDkyMy8yMTQ0NQ==
 
 # Gitment
 # Introduction: https://github.com/imsun/gitment
@@ -834,7 +834,7 @@ busuanzi_count:
 # See: https://theme-next.org/docs/third-party-services/search-services#Algolia-Search
 # Dependencies: https://github.com/theme-next/theme-next-algolia-instant-search
 algolia_search:
-  enable: false
+  enable: true
   hits:
     per_page: 10
   labels:

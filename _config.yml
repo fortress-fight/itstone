@@ -3,18 +3,18 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle:
-description:
-keywords:
-author: John Doe
-language:
+title: 八九闲谈
+subtitle: 前端小学生
+description: 好好学习天天向上
+keywords: blog web-developer
+author: STONE
+language: zh-CN
 timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
-root: /
+url: https://fortress-fight.github.io/itstone
+root: /itstone/
 permalink: posts/:abbrlink/
 permalink_defaults:
 
@@ -79,10 +79,18 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
     type: git
-    repository: xxx.git
+    repository: git@github.com:fortress-fight/itstone.git
     branch: gh-pages
 
 # abbrlink config
 abbrlink:
     alg: crc32 #support crc16(default) and crc32
     rep: hex #support dec(default) and hex
+
+# 替换除了 chunkSize 以外的其他字段为在 Algolia 获取到的值。
+## DOCs https://github.com/theme-next/hexo-theme-next/blob/5067852e5f5ba4883064716b530c664ec0feeafc/docs/zh-CN/ALGOLIA-SEARCH.md
+algolia:
+    applicationID: "0DJL0Q3VVL"
+    apiKey: "ea7d5d1a82a048488443101e9ebb1e92"
+    indexName: "blog"
+    chunkSize: 5000

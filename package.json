@@ -9,7 +9,7 @@
         "hexo:dev": "hexo server --draft",
         "hexo:build": "hexo clean | hexo generate",
         "hexo:deploy": "hexo clean | hexo generate --deploy",
-        "hexo:algolia": "set HEXO_ALGOLIA_INDEXING_KEY=Search-Only API key && hexo algolia",
+        "hexo:algolia": "set HEXO_ALGOLIA_INDEXING_KEY=a573711f7d89914e9f18528e1d1a76cd && hexo algolia",
         "hexo:pages": "hexo new page"
     },
     "dependencies": {
