@@ -15,7 +15,7 @@ timezone:
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: http://yoursite.com
 root: /
-permalink: :year/:month/:day/:title/
+permalink: posts/:abbrlink/
 permalink_defaults:
 
 # Directory
@@ -79,3 +79,8 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
     type:
+
+# abbrlink config
+abbrlink:
+    alg: crc32 #support crc16(default) and crc32
+    rep: hex #support dec(default) and hex
