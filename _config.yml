@@ -29,7 +29,7 @@ i18n_dir: :lang
 skip_render:
 
 # Writing
-new_post_name: :title.md # File name of new posts
+new_post_name: :folder/:year-:month-:day-:title.md # File name of new posts
 default_layout: post
 titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
@@ -86,3 +86,47 @@ deploy:
 abbrlink:
     alg: crc32 #support crc16(default) and crc32
     rep: hex #support dec(default) and hex
+
+# 替换除了 chunkSize 以外的其他字段为在 Algolia 获取到的值。
+## DOCs https://github.com/theme-next/hexo-theme-next/blob/5067852e5f5ba4883064716b530c664ec0feeafc/docs/zh-CN/ALGOLIA-SEARCH.md
+# algolia:
+#     applicationID: ""
+#     apiKey: ""
+#     indexName: ""
+#     chunkSize: 5000
+
+markdown_it_plus:
+    highlight: true
+    html: true
+    xhtmlOut: true
+    breaks: true
+    langPrefix:
+    linkify: true
+    typographer:
+    quotes: “”‘’
+    pre_class: highlight
+    plugins:
+        - plugin:
+              name: markdown-it-imsize
+              enable: true
+              options:
+        - plugin:
+              name: markdown-it-inline-comments
+              enable: true
+              options:
+        # https://www.npmjs.com/package/markdown-it-alerts
+        # example: header {.style-me}
+        - plugin:
+              name: markdown-it-attrs
+              enable: true
+              options:
+        # https://www.npmjs.com/package/markdown-it-container
+        - plugin:
+              name: markdown-it-container
+              enable: true
+              options:
+        # https://www.npmjs.com/package/markdown-it-abbr
+        - plugin:
+              name: markdown-it-abbr
+              enable: true
+              options:

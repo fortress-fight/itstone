@@ -1,1 +1,32 @@
 // Custom styles.
+//代码块复制按钮
+.highlight{
+  //方便copy代码按钮（btn-copy）的定位
+  position: relative;
+}
+.btn-copy {
+    display: inline-block;
+    cursor: pointer;
+    user-select: none;
+    -webkit-appearance: none;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 20px;
+    color: #333;
+    transition: color .3s ease-in-out;
+    padding: 2px 6px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+
+    background: none;
+    color: #999;
+    border: none;
+    outline: none;
+}
+.btn-copy span {
+    margin-left: 5px;
+}
+.highlight:hover .btn-copy{
+  color: #fff
+}
