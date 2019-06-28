@@ -29,7 +29,7 @@ i18n_dir: :lang
 skip_render:
 
 # Writing
-new_post_name: :title.md # File name of new posts
+new_post_name: :folder/:year-:month-:day-:title.md # File name of new posts
 default_layout: post
 titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
@@ -94,3 +94,39 @@ algolia:
     apiKey: "ea7d5d1a82a048488443101e9ebb1e92"
     indexName: "blog"
     chunkSize: 5000
+
+markdown_it_plus:
+    highlight: true
+    html: true
+    xhtmlOut: true
+    breaks: true
+    langPrefix:
+    linkify: true
+    typographer:
+    quotes: “”‘’
+    pre_class: highlight
+    plugins:
+        - plugin:
+              name: markdown-it-imsize
+              enable: true
+              options:
+        - plugin:
+              name: markdown-it-inline-comments
+              enable: true
+              options:
+        # https://www.npmjs.com/package/markdown-it-alerts
+        # example: header {.style-me}
+        - plugin:
+              name: markdown-it-attrs
+              enable: true
+              options:
+        # https://www.npmjs.com/package/markdown-it-container
+        - plugin:
+              name: markdown-it-container
+              enable: true
+              options:
+        # https://www.npmjs.com/package/markdown-it-abbr
+        - plugin:
+              name: markdown-it-abbr
+              enable: true
+              options:

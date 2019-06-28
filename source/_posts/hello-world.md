@@ -49,3 +49,12 @@ $ hexo deploy
 ```
 
 More info: [Deployment](https://hexo.io/docs/deployment.html)
+
+{% note info %}
+
+### Info Header
+
+**Welcome** to [Hexo!](https://hexo.io)
+{% endnote %}
+
+{% include_code index js index.js %}

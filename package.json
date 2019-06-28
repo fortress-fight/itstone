@@ -24,15 +24,24 @@
         "hexo-generator-index": "^0.2.1",
         "hexo-generator-tag": "^0.2.0",
         "hexo-renderer-ejs": "^0.3.1",
-        "hexo-renderer-marked": "^1.0.1",
+        "hexo-renderer-markdown-it-plus": "^1.0.4",
         "hexo-renderer-stylus": "^0.3.3",
-        "hexo-server": "^0.3.3"
+        "hexo-server": "^0.3.3",
+        "hexo-symbols-count-time": "^0.6.0",
+        "hexo-wordcount": "^6.0.1",
+        "markdown-it-abbr": "^1.0.4",
+        "markdown-it-attrs": "^2.4.1",
+        "markdown-it-container": "^2.0.0",
+        "markdown-it-imsize": "^2.0.1",
+        "markdown-it-inline-comments": "^1.0.1",
+        "markdown-it-task-checkbox": "^1.0.6"
     },
     "devDependencies": {
         "@commitlint/cli": "^8.0.0",
         "@commitlint/config-angular": "^8.0.0",
         "@commitlint/config-conventional": "^8.0.0",
         "cz-customizable": "^6.1.0",
+        "eslint": "^6.0.1",
         "husky": "^2.5.0"
     },
     "config": {
