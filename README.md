@@ -45,3 +45,4 @@
 ## 参考
 
 -   [Easy Hexo](https://easyhexo.com/)
+-   [theme-next doc](https://theme-next.org/)

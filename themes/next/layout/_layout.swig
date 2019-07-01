@@ -123,7 +123,7 @@
   {% include '_third-party/chatra.swig' %}
   {% include '_third-party/tidio.swig' %}
   <!-- 代码块复制功能 -->
-  <script type="text/javascript" src="./lib/clipboard.min.js"></script>
+  <script type="text/javascript" src="/lib/clipboard.min.js"></script>
   <script type="text/javascript" src="./js/custom/clipboard-use.js"></script>
 </body>
 </html>
