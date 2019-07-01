@@ -8,7 +8,7 @@ subtitle:
 description:
 keywords:
 author: John Doe
-language:
+language: zh-CN
 timezone:
 
 # URL
@@ -130,3 +130,18 @@ markdown_it_plus:
               name: markdown-it-abbr
               enable: true
               options:
+
+feed:
+    type: atom
+    path: atom.xml
+    limit: 20
+    hub:
+    content:
+    content_limit: 140
+    content_limit_delim: " "
+    order_by: -date
+    icon: icon.png
+
+back2top:
+    enable: true
+    scrollpercent: true
