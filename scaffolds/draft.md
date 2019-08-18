@@ -1,5 +1,8 @@
 ---
 title: {{ title }}
 tags:
-path: 
+    -
+path:
+categories:
+    - []
 ---
