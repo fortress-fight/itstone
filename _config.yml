@@ -145,3 +145,13 @@ feed:
 back2top:
     enable: true
     scrollpercent: true
+
+toc:
+    maxdepth: 2
+    class: toc
+    slugify: transliteration
+    decodeEntities: false
+    anchor:
+        position: after
+        symbol: "#"
+        style: header-anchor
