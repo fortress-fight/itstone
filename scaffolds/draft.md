@@ -6,3 +6,15 @@ path:
 categories:
     - []
 ---
+
+{% note default %}
+
+-   `item`
+
+{% endnote %}
+
+<!-- more -->
+
+---
+
+##

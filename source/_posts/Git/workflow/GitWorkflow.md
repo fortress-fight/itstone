@@ -37,12 +37,24 @@ Git 是目前最流行的源代码管理工具，常见的 Git 云平台有：Gi
 2. 初始化 `git flow init -d`
 3. `commitizen` 安装
 
-    - `npm install -g commitizen cz-conventional-changelog cz-customizable`
-    - `~/.czrc` 添加 `{"path": "cz-conventional-changelog"}`
-    - 如果需要自定义适配器：
+    - 安装文件
 
-        - 指定适配器为`cz-customizable`，然后将指定的适配器文件(`.cz-config.js`)放到 `~` 目录下
-        - 自用的`.cz-config.js` [适配器文件](https://github.com/fortress-fight/itstone/blob/master/.cz-config.js)
+        `npm install -g commitizen cz-conventional-changelog cz-customizable`
+
+    - 选择适配器
+
+        `~/.czrc` 添加 `{"path": "cz-conventional-changelog"}`
+        如果仅在本地配置，请在 packages 中添加：
+
+        ```json
+        "config": {
+            "commitizen": {
+            "path": "cz-customizable"
+            }
+        }
+        ```
+
+        如果需要自定义适配器，设置适配器为`cz-customizable`，然后将指定的适配器文件[自用的`.cz-config.js`](https://github.com/fortress-fight/itstone/blob/master/.cz-config.js)放到 `~` 目录下
 
     - 使用 `git cz` 代替 `git commit` 进行提交
 
@@ -56,9 +68,20 @@ Git 是目前最流行的源代码管理工具，常见的 Git 云平台有：Gi
 
     - 使用自定义 commitlint
 
-        如果在安装 `commitizen` 时，使用了自定义的配置，我们需要对 `commitlint` 添加自定义的校验。
+        如果在安装 `commitizen` 时，使用了自定义的配置，我们需要对 `commitlint` 添加自定义的校验。[自用 commitlint.config.js](https://github.com/fortress-fight/itstone/blob/master/commitlint.config.js)
 
-        - 自用 `commitlint.config.js` [自定义配置文件](https://github.com/fortress-fight/itstone/blob/master/commitlint.config.js)
+    - 使用 husky
+
+        在 package 中添加：
+
+        ```json
+        "husky": {
+            "hooks": {
+                "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+                "post-commit": "git-branch-is master && git push origin master"
+            }
+        },
+        ```
 
 {% endnote %}
 
