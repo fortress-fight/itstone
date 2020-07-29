@@ -1,2 +1,2 @@
 #!/bin/bash
-hexo server --draft -p 4000
+hexo server --draft -p 4400
