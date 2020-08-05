@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/itstone/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/itstone/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/itstone/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/itstone/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/itstone/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/itstone/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/itstone/',
+    scheme: 'Gemini',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: true,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '0DJL0Q3VVL',
+      apiKey: 'ea7d5d1a82a048488443101e9ebb1e92',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Vim 操作">
+<meta name="keywords" content="Editor,Vim">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vim 基础使用">
+<meta property="og:url" content="https://fortress-fight.github.io/itstone/posts/280100fb/index.html">
+<meta property="og:site_name" content="八九闲谈">
+<meta property="og:description" content="Vim 操作">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://resources.ffstone.top/resource/image/20190619095318.png">
+<meta property="og:updated_time" content="2020-05-06T06:06:48.388Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vim 基础使用">
+<meta name="twitter:description" content="Vim 操作">
+<meta name="twitter:image" content="http://resources.ffstone.top/resource/image/20190619095318.png">
+
+
+
+  <link rel="alternate" href="/itstone/atom.xml" title="八九闲谈" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://fortress-fight.github.io/itstone/posts/280100fb/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>vim 基础使用 | 八九闲谈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/itstone/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">八九闲谈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">前端小学生</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/itstone/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/itstone/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/itstone/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/itstone/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/itstone/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+      
+    
+
+    
+
+    <span class="exturl" data-url="aHR0cHM6Ly90cmVsbG8uY29tL2IvTllGWGdUQlM="><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</span>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/itstone/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="algolia-popup popup search-popup">
+  <div class="algolia-search">
+    <div class="algolia-search-input-icon">
+      <i class="fa fa-search"></i>
+    </div>
+    <div class="algolia-search-input" id="algolia-search-input"></div>
+  </div>
+
+  <div class="algolia-results">
+    <div id="algolia-stats"></div>
+    <div id="algolia-hits"></div>
+    <div id="algolia-pagination" class="algolia-pagination"></div>
+  </div>
+
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fortress-fight.github.io/itstone/itstone/posts/280100fb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="STONE">
+      <meta itemprop="description" content="好好学习天天向上">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/20747438?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="八九闲谈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vim 基础使用
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-18 17:58:16" itemprop="dateCreated datePublished" datetime="2019-08-18T17:58:16+08:00">2019-08-18</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-05-06 14:06:48" itemprop="dateModified" datetime="2020-05-06T14:06:48+08:00">2020-05-06</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/itstone/categories/Editor/" itemprop="url" rel="index"><span itemprop="name">Editor</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          <span class="post-time">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">字数统计:</span>
+              <span class="post-count">1.8k(字)</span>
+          </span>
+          <span class="post-time">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">阅读时长:</span>
+              <span class="post-count">6(分)</span>
+          </span>
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <div class="note default">
+
+            <ul><li><code>Vim 操作</code></li></ul>
+          </div>
+<a id="more"></a>
+<hr>
+<div class="note info">
+
+            <p>运行 <code>vimtutor zh</code> 命令，可以进入 vim 教学</p>
+          </div>
+<h2 id="移动光标"><a class="markdownIt-Anchor" href="#移动光标"></a> 移动光标</h2>
+<p><strong>要移动光标，请依照说明分别按下 h、j、k、l 键。</strong></p>
+<p><img src="http://resources.ffstone.top/resource/image/20190619095318.png" alt="20190619095318.png"></p>
+<h2 id="vim-的进入和退出"><a class="markdownIt-Anchor" href="#vim-的进入和退出"></a> Vim 的进入和退出</h2>
+<ol>
+<li>按下 <code>&lt;ESC&gt;</code> 进入正常模式:help user-manual</li>
+<li>输入
+<ul>
+<li><code>:q!</code> （ 这种方式的退出编辑器会丢弃您进入编辑器以来所做的改动。）</li>
+<li><code>:wq</code> （ 保存改动过的文件并退出 Vim ）</li>
+<li><code>:w &lt;filename&gt;</code> 将当前文件保存为 <code>&lt;filename&gt;</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="文本编辑"><a class="markdownIt-Anchor" href="#文本编辑"></a> 文本编辑</h2>
+<p>在正常模式下 （如果命令输出错误，按下 <esc> 重新输入）</esc></p>
+<h3 id="编辑操作"><a class="markdownIt-Anchor" href="#编辑操作"></a> 编辑操作</h3>
+<div class="note info">
+
+            <ul><li><code>i</code> 进入输入模式（在光标位置前插入文字）</li><li><code>I</code> 进入输入模式（在一行的开头插入文字）</li><li><code>a</code> 进入输入模式（在光标位置后插入文字）</li><li><code>A</code> 进入输入模式（在一行的结尾插入文字）</li><li><code>o</code> 在光标下方打开新的一行，并进入插入模式。</li><li><code>O</code> 在光标上方打开新的一行，并进入插入模式。</li><li><code>y</code> 复制文本</li><li><code>p</code> 将最后一次删除的内容置入光标之后（删除的内容将会放到 vim 中的一个寄存器中）</li><li><code>r</code> 和一个字符替换光标所在位置的字符</li><li><code>R</code> 进入替换输入方式</li></ul>
+          </div>
+<h3 id="删除操作"><a class="markdownIt-Anchor" href="#删除操作"></a> 删除操作</h3>
+<div class="note info">
+
+            <ul><li><code>x</code> 删除光标所在位置的字符</li><li><code>dw</code> 删除从光标当前位置直到下一个单词起始处</li><li><code>de</code> 删除从光标当前位置直到单词结尾</li><li><code>d$</code> 从当前光标删除到行末</li><li><code>dd</code> 删除整行 （输入 <code>2dd</code> 将会删除 2 行）</li></ul>
+          </div>
+<p>许多改变文本的命令都由一个操作符和一个动作构成</p>
+<div class="note info">
+
+            <p><code>operator [number] motion</code>。</p><ul><li>operator - 操作符，代表要做的事情，比如 d 代表删除</li><li>[number] - 可以附加的数字，代表动作重复的次数</li><li>motion - 动作，代表在所操作的文本上的移动，例如 w 代表单词(word)，$ 代表行末等等。</li></ul>
+          </div>
+<p>例如：使用删除操作符 d 的删除命令的格式如：<code>d motion</code></p>
+<ul>
+<li>d 删除操作符。</li>
+<li>motion 操作符的操作对象(在下面列出)。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>operator</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>d</td>
+<td>删除操作符</td>
+</tr>
+<tr>
+<td>v</td>
+<td>多行选择</td>
+</tr>
+<tr>
+<td>c</td>
+<td>修改字符操作符</td>
+</tr>
+<tr>
+<td>r</td>
+<td>替换光标位置的字符但不进入插入模式</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<table>
+<thead>
+<tr>
+<th>motion</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>h</td>
+<td>左移一个字符</td>
+</tr>
+<tr>
+<td>l</td>
+<td>右移一个字符</td>
+</tr>
+<tr>
+<td>w</td>
+<td>从当前光标当前位置直到下一个单词起始处，不包括它的第一个字符。</td>
+</tr>
+<tr>
+<td>b</td>
+<td>移动到上一单词的开头</td>
+</tr>
+<tr>
+<td>e</td>
+<td>从当前当前位置直到单词末尾，包括最后一个字符。</td>
+</tr>
+<tr>
+<td>W、B、E</td>
+<td>W、B、E 命令操作的单词是以空白字符（空格、Tab）分隔的字串</td>
+</tr>
+<tr>
+<td>j</td>
+<td>下一行</td>
+</tr>
+<tr>
+<td>k</td>
+<td>上一行</td>
+</tr>
+<tr>
+<td>0</td>
+<td>该行的开头</td>
+</tr>
+<tr>
+<td>^</td>
+<td>该行的第一个非空字符</td>
+</tr>
+<tr>
+<td>$</td>
+<td>从当前光标当前位置直到当前行末。</td>
+</tr>
+<tr>
+<td>(</td>
+<td>当前句子的开头</td>
+</tr>
+<tr>
+<td>)</td>
+<td>当前句子的末尾</td>
+</tr>
+<tr>
+<td>{</td>
+<td>当前段落的开头</td>
+</tr>
+<tr>
+<td>}</td>
+<td>当前段落的末尾</td>
+</tr>
+<tr>
+<td>H</td>
+<td>屏幕的第一行</td>
+</tr>
+<tr>
+<td>M</td>
+<td>屏幕的中间位置</td>
+</tr>
+<tr>
+<td>L</td>
+<td>屏幕的最后位置</td>
+</tr>
+<tr>
+<td>%</td>
+<td>可以查找配对的括号 )、]、}</td>
+</tr>
+<tr>
+<td>CTRL+f</td>
+<td>向前翻页</td>
+</tr>
+<tr>
+<td>CTRL+b</td>
+<td>向后翻页</td>
+</tr>
+<tr>
+<td>CTRL+u</td>
+<td>向前翻半页</td>
+</tr>
+<tr>
+<td>CTRL+d</td>
+<td>向后翻半页</td>
+</tr>
+<tr>
+<td>G</td>
+<td>移到文件末尾</td>
+</tr>
+<tr>
+<td>gg</td>
+<td>移到文件开头</td>
+</tr>
+<tr>
+<td>'.</td>
+<td>跳转到最近的编辑点</td>
+</tr>
+<tr>
+<td>`.</td>
+<td>跳转到最近的编辑点</td>
+</tr>
+</tbody>
+</table>
+<p>正常模式下面仅按代表相应动作的键而不使用操作符，您将看到光标的移动正如上面的对象列表所代表的一样。</p>
+<h3 id="更改类命令"><a class="markdownIt-Anchor" href="#更改类命令"></a> 更改类命令</h3>
+<ul>
+<li><code>ce</code> 要改变文本直到一个单词的末尾（删除当前光标所在单词，并进入插入模式）</li>
+</ul>
+<ol>
+<li>更改类操作符的工作方式跟删除类是一致的。操作格式是：<code>c [number] motion</code></li>
+<li>动作参数(motion)也是一样的，比如 w 代表单词，$代表行末等等。</li>
+</ol>
+<h3 id="撤销类命令"><a class="markdownIt-Anchor" href="#撤销类命令"></a> 撤销类命令</h3>
+<div class="note info">
+
+            <ul><li><code>u</code> 来撤消最后执行的命令</li><li><code>U</code> 来撤消对整行的修改。</li><li><code>CTRL-R</code> 撤消掉撤消命令</li></ul>
+          </div>
+<h3 id="选择多行命令"><a class="markdownIt-Anchor" href="#选择多行命令"></a> 选择多行命令</h3>
+<div class="note info">
+
+            <ul><li><p><code>v</code> 进入多行选择模式，移动光标进行选择</p><p>在多行选择的模式下，进入命令输入 <code>:</code> 将会对选择的行进行操作。例如：<code>:w &lt;filename&gt;</code> 将会把选择的行保存在 <code>&lt;filename&gt;</code> 中<br>在多行选择的模式下，输入操作符，同样是对选中的字符进行操作</p></li></ul>
+          </div>
+<h3 id="提取和合并文件"><a class="markdownIt-Anchor" href="#提取和合并文件"></a> 提取和合并文件</h3>
+<div class="note info">
+
+            <ul><li><p><code>:r &lt;filename&gt;</code> 可提取磁盘文件 <code>&lt;filename&gt;</code> 并将其插入到当前文件的光标位置后面。</p><blockquote><p>您还可以读取外部命令的输出。例如， :r !ls 可以读取 ls 命令的输出，并把它放置在光标下面。</p></blockquote></li></ul>
+          </div>
+<h2 id="定位"><a class="markdownIt-Anchor" href="#定位"></a> 定位</h2>
+<h3 id="定位及文件状态"><a class="markdownIt-Anchor" href="#定位及文件状态"></a> 定位及文件状态</h3>
+<div class="note info">
+
+            <ul><li><code>CTRL-G</code> 显示当前编辑文件中当前光标所在行位置以及文件状态信息。</li><li><code>G</code> 可以使得当前光标直接跳转到文件最后一行。</li><li><code>gg</code> 使得当前光标直接跳转到文件第一行</li><li>输入行号，然后输入大写 G。可以跳转到制定行数的位置</li><li>输入 <code>50%</code> 能直接跳转到 50% 的位置</li></ul>
+          </div>
+<h3 id="搜索"><a class="markdownIt-Anchor" href="#搜索"></a> 搜索</h3>
+<div class="note info">
+
+            <ul><li><p><code>/</code>（正序查找） 然后输入要查询的字符，回车</p></li><li><p><code>?</code> （反序查找）</p></li><li><p><code>CTRL-O</code> 回退上一个查询位置</p></li><li><p><code>CTRL-I</code> 前进到下一个查询位置</p><blockquote><p>要查找同上一次的字符串，只需要按 n 键。要向相反方向查找同上一次的字符串，请输入大写 N 即可。</p></blockquote></li></ul>
+          </div>
+<h3 id="跳转到配对括号出"><a class="markdownIt-Anchor" href="#跳转到配对括号出"></a> 跳转到配对括号出</h3>
+<div class="note info">
+
+            <ul><li><code>%</code> 可以查找配对的括号 )、]、}</li></ul>
+          </div>
+<h3 id="替换操作"><a class="markdownIt-Anchor" href="#替换操作"></a> 替换操作</h3>
+<div class="note info">
+
+            <ul><li><code>:s/&lt;oldWord&gt;/&lt;newWord&gt;/g</code> 替换一行所有的 <code>&lt;oldWord&gt;</code> 为 <code>&lt;newWord&gt;</code></li></ul>
+          </div>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:#,#s/old/new/g</code></td>
+<td>其中 #,# 代表的是替换操作的若干行中首尾两行的行号。</td>
+</tr>
+<tr>
+<td><code>:%s/old/new/g</code></td>
+<td>则是替换整个文件中的每个匹配串。</td>
+</tr>
+<tr>
+<td><code>:%s/old/new/gc</code></td>
+<td>会找到整个文件中的每个匹配串，并且对每个匹配串提示是否进行替换。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="常用快捷操作"><a class="markdownIt-Anchor" href="#常用快捷操作"></a> 常用快捷操作</h2>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.</td>
+<td>重复上次的操作</td>
+</tr>
+<tr>
+<td>~</td>
+<td>将光标下的字母切换大小写</td>
+</tr>
+<tr>
+<td>guw</td>
+<td>将光标所在单词转换为小写</td>
+</tr>
+<tr>
+<td>gUw</td>
+<td>将光标所在单词转换为大写</td>
+</tr>
+<tr>
+<td>guu</td>
+<td>将光标所在行转换为小写</td>
+</tr>
+<tr>
+<td>gUu</td>
+<td>将光标所在行转换为大写</td>
+</tr>
+<tr>
+<td>g~w</td>
+<td>将光标所在单词进行大小写转换</td>
+</tr>
+<tr>
+<td>&gt;&gt;</td>
+<td>缩进</td>
+</tr>
+<tr>
+<td>*</td>
+<td>向前搜索光标所在的单词</td>
+</tr>
+<tr>
+<td>#</td>
+<td>向后搜索光标所在的单词</td>
+</tr>
+<tr>
+<td>q/</td>
+<td>显示搜索命令历史的窗口</td>
+</tr>
+</tbody>
+</table>
+<h2 id="其他"><a class="markdownIt-Anchor" href="#其他"></a> 其他</h2>
+<h3 id="vim-内执行外部命令的方法"><a class="markdownIt-Anchor" href="#vim-内执行外部命令的方法"></a> VIM 内执行外部命令的方法</h3>
+<div class="note info">
+
+            <p><code>:!</code> 然后紧接着输入一个外部命令可以执行该外部命令</p>
+          </div>
+<h3 id="设置类命令"><a class="markdownIt-Anchor" href="#设置类命令"></a> 设置类命令</h3>
+<div class="note info">
+
+            <p><code>set xxx</code> 可以设置 xxx 选项。一些有用的选项如下：</p><ul><li>‘ic’ ‘ignorecase’ 查找时忽略字母大小写</li><li>‘is’ ‘incsearch’ 查找短语时显示部分匹配</li><li>‘hls’ ‘hlsearch’ 高亮显示所有的匹配短语</li></ul><p>在选项前加上 no 可以关闭选项： :set noic</p>
+          </div>
+<h3 id="获取帮助信息"><a class="markdownIt-Anchor" href="#获取帮助信息"></a> 获取帮助信息</h3>
+<div class="note info">
+
+            <p>输入 <code>:help</code> &lt;回车&gt;</p><p>或者使用 <code>:help &lt;command&gt;</code> &lt;回车&gt;，例如：</p>undefined
+          </div>
+<p>下一步您可以阅读 Vim 的用户手册，使用的命令是： <code>:help user-manual</code></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/itstone/tags/Editor/" rel="tag"># Editor</a>
+          
+            <a href="/itstone/tags/Vim/" rel="tag"># Vim</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/itstone/posts/a846e40f/" rel="next" title="TypeScript函数重载">
+                <i class="fa fa-chevron-left"></i> TypeScript函数重载
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/itstone/posts/edd825ca/" rel="prev" title="GitWorkflow">
+                GitWorkflow <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80NDkyMy8yMTQ0NQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://avatars1.githubusercontent.com/u/20747438?s=460&v=4" alt="STONE">
+            
+              <p class="site-author-name" itemprop="name">STONE</p>
+              <div class="site-description motion-element" itemprop="description">好好学习天天向上</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/itstone/archives/">
+                
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/itstone/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/itstone/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/itstone/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3lvdXJuYW1l" title="GitHub &rarr; https://github.com/yourname"><i class="fa fa-fw fa-github"></i>GitHub</span>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <span class="exturl" data-url="bWFpbHRvOnlvdXJuYW1lQGdtYWlsLmNvbQ==" title="E-Mail &rarr; mailto:yourname@gmail.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#移动光标"><span class="nav-number">1.</span> <span class="nav-text"> 移动光标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vim-的进入和退出"><span class="nav-number">2.</span> <span class="nav-text"> Vim 的进入和退出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文本编辑"><span class="nav-number">3.</span> <span class="nav-text"> 文本编辑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#编辑操作"><span class="nav-number">3.1.</span> <span class="nav-text"> 编辑操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除操作"><span class="nav-number">3.2.</span> <span class="nav-text"> 删除操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更改类命令"><span class="nav-number">3.3.</span> <span class="nav-text"> 更改类命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#撤销类命令"><span class="nav-number">3.4.</span> <span class="nav-text"> 撤销类命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择多行命令"><span class="nav-number">3.5.</span> <span class="nav-text"> 选择多行命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提取和合并文件"><span class="nav-number">3.6.</span> <span class="nav-text"> 提取和合并文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定位"><span class="nav-number">4.</span> <span class="nav-text"> 定位</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定位及文件状态"><span class="nav-number">4.1.</span> <span class="nav-text"> 定位及文件状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#搜索"><span class="nav-number">4.2.</span> <span class="nav-text"> 搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跳转到配对括号出"><span class="nav-number">4.3.</span> <span class="nav-text"> 跳转到配对括号出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#替换操作"><span class="nav-number">4.4.</span> <span class="nav-text"> 替换操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用快捷操作"><span class="nav-number">5.</span> <span class="nav-text"> 常用快捷操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">6.</span> <span class="nav-text"> 其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vim-内执行外部命令的方法"><span class="nav-number">6.1.</span> <span class="nav-text"> VIM 内执行外部命令的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置类命令"><span class="nav-number">6.2.</span> <span class="nav-text"> 设置类命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取帮助信息"><span class="nav-number">6.3.</span> <span class="nav-text"> 获取帮助信息</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">STONE</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> v7.1.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/itstone/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/itstone/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/itstone/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/itstone/js/utils.js?v=7.1.2"></script>
+
+  <script src="/itstone/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/itstone/js/affix.js?v=7.1.2"></script>
+
+  <script src="/itstone/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/itstone/js/scrollspy.js?v=7.1.2"></script>
+<script src="/itstone/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/itstone/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+  <script src="/itstone/js/exturl.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+
+  
+    <script>
+  window.livereOptions = {
+    refer: 'posts/280100fb/'
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/itstone/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/itstone/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/itstone/js/algolia-search.js?v=7.1.2"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 代码块复制功能 -->
+  
+  <script src="/itstone/lib/clipboard.min.js"></script>
+  <script src="/itstone/js/custom/clipboard-use.js"></script>
+
+</body>
+</html>

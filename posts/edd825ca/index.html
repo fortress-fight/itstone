@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/itstone/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/itstone/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/itstone/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/itstone/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/itstone/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/itstone/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/itstone/',
+    scheme: 'Gemini',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: true,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '0DJL0Q3VVL',
+      apiKey: 'ea7d5d1a82a048488443101e9ebb1e92',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Git 分支管理：github flow快速编写合理的 .gitignore利用 commitizen 使用正规的 Git-Commit 规范利用 commitlint husky 进行校验">
+<meta name="keywords" content="git,git工作流">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GitWorkflow">
+<meta property="og:url" content="https://fortress-fight.github.io/itstone/posts/edd825ca/index.html">
+<meta property="og:site_name" content="八九闲谈">
+<meta property="og:description" content="Git 分支管理：github flow快速编写合理的 .gitignore利用 commitizen 使用正规的 Git-Commit 规范利用 commitlint husky 进行校验">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://www.ibm.com/developerworks/cn/java/j-lo-git-mange/img001.png">
+<meta property="og:image" content="https://www.ibm.com/developerworks/cn/java/j-lo-git-mange/img002.png">
+<meta property="og:image" content="http://resources.ffstone.top/resource/image/20190515100137.png">
+<meta property="og:image" content="http://resources.ffstone.top/resource/image/20190515102750.png">
+<meta property="og:image" content="http://resources.ffstone.top/resource/image/React_%E7%9A%84%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83%E6%97%A5%E5%BF%97">
+<meta property="og:updated_time" content="2020-05-07T03:57:54.450Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GitWorkflow">
+<meta name="twitter:description" content="Git 分支管理：github flow快速编写合理的 .gitignore利用 commitizen 使用正规的 Git-Commit 规范利用 commitlint husky 进行校验">
+<meta name="twitter:image" content="https://www.ibm.com/developerworks/cn/java/j-lo-git-mange/img001.png">
+
+
+
+  <link rel="alternate" href="/itstone/atom.xml" title="八九闲谈" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://fortress-fight.github.io/itstone/posts/edd825ca/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>GitWorkflow | 八九闲谈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/itstone/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">八九闲谈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">前端小学生</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/itstone/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/itstone/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/itstone/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/itstone/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/itstone/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+      
+    
+
+    
+
+    <span class="exturl" data-url="aHR0cHM6Ly90cmVsbG8uY29tL2IvTllGWGdUQlM="><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</span>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/itstone/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="algolia-popup popup search-popup">
+  <div class="algolia-search">
+    <div class="algolia-search-input-icon">
+      <i class="fa fa-search"></i>
+    </div>
+    <div class="algolia-search-input" id="algolia-search-input"></div>
+  </div>
+
+  <div class="algolia-results">
+    <div id="algolia-stats"></div>
+    <div id="algolia-hits"></div>
+    <div id="algolia-pagination" class="algolia-pagination"></div>
+  </div>
+
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fortress-fight.github.io/itstone/itstone/posts/edd825ca/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="STONE">
+      <meta itemprop="description" content="好好学习天天向上">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/20747438?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="八九闲谈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">GitWorkflow
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-18 18:38:18" itemprop="dateCreated datePublished" datetime="2019-08-18T18:38:18+08:00">2019-08-18</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-05-07 11:57:54" itemprop="dateModified" datetime="2020-05-07T11:57:54+08:00">2020-05-07</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/itstone/categories/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          <span class="post-time">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">字数统计:</span>
+              <span class="post-count">4.7k(字)</span>
+          </span>
+          <span class="post-time">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">阅读时长:</span>
+              <span class="post-count">18(分)</span>
+          </span>
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <div class="note default">
+
+            <ul><li>Git 分支管理：<code>github flow</code></li><li>快速编写合理的 <code>.gitignore</code></li><li>利用 <code>commitizen</code> 使用正规的 Git-Commit 规范</li><li>利用 <code>commitlint</code> <code>husky</code> 进行校验</li></ul>
+          </div>
+<a id="more"></a>
+<hr>
+<h2 id="介绍"><a class="markdownIt-Anchor" href="#介绍"></a> 介绍</h2>
+<p><strong>选择合适的 Git 分支管理方式</strong></p>
+<p>Git 是目前最流行的源代码管理工具，常见的 Git 云平台有：GitHub、Bitbucket 和 GitLab 或者私有的 Git 仓库</p>
+<p>在使用 Git 时通常会遇到一个问题：采用何种分支管理方式，对不同的分支进行管理。其实 Git 分支管理并没有普遍使用的最佳做法，而是只有对每个团队和项目而言最合适的做法。通常来说 <strong>使用多个分支将会带来额外的管理和维护的开销。但是多个分支对于项目的团队合作，新功能开发和发布管理都具有一定的好处。</strong> 不同的团队可以根据团队人员组成和意愿、项目发布的周期等因素选择最合适的策略，找到最适合团队的管理方式</p>
+<div class="note info">
+
+            <p><strong>太长不看步骤：</strong></p><ol><li><p>没有 <code>git flow</code> 的请先安装：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3BldGVydmFuZGVyZG9lcy9naXRmbG93LWF2aC93aWtpI2luc3RhbGxpbmctZ2l0LWZsb3c=" title="https://github.com/petervanderdoes/gitflow-avh/wiki#installing-git-flow">git flow<i class="fa fa-external-link"></i></span></p></li><li><p>初始化 <code>git flow init -d</code></p></li><li><p><code>commitizen</code> 安装</p><ul><li><p>安装文件</p><p><code>npm install -g commitizen cz-conventional-changelog cz-customizable</code></p></li><li><p>选择适配器</p><p><code>~/.czrc</code> 添加 <code>{&quot;path&quot;: &quot;cz-conventional-changelog&quot;}</code><br>如果仅在本地配置，请在 packages 中添加：</p>  undefined<p>如果需要自定义适配器，设置适配器为<code>cz-customizable</code>，然后将指定的适配器文件<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2ZvcnRyZXNzLWZpZ2h0L2l0c3RvbmUvYmxvYi9tYXN0ZXIvLmN6LWNvbmZpZy5qcw==" title="https://github.com/fortress-fight/itstone/blob/master/.cz-config.js">自用的<code>.cz-config.js</code><i class="fa fa-external-link"></i></span>放到 <code>~</code> 目录下</p></li><li><p>使用 <code>git cz</code> 代替 <code>git commit</code> 进行提交</p></li></ul></li><li><p><code>commitlint</code> <code>husky</code> 安装</p><p><code>npm install -D @commitlint/config-conventional @commitlint/cli husky @commitlint/config-angular</code></p><ul><li><p>配置</p><p><code>echo module.exports = {extends: ['@commitlint/config-conventional']} &gt; commitlint.config.js</code></p></li><li><p>使用自定义 commitlint</p><p>如果在安装 <code>commitizen</code> 时，使用了自定义的配置，我们需要对 <code>commitlint</code> 添加自定义的校验。<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2ZvcnRyZXNzLWZpZ2h0L2l0c3RvbmUvYmxvYi9tYXN0ZXIvY29tbWl0bGludC5jb25maWcuanM=" title="https://github.com/fortress-fight/itstone/blob/master/commitlint.config.js">自用 commitlint.config.js<i class="fa fa-external-link"></i></span></p></li><li><p>使用 husky</p><p>在 package 中添加：</p>  undefined</li></ul></li></ol>
+          </div>
+<h2 id="分支管理"><a class="markdownIt-Anchor" href="#分支管理"></a> 分支管理</h2>
+<ol>
+<li>
+<p>单主干</p>
+<p>所有团队成员都在单个主干分支（master）上进行开发。当需要发布时，先考虑使用标签（tag），即 tag 某个 commit 来作为发布的版本。如果仅靠 tag 不能满足要求，则从主干分支创建发布分支。bug 修复在主干分支中进行，再 cherry-pick 到发布分支。</p>
+<p><img src="https://www.ibm.com/developerworks/cn/java/j-lo-git-mange/img001.png" alt="20190429112954.png"></p>
+<p>优点：由于分支所带来的额外开销非常小。开发人员不需要频繁在不同的分支之间切换。<br>
+缺点：由于所有开发人员都在同一个分支上工作，团队需要合理的分工和充分的沟通来保证不同开发人员的代码尽可能少的发生冲突。持续集成和自动化测试是必要的，用来及时发现主干分支中的 bug。</p>
+</li>
+<li>
+<p>GitHub flow</p>
+<p><span class="exturl" data-url="aHR0cDovL3Njb3R0Y2hhY29uLmNvbS8yMDExLzA4LzMxL2dpdGh1Yi1mbG93Lmh0bWw=" title="http://scottchacon.com/2011/08/31/github-flow.html">GitHub flow<i class="fa fa-external-link"></i></span> 是 GitHub 所使用的一种简单的流程。该流程只使用两类分支，并依托于 GitHub 的 pull request 功能。</p>
+<p>在 GitHub flow 中，</p>
+<ul>
+<li>
+<p>master：分支中包含稳定的代码。该分支已经或即将被部署到生产环境。master 分支的作用是提供一个稳定可靠的代码基础。任何开发人员都不允许把未测试或未审查的代码直接提交到 master 分支。</p>
+</li>
+<li></li>
+<li>
+<p>对代码的任何修改，包括 bug 修复、hotfix、新功能开发等都在单独的分支中进行。不管是一行代码的小改动，还是需要几个星期开发的新功能，都采用同样的方式来管理。当需要进行修改时，<strong>从 master 分支创建一个新的分支。新分支的名称应该简单清晰地描述该分支的作用。所有相关的代码修改都在新分支中进行。开发人员可以自由地提交代码和 push 到远程仓库。</strong></p>
+</li>
+<li>
+<p>当新分支中的代码全部完成之后，通过 GitHub 提交一个新的 pull request。团队中的其他人员会对代码进行审查，提出相关的修改意见。由持续集成服务器（如 Jenkins）对新分支进行自动化测试。当代码通过自动化测试和代码审查之后，该分支的代码被合并到 master 分支。再从 master 分支部署到生产环境。</p>
+</li>
+</ul>
+<p><img src="https://www.ibm.com/developerworks/cn/java/j-lo-git-mange/img002.png" alt="20190429113510.png"></p>
+<p>优点：非常简单实用。开发人员需要注意的事项非常少，很容易形成习惯。<br>
+缺点：GitHub flow 要求项目有完善的自动化测试、持续集成和部署等相关的基础设施。每个新分支都需要测试和部署，如果这些不能自动化进行，会增加开发人员的工作量，导致无法有效地实施该流程。这种分支实践也要求团队有代码审查的相应流程。</p>
+</li>
+<li>
+<p>git-flow</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9udmllLmNvbS9wb3N0cy9hLXN1Y2Nlc3NmdWwtZ2l0LWJyYW5jaGluZy1tb2RlbC8=" title="https://nvie.com/posts/a-successful-git-branching-model/">git-flow<i class="fa fa-external-link"></i></span> 应该是目前流传最广的 Git 分支管理实践。git-flow 围绕的核心概念是版本发布（release）。因此 git-flow 适用于有较长版本发布周期的项目。虽然目前推崇的做法是持续集成和随时发布。有的项目甚至可以一天发布很多次。随时发布对于 SaaS 服务类的项目来说是很适合的。不过仍然有很大数量的项目的发布周期是几个星期甚至几个月。较长的发布周期可能是由于非技术相关的因素造成的，比如人员限制、管理层决策和市场营销策略等。</p>
+<p>git-flow 流程中包含了 5 类分支：</p>
+<ol>
+<li>master: 可以部署到生产环境的代码</li>
+<li>develop: 包含的是下个版本需要发布的内容，当 develop 分支集成了足够的新功能和 Bug 修复代码之后，通过一个发布流程来完成新版本的发布。发布完成后，develop 分支的代码将会被合并到 master 分支中。</li>
+<li>feature: 新功能分支</li>
+<li>release: 发布分支（当你认为现在在 “develop” 分支的代码已经是一个成熟的 release 版本时，这意味着：第一，它包括所有新的功能和必要的修复；第二，它已经被彻底的测试过了。如果上述两点都满足，那就是时候开始生成一个新的 release 了。release 分支是使用版本号命名的。）</li>
+<li>hotfix: 修复分支</li>
+</ol>
+<p>其中新功能分支（feature）、发布分支（release）和 hotfix 只在需要时从 develop 或 master 分支创建。在完成之后合并到 develop 或 master 分支。合并完成之后该分支被删除。这几类分支的名称应该遵循一定的命名规范，以方便开发人员识别。</p>
+<table>
+<thead>
+<tr>
+<th>分支类型</th>
+<th>命名规范</th>
+<th>创建自</th>
+<th>合并到</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>feature</td>
+<td>feature/*</td>
+<td>develop</td>
+<td>develop</td>
+<td>新功能</td>
+</tr>
+<tr>
+<td>release</td>
+<td>release/*</td>
+<td>develop</td>
+<td>develop 和 master</td>
+<td>一次新版本的发布</td>
+</tr>
+<tr>
+<td>hotfix</td>
+<td>hotfix/*</td>
+<td>master</td>
+<td>develop 和 master</td>
+<td>生产环境中发现的紧急 bug 的修复</td>
+</tr>
+</tbody>
+</table>
+<p>当需要开发一个新的功能的时候，基本流程：</p>
+<ol>
+<li>从 develop 分支创建一个新的 feature 分支，如 feature/my-awesome-feature。</li>
+<li>在该 feature 分支上进行开发，提交代码，push 到远程仓库</li>
+<li>当代码完成之后，合并到 develop 分支并删除当前分支的 feature 分支</li>
+</ol>
+<p>在进行版本发布和 hotfix 时也有类似的流程。当需要发布新版本时，采用的是如下的流程：</p>
+<ol>
+<li>从 develop 分支创建一个新的 release 分支，如 release/1.4。</li>
+<li>把 release 分支部署到持续集成服务器上进行测试。测试包括自动化集成测试和手动的用户接受测试。</li>
+<li>对于测试中发现的问题，直接在 release 分支上提交修改。完成修改之后再次部署和测试。</li>
+<li>当 release 分支中的代码通过测试之后，把 release 分支合并到 develop 和 master 分支，并在 master 分支上添加相应的 tag。</li>
+</ol>
+<p>缺点：git-flow 相关的流程比较繁琐和难以记忆，在实践中一般使用<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL252aWUvZ2l0Zmxvdw==" title="https://github.com/nvie/gitflow">辅助脚本<i class="fa fa-external-link"></i></span>来完成相关的工作。</p>
+<blockquote>
+<p>对于使用 Apache Maven 的项目来说，Atlassian 的 JGit-Flow 是一个更好的 git-flow 实现。</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="建议"><a class="markdownIt-Anchor" href="#建议"></a> 建议：</h3>
+<p>每个开发团队都应该根据团队自身和项目的特点来选择最适合的分支实践。</p>
+<ol>
+<li>如果发布周期较长，则 git-flow 是最好的选择。git-flow 可以很好地解决新功能开发、版本发布、生产系统维护等问题；如果发布周期较短，则 TBD 和 GitHub flow 都是不错的选择。</li>
+<li>GitHub flow 的特色在于集成了 pull request 和代码审查。如果项目已经使用 GitHub，则 GitHub flow 是最佳的选择。</li>
+<li>GitHub flow 和 TBD 对持续集成和自动化测试等基础设施有比较高的要求。如果相关的基础设施不完善，则不建议使用。</li>
+</ol>
+<h3 id="git-flowhttpsgithubcompetervanderdoesgitflow-avh-使用介绍"><a class="markdownIt-Anchor" href="#git-flowhttpsgithubcompetervanderdoesgitflow-avh-使用介绍"></a> (git-flow)[<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3BldGVydmFuZGVyZG9lcy9naXRmbG93LWF2aA==" title="https://github.com/petervanderdoes/gitflow-avh">https://github.com/petervanderdoes/gitflow-avh<i class="fa fa-external-link"></i></span>] 使用介绍</h3>
+<ol>
+<li>
+<p>安装：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3BldGVydmFuZGVyZG9lcy9naXRmbG93LWF2aC93aWtpI2luc3RhbGxpbmctZ2l0LWZsb3c=" title="https://github.com/petervanderdoes/gitflow-avh/wiki#installing-git-flow">https://github.com/petervanderdoes/gitflow-avh/wiki#installing-git-flow<i class="fa fa-external-link"></i></span></p>
+</li>
+<li>
+<p>初始化：<code>git flow init [-d]</code></p>
+<ul>
+<li>将以交互方式提示您，您希望将哪些分支用作开发和生产分支，以及您希望如何命名前缀。你可以简单地按任何一个问题上的 Return 来接受（理智的）默认建议。<code>-d</code> 标志将接受所有默认值。</li>
+</ul>
+</li>
+<li>
+<p>分支操作:</p>
+ <figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"># 列出 feature 分支</span><br><span class="line">git flow feature</span><br><span class="line"># 开启一个 feature 分支</span><br><span class="line">git flow feature <span class="built_in">start</span> &lt;name&gt; [&lt;base&gt;]</span><br><span class="line"># 完成一个 feature 分支 <span class="number">1</span>️⃣</span><br><span class="line">git flow feature finish &lt;name&gt;</span><br><span class="line"># 删除一个 feature 分支 -- 这将自动删除远程分支。</span><br><span class="line">git flow feature delete &lt;name&gt;</span><br><span class="line"># push / pull 一个 feature 分支到远程分支</span><br><span class="line">git flow feature publish &lt;name&gt;</span><br><span class="line">git flow feature track &lt;name&gt;</span><br><span class="line"></span><br><span class="line"># 列出 release 分支</span><br><span class="line">git flow release</span><br><span class="line"># 开启一个 release 分支</span><br><span class="line">git flow release <span class="built_in">start</span> &lt;release&gt; [&lt;base&gt;]</span><br><span class="line"># 完成一个 release 分支 <span class="number">2</span>️⃣</span><br><span class="line">git flow release finish &lt;release&gt;</span><br><span class="line"># 删除一个 release 分支</span><br><span class="line">git flow release delete &lt;release&gt;</span><br><span class="line"></span><br><span class="line"># 列出 hotfix 分支</span><br><span class="line">git flow hotfix</span><br><span class="line"># 开启一个 hotfix 分支</span><br><span class="line">git flow hotfix <span class="built_in">start</span> &lt;hotfix&gt; [&lt;base&gt;]</span><br><span class="line"># 完成一个 hotfix 分支</span><br><span class="line">git flow hotfix finish &lt;hotfix&gt;</span><br><span class="line"># 删除一个 hotfix 分支</span><br><span class="line">git flow hotfix delete &lt;hotfix&gt;</span><br><span class="line"># 发布一个 hotfix 分支 <span class="number">3</span>️⃣</span><br><span class="line">git flow hotfix publish &lt;name&gt;</span><br><span class="line"># 拉取 hotfix 分支</span><br><span class="line">git pull</span><br><span class="line">git checkout hotfix/&lt;name&gt;</span><br></pre></td></tr></table></figure>
+<p>1️⃣ <code>feature finish</code> 将会把我们的工作整合到 <code>develop</code> 分支中，之后 <code>git-flow</code> 会进行清理操作，他会删除这个当下已经完成的功能分支，并切换到 <code>develop</code> 分支下。<br>
+2️⃣ <code>release finish</code> 首先会拉取远程仓库，以保证目前是最新的版本，然后将内容合并到 <code>master</code> 和 <code>develop</code> 两个分支中。为了便于识别和做历史参考，release 提交会被标记上这个 release 的名字，最后清理操作，版本分支会被删除，并且回到 <code>develop</code> 分支上。<br>
+3️⃣ <code>hotfix finish</code> 完成后的改动将会被合并到 <code>master</code> 和 <code>develop</code> 分支中，并会把这个 <code>hotfix</code> 标记起来以便参考，最后这个 <code>hotfix</code> 分支将会删除，然后回到 <code>develop</code> 分支上</p>
+</li>
+</ol>
+<blockquote>
+<p>git-flow 可以使用的分支有：feature | bugfix | release | hotfix | support</p>
+</blockquote>
+<h2 id="gitignore"><a class="markdownIt-Anchor" href="#gitignore"></a> .gitignore</h2>
+<p>我们可以使用 <span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGlnbm9yZS5pby9pbnN0YWxsL2NvbW1hbmQtbGluZQ==" title="https://docs.gitignore.io/install/command-line">gitignore<i class="fa fa-external-link"></i></span> 在命令行上生成对应变成语言的 <code>.gitignore</code> 文件，但是如果你涉猎的语言并不多的话，建议可以使用自定义代码段的方式来完成这项工作。以前端与 VSCode 为例：</p>
+<figure class="highlight json"><figcaption><span>.gitignore</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"git_ignore"</span>: &#123;</span><br><span class="line">        <span class="attr">"prefix"</span>: <span class="string">"!"</span>,</span><br><span class="line">        <span class="attr">"body"</span>: [</span><br><span class="line">            <span class="string">"### https: //raw.github.com/github/gitignore/967cd6479319efde70a6fa44fa1bfa02020f2357/Node.gitignore"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# Logs"</span>,</span><br><span class="line">            <span class="string">"logs"</span>,</span><br><span class="line">            <span class="string">"*.log"</span>,</span><br><span class="line">            <span class="string">"npm-debug.log*"</span>,</span><br><span class="line">            <span class="string">"yarn-debug.log*"</span>,</span><br><span class="line">            <span class="string">"yarn-error.log*"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# Runtime data"</span>,</span><br><span class="line">            <span class="string">"pids"</span>,</span><br><span class="line">            <span class="string">"*.pid"</span>,</span><br><span class="line">            <span class="string">"*.seed"</span>,</span><br><span class="line">            <span class="string">"*.pid.lock"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# Directory for instrumented libs generated by jscoverage/JSCover"</span>,</span><br><span class="line">            <span class="string">"lib-cov"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# Coverage directory used by tools like istanbul"</span>,</span><br><span class="line">            <span class="string">"coverage"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# nyc test coverage"</span>,</span><br><span class="line">            <span class="string">".nyc_output"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# Grunt intermediate storage (Creating plugins - Grunt: The JavaScript Task Runner)"</span>,</span><br><span class="line">            <span class="string">".grunt"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# Bower dependency directory (Bower)"</span>,</span><br><span class="line">            <span class="string">"bower_components"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# node-waf configuration"</span>,</span><br><span class="line">            <span class="string">".lock-wscript"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# Compiled binary addons (Node.js v10.7.0 Documentation)"</span>,</span><br><span class="line">            <span class="string">"build/Release"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# Dependency directories"</span>,</span><br><span class="line">            <span class="string">"node_modules/"</span>,</span><br><span class="line">            <span class="string">"jspm_packages/"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# TypeScript v1 declaration files"</span>,</span><br><span class="line">            <span class="string">"typings/"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# Optional npm cache directory"</span>,</span><br><span class="line">            <span class="string">".npm"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# Optional eslint cache"</span>,</span><br><span class="line">            <span class="string">".eslintcache"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# Optional REPL history"</span>,</span><br><span class="line">            <span class="string">".node_repl_history"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# Output of 'npm pack'"</span>,</span><br><span class="line">            <span class="string">"*.tgz"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# Yarn Integrity file"</span>,</span><br><span class="line">            <span class="string">".yarn-integrity"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# dotenv environment variables file"</span>,</span><br><span class="line">            <span class="string">".env"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# parcel-bundler cache (Parcel)"</span>,</span><br><span class="line">            <span class="string">".cache"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# next.js build output"</span>,</span><br><span class="line">            <span class="string">".next"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# nuxt.js build output"</span>,</span><br><span class="line">            <span class="string">".nuxt"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# vuepress build output"</span>,</span><br><span class="line">            <span class="string">".vuepress/dist"</span>,</span><br><span class="line"></span><br><span class="line">            <span class="string">"# Serverless directories"</span>,</span><br><span class="line">            <span class="string">".serverless"</span></span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="git-commit-规范"><a class="markdownIt-Anchor" href="#git-commit-规范"></a> Git Commit 规范</h2>
+<p>使用较合理的 Git Commit 规范，可以生成更易读的消息。目前使用较多的提交规范是：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FuZ3VsYXIvYW5ndWxhci5qcy9ibG9iL21hc3Rlci9ERVZFTE9QRVJTLm1kIy1naXQtY29tbWl0LWd1aWRlbGluZXM=" title="https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines">Angular Git Commit Guidelines<i class="fa fa-external-link"></i></span></p>
+<h3 id="commit-格式"><a class="markdownIt-Anchor" href="#commit-格式"></a> Commit 格式</h3>
+<figure class="highlight shell"><figcaption><span>git-commit</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 头部信息：类型、范围、主题</span></span><br><span class="line">&lt;type&gt;(&lt;scope&gt;):&lt;subject&gt;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 换行</span></span><br><span class="line">&lt;blank_line&gt;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 正文</span></span><br><span class="line">&lt;body&gt;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 换行</span></span><br><span class="line">&lt;blank_line&gt;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 底部信息</span></span><br><span class="line">&lt;footer&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>提交信息中，每一行最多不能超过 100 个字符。这样会更利于 GitHub 阅读</p>
+</blockquote>
+<h3 id="revert"><a class="markdownIt-Anchor" href="#revert"></a> Revert</h3>
+<p>如果恢复了之前的提交，则提交信息中应该是以：<code>revert:</code> 开头然后恢复的提交的标头。并在正文中注明：<code>This reverts commit &lt;hash&gt;.</code> 其中 hash 表示是被还原掉的 SHA</p>
+<h3 id="type"><a class="markdownIt-Anchor" href="#type"></a> Type</h3>
+<p>header 的 Type 必须是以下几种类型之一</p>
+<ul>
+<li>feat: A new feature</li>
+<li>fix: A bug fix</li>
+<li>docs: Documentation only changes</li>
+<li>style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)</li>
+<li>refactor: A code change that neither fixes a bug nor adds a feature (重构)</li>
+<li>perf: A code change that improves performance (改进性能)</li>
+<li>test: Adding missing or correcting existing tests</li>
+<li>chore: Changes to the build process or auxiliary tools and libraries such as documentation generation (构建工具等辅助工具的修改)</li>
+</ul>
+<h3 id="scope"><a class="markdownIt-Anchor" href="#scope"></a> Scope</h3>
+<p>可选项，指明修改的范围，如函数名、类名等，如果修改多处地方可以使用 <code>*</code></p>
+<h3 id="subject"><a class="markdownIt-Anchor" href="#subject"></a> Subject</h3>
+<p>对修改的简短描述，有以下几点要求</p>
+<ul>
+<li>使用命令式语气，例如： “change” not “changed” nor “changes”</li>
+<li>不要首字符大写</li>
+<li>不要使用句号结尾</li>
+</ul>
+<h3 id="body"><a class="markdownIt-Anchor" href="#body"></a> body</h3>
+<p>对 subject 中的描述进一步的说明，并且和修改前进行对比说明</p>
+<h3 id="footer"><a class="markdownIt-Anchor" href="#footer"></a> footer</h3>
+<p>一些备注, 通常是 BREAKING CHANGE 或修复的 bug 的链接.</p>
+<p>可以查看 angular 的详细介绍 – <span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vZG9jdW1lbnQvZC8xUXJERmNJaVBqU0xEbjNFTDE1SUp5Z05QaUhPUmdVMV9PT0FxV2ppRFU1WS9lZGl0Iw==" title="https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#">angular-commit<i class="fa fa-external-link"></i></span></p>
+<h2 id="使用-commitizen-commitlint-husky-规范-commit-message"><a class="markdownIt-Anchor" href="#使用-commitizen-commitlint-husky-规范-commit-message"></a> 使用 commitizen 、commitlint 、husky 规范 commit message</h2>
+<p>我们在了解 git commit 规范以后，我们还希望能投通过工具来帮助我们更好的实施规范。</p>
+<ul>
+<li><span class="exturl" data-url="aHR0cDovL2NvbW1pdGl6ZW4uZ2l0aHViLmlvL2N6LWNsaS8=" title="http://commitizen.github.io/cz-cli/">commitizen/cz-cli<i class="fa fa-external-link"></i></span> 配合 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NvbW1pdGl6ZW4vY3otY29udmVudGlvbmFsLWNoYW5nZWxvZw==" title="https://github.com/commitizen/cz-conventional-changelog">cz-conventional-changelog<i class="fa fa-external-link"></i></span> 可以通过交互的方式帮助我们生成符合规范的 commit message;</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9jb21taXRsaW50LmpzLm9yZy8jLw==" title="https://commitlint.js.org/#/">commitlint<i class="fa fa-external-link"></i></span> 配合 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NvbnZlbnRpb25hbC1jaGFuZ2Vsb2cvY29tbWl0bGludC90cmVlL21hc3Rlci9AY29tbWl0bGludC9jb25maWctYW5ndWxhcg==" title="https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-angular">config-angular<i class="fa fa-external-link"></i></span> 以及 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3R5cGljb2RlL2h1c2t5I3JlYWRtZQ==" title="https://github.com/typicode/husky#readme">husky<i class="fa fa-external-link"></i></span> 可以帮助我们使用 angular 提交规范 lint commit messages;</li>
+</ul>
+<h3 id="使用-commitizen"><a class="markdownIt-Anchor" href="#使用-commitizen"></a> 使用 commitizen</h3>
+<ol>
+<li>
+<p>全局安装：</p>
+<ul>
+<li><code>npm install -g commitizen cz-conventional-changelog</code></li>
+<li>指定适配器 <code>echo '{ &quot;path&quot;: &quot;cz-conventional-changelog&quot; }' &gt; ~/.czrc</code></li>
+<li>使用 <code>git cz</code> 替换使用 <code>git commit</code></li>
+</ul>
+</li>
+<li>
+<p>项目安装：</p>
+<ul>
+<li>
+<p>npm install -D commitizen cz-conventional-changelog</p>
+</li>
+<li>
+<p>指定适配器：</p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">"script": &#123;</span><br><span class="line">    ...,</span><br><span class="line">    "commit": "git-cz",</span><br><span class="line">&#125;,</span><br><span class="line">"config": &#123;</span><br><span class="line">    "commitizen": &#123;</span><br><span class="line">    "path": "cz-conventional-changelog"</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>使用 <code>npm run commit</code> 进行提交</p>
+</li>
+</ul>
+<blockquote>
+<p>如果全局安装过 commitizen, 那么在对应的项目中执行 git cz or npm run commit 都可以.</p>
+</blockquote>
+</li>
+<li>
+<p>自定义适配器</p>
+<p>如果需要自定义一套规范，我们可以使用：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xlb25hcmRvYW5hbGlzdGEvY3otY3VzdG9taXphYmxl" title="https://github.com/leonardoanalista/cz-customizable">cz-customizable<i class="fa fa-external-link"></i></span> 编写自己的规范</p>
+<ul>
+<li>
+<p><code>npm i -g cz-customizable</code> 或者 <code>npm i -D cz-customizable</code></p>
+</li>
+<li>
+<p>指定适配器</p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 全局：~/.czrc`</span><br><span class="line">&#123; <span class="attr">"path"</span>: <span class="string">"cz-customizable"</span> &#125;</span><br><span class="line">// 项目：packages</span><br><span class="line">"config": &#123;</span><br><span class="line">    "commitizen": &#123;</span><br><span class="line">    "path": "node_modules/cz-customizable"</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>在 <code>~/</code> 或项目目录下创建 .cz-config.js 文件, 维护你想要的格式:</p>
+</li>
+</ul>
+<blockquote>
+<p>示例：<br>
+<span class="exturl" data-url="aHR0cHM6Ly9saW5rLnpoaWh1LmNvbS8/dGFyZ2V0PWh0dHBzJTNBLy9naXN0LmdpdGh1Yi5jb20vbGVvaHhqLzdiYzkyOGY2MGJmYTQ2YTM4NTZkZGY3YzBmOTFhYjk4" title="https://link.zhihu.com/?target=https%3A//gist.github.com/leohxj/7bc928f60bfa46a3856ddf7c0f91ab98">leohxj/.cz-config.js<i class="fa fa-external-link"></i></span> &gt; <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0dvb2dsZUNocm9tZS9saWdodGhvdXNlL2Jsb2IvbWFzdGVyLy5jei1jb25maWcuanM=" title="https://github.com/GoogleChrome/lighthouse/blob/master/.cz-config.js">GoogleChrome Lightouse cz-config<i class="fa fa-external-link"></i></span></p>
+</blockquote>
+</li>
+</ol>
+<h3 id="使用-commitlint-校验提交"><a class="markdownIt-Anchor" href="#使用-commitlint-校验提交"></a> 使用 commitlint 校验提交</h3>
+<ol>
+<li>
+<p>添加 commitlint 支持</p>
+<ul>
+<li>
+<p><code>npm install -g @commitlint/cli</code></p>
+</li>
+<li>
+<p><code>npm i -D @commitlint/config-conventional</code></p>
+</li>
+<li>
+<p><code>echo module.exports = {extends: ['@commitlint/config-conventional']} &gt; commitlint.config.js</code> 配置文件，或者在 package 中添加字段：</p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">"commitlint": &#123;</span><br><span class="line">    "extends": [</span><br><span class="line">        <span class="string">"@commitlint/config-conventional"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>测试：<code>echo foo: bar | commitlint</code> 输出</p>
+<p><img src="http://resources.ffstone.top/resource/image/20190515100137.png" alt="20190515100137.png"></p>
+</li>
+<li>
+<p>添加 husky（帮助使用 git 钩子的工具）校验提交信息 <span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdGhvb2tz" title="https://git-scm.com/docs/githooks">git hook<i class="fa fa-external-link"></i></span> 提供了各种钩子</p>
+<ul>
+<li>
+<p><code>npm install husky --save-dev</code></p>
+</li>
+<li>
+<p>配置 <code>package.json</code></p>
+  <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// package.json</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">"husky"</span>: &#123;</span><br><span class="line">        <span class="attr">"hooks"</span>: &#123;</span><br><span class="line">            <span class="attr">"commit-msg"</span>: <span class="string">"commitlint -E HUSKY_GIT_PARAMS"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试：<code>git commit -m &quot;foo: this will fail&quot;</code><br>
+<img src="http://resources.ffstone.top/resource/image/20190515102750.png" alt="20190515102750.png"></p>
+</li>
+</ul>
+</li>
+<li>
+<p>配合 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NvbnZlbnRpb25hbC1jaGFuZ2Vsb2cvY29tbWl0bGludC90cmVlL21hc3Rlci9AY29tbWl0bGludC9jb25maWctYW5ndWxhcg==" title="https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-angular">config-angular<i class="fa fa-external-link"></i></span><br>
+使用 angular 规范</p>
+<ul>
+<li>
+<p><code>npm install --save-dev @commitlint/config-angular @commitlint/cli</code></p>
+</li>
+<li>
+<p>修改 <code>package.json</code> 或者在当前目录下创建 <code>.cz-config.js</code> 文件</p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">"commitlint": &#123;</span><br><span class="line">    "extends": [</span><br><span class="line">    <span class="string">"@commitlint/config-angular"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    extends: [<span class="string">"@commitlint/config-angular"</span>]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="使用-standard-version-进行版本格式管理"><a class="markdownIt-Anchor" href="#使用-standard-version-进行版本格式管理"></a> 使用 standard-version 进行版本格式管理</h2>
+<p>在严格使用 commit 规范后，我们可以通过使用 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NvbnZlbnRpb25hbC1jaGFuZ2Vsb2cvc3RhbmRhcmQtdmVyc2lvbg==" title="https://github.com/conventional-changelog/standard-version">standard-version<i class="fa fa-external-link"></i></span> 来对发布进行版本号管理。</p>
+<h3 id="semver语义化版本号-规范"><a class="markdownIt-Anchor" href="#semver语义化版本号-规范"></a> Semver(语义化版本号) 规范</h3>
+<p>Semver 规范规定了版本号如何表示，如何增加，如何进行比较，不同的版本号意味着什么。</p>
+<p>版本格式：<code>主版本号.次版本号.修订号</code></p>
+<ul>
+<li>主版本号（major）：当你做了不兼容的 API 修改。</li>
+<li>次版本号（minor）：当你做了向下兼容的功能性新增，可以理解为 Feature 版本。</li>
+<li>修订号（patch）：当你做了向下兼容的问题修正，可以理解为 Bug fix 版本。</li>
+</ul>
+<blockquote>
+<p>先行版本号及版本编译信息可以加到 “主版本号.次版本号.修订号” 的后面，作为延伸</p>
+</blockquote>
+<p>示例：</p>
+<p><img src="http://resources.ffstone.top/resource/image/React_%E7%9A%84%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83%E6%97%A5%E5%BF%97" alt="React_的版本发布日志"></p>
+<p>Semver 规范中使用:</p>
+<ul>
+<li><code>alpha</code>: 内部测试</li>
+<li><code>beta</code>: 公测版本</li>
+<li><code>rc</code>: 正式版本的候选版本</li>
+</ul>
+<p>在发布 npm 包的时候，npm 提供了 <code>npm version</code> 来帮助我们使用 <code>semver</code> 规范中使用</p>
+<ul>
+<li>升级补丁版本号：<code>npm version patch</code></li>
+<li>升级小版本号：<code>npm version minor</code></li>
+<li>升级大版本号：<code>npm version major</code></li>
+</ul>
+<h3 id="standard-version"><a class="markdownIt-Anchor" href="#standard-version"></a> standard-version</h3>
+<p><code>standard-version</code> 是类似于 <code>npm version</code> 的工具</p>
+<h3 id="使用方法"><a class="markdownIt-Anchor" href="#使用方法"></a> 使用方法</h3>
+<ul>
+<li>
+<p><code>npm i --save-dev standard-version</code> 或者 <code>npm i -g standard-version</code></p>
+</li>
+<li>
+<p><code>git checkout master</code></p>
+</li>
+<li>
+<p><code>git pull origin master</code></p>
+</li>
+<li>
+<p><code>standard-version</code></p>
+<ul>
+<li>修改 <code>package.json</code> 等文件里面的版本号</li>
+<li>使用 <code>legacy-changelog</code> 更新 <span class="exturl" data-url="aHR0cDovL0NIQU5HRUxPRy5tZA==" title="http://CHANGELOG.md">CHANGELOG.md<i class="fa fa-external-link"></i></span></li>
+<li>提交 <code>package.json</code> 和 <span class="exturl" data-url="aHR0cDovL0NIQU5HRUxPRy5tZA==" title="http://CHANGELOG.md">CHANGELOG.md<i class="fa fa-external-link"></i></span></li>
+<li>标记新版本</li>
+</ul>
+</li>
+<li>
+<p><code>git push --follow-tags origin master</code></p>
+</li>
+</ul>
+<h3 id="配置"><a class="markdownIt-Anchor" href="#配置"></a> 配置</h3>
+<ul>
+<li>在您的 <code>package.json</code> 中设置字段 <code>standard-version</code>。</li>
+<li>创建一个 <code>.versionrc</code> 或 <code>.versionrc.json</code>。</li>
+</ul>
+<p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NvbnZlbnRpb25hbC1jaGFuZ2Vsb2cvY29udmVudGlvbmFsLWNoYW5nZWxvZy1jb25maWctc3BlYy90cmVlL21hc3Rlci92ZXJzaW9ucy8yLjAuMCN0eXBl" title="https://github.com/conventional-changelog/conventional-changelog-config-spec/tree/master/versions/2.0.0#type">具体配置项<i class="fa fa-external-link"></i></span></p>
+<h3 id="cli"><a class="markdownIt-Anchor" href="#cli"></a> CLI</h3>
+<p><code>standard-version --first-release</code></p>
+<h3 id="参数"><a class="markdownIt-Anchor" href="#参数"></a> 参数</h3>
+<ul>
+<li>
+<p><code>--first-release</code> 第一次提交</p>
+</li>
+<li>
+<p><code>--prerelease</code> 预发布</p>
+<p>例如：当前版本是：<code>1.0.0</code>，使用命令 <code>standard-version --prerelease</code> 会生成新的版本号：<code>1.0.1-0</code>。如果希望添加说明可以：<code>standard-version --prerelease [des?]</code></p>
+</li>
+<li>
+<p><code>--release-as [version|standard-name|null]</code> 指定发布版本 例如：<code>standard-version --release-as minor</code> | <code>standard-version --release-as 1.1.0</code></p>
+</li>
+<li>
+<p><code>--no-verify</code> 跳过 <code>git-hooks</code> 检测</p>
+</li>
+<li>
+<p><code>--dry-run</code>: 允许查看即将运行的命令，但是不会执行</p>
+</li>
+<li>
+<p><code>-t &lt;des:string&gt;</code>: 前置修饰</p>
+</li>
+</ul>
+<h3 id="声明周期"><a class="markdownIt-Anchor" href="#声明周期"></a> 声明周期</h3>
+<p><code>standard-version</code> 支持生命周期脚本。这些允许您在发布期间执行自己的补充命令。以下钩子可用并按记录顺序执行：</p>
+<ul>
+<li><code>prerelease</code>：在发生任何事情之前执行 如果 prerelease 脚本返回非零退出代码，则将中止版本控制，但它对该进程没有其他影响。</li>
+<li><code>prebump/postbump</code>：在版本修改之前和之后执行。如果 prebump 脚本返回版本＃，则将使用它而不是计算的版本 standard-version。</li>
+<li><code>prechangelog/postchangelog</code>：在生成 CHANGELOG 之前和之后执行。</li>
+<li><code>precommit/postcommit</code>：在提交步骤之前和之后调用。</li>
+<li><code>pretag/posttag</code>：在标记步骤之前和之后调用。</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"standard-version"</span>: &#123;</span><br><span class="line">        <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">            <span class="attr">"prebump "</span>: <span class="string">"echo 9.9.9"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们还可以通过 <code>skip</code> 字段跳过制定的生命周期：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"standard-version"</span>: &#123;</span><br><span class="line">        <span class="attr">"skip"</span>: &#123;</span><br><span class="line">            <span class="attr">"changelog"</span>: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="参考文章"><a class="markdownIt-Anchor" href="#参考文章"></a> 参考文章</h2>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuaWJtLmNvbS9kZXZlbG9wZXJ3b3Jrcy9jbi9qYXZhL2otbG8tZ2l0LW1hbmdlL2luZGV4Lmh0bWw=" title="https://www.ibm.com/developerworks/cn/java/j-lo-git-mange/index.html">Git 分支管理最佳实践<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRib29rLnR3Lw==" title="https://gitbook.tw/">為你自己學 Git<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuZ2l0LXRvd2VyLmNvbS9sZWFybi9naXQvZWJvb2svY24vY29tbWFuZC1saW5lL2FkdmFuY2VkLXRvcGljcy9naXQtZmxvdyM=" title="https://www.git-tower.com/learn/git/ebook/cn/command-line/advanced-topics/git-flow#">git-flow 的工作流程<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3BldGVydmFuZGVyZG9lcy9naXRmbG93LWF2aA==" title="https://github.com/petervanderdoes/gitflow-avh">gitflow-avh<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGlnbm9yZS5pby9pbnN0YWxsL2NvbW1hbmQtbGluZQ==" title="https://docs.gitignore.io/install/command-line">gitignore<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zNDIyMzE1MA==" title="https://zhuanlan.zhihu.com/p/34223150">优雅的提交你的 Git Commit Message<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FuZ3VsYXIvYW5ndWxhci5qcy9ibG9iL21hc3Rlci9ERVZFTE9QRVJTLm1kIy1naXQtY29tbWl0LWd1aWRlbGluZXM=" title="https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines">Angular Git Commit Guidelines<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2NvbW1pdGl6ZW4vY3otY2xp" title="https://github.com/commitizen/cz-cli">Angular 提交规范约束工具 – Commitizen<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9jb21taXRsaW50LmpzLm9yZy8jLw==" title="https://commitlint.js.org/#/">commitlint<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3R5cGljb2RlL2h1c2t5I3JlYWRtZQ==" title="https://github.com/typicode/husky#readme">husky<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9naXQtc2NtLmNvbS9kb2NzL2dpdGhvb2tz" title="https://git-scm.com/docs/githooks">git hook<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9qdWVqaW4uaW0vZW50cnkvNWI5N2NlYTY1MTg4MjU1YzdmNWU5NmE0I3N0YW5kYXJkLXZlcnNpb24tJUU3JUFFJTgwJUU0JUJCJThC" title="https://juejin.im/entry/5b97cea65188255c7f5e96a4#standard-version-%E7%AE%80%E4%BB%8B">standard-version-简介<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9qdWVqaW4uaW0vcG9zdC81YWQ0MTNiYTZmYjlhMDI4YjU0ODU4NjY=" title="https://juejin.im/post/5ad413ba6fb9a028b5485866">Semver(语义化版本号)扫盲<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuY29udmVudGlvbmFsY29tbWl0cy5vcmcvZW4vdjEuMC4wLWJldGEuNC8=" title="https://www.conventionalcommits.org/en/v1.0.0-beta.4/">conventionalcommits_约定规范<i class="fa fa-external-link"></i></span></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/itstone/tags/git/" rel="tag"># git</a>
+          
+            <a href="/itstone/tags/git工作流/" rel="tag"># git工作流</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/itstone/posts/280100fb/" rel="next" title="vim 基础使用">
+                <i class="fa fa-chevron-left"></i> vim 基础使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/itstone/posts/f55a1c3d/" rel="prev" title="node-创建文件目录">
+                node-创建文件目录 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80NDkyMy8yMTQ0NQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://avatars1.githubusercontent.com/u/20747438?s=460&v=4" alt="STONE">
+            
+              <p class="site-author-name" itemprop="name">STONE</p>
+              <div class="site-description motion-element" itemprop="description">好好学习天天向上</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/itstone/archives/">
+                
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/itstone/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/itstone/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/itstone/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3lvdXJuYW1l" title="GitHub &rarr; https://github.com/yourname"><i class="fa fa-fw fa-github"></i>GitHub</span>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <span class="exturl" data-url="bWFpbHRvOnlvdXJuYW1lQGdtYWlsLmNvbQ==" title="E-Mail &rarr; mailto:yourname@gmail.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text"> 介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分支管理"><span class="nav-number">2.</span> <span class="nav-text"> 分支管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#建议"><span class="nav-number">2.1.</span> <span class="nav-text"> 建议：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-flowhttpsgithubcompetervanderdoesgitflow-avh-使用介绍"><span class="nav-number">2.2.</span> <span class="nav-text"> (git-flow)[https://github.com/petervanderdoes/gitflow-avh] 使用介绍</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gitignore"><span class="nav-number">3.</span> <span class="nav-text"> .gitignore</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-commit-规范"><span class="nav-number">4.</span> <span class="nav-text"> Git Commit 规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#commit-格式"><span class="nav-number">4.1.</span> <span class="nav-text"> Commit 格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#revert"><span class="nav-number">4.2.</span> <span class="nav-text"> Revert</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#type"><span class="nav-number">4.3.</span> <span class="nav-text"> Type</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scope"><span class="nav-number">4.4.</span> <span class="nav-text"> Scope</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#subject"><span class="nav-number">4.5.</span> <span class="nav-text"> Subject</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#body"><span class="nav-number">4.6.</span> <span class="nav-text"> body</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#footer"><span class="nav-number">4.7.</span> <span class="nav-text"> footer</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-commitizen-commitlint-husky-规范-commit-message"><span class="nav-number">5.</span> <span class="nav-text"> 使用 commitizen 、commitlint 、husky 规范 commit message</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-commitizen"><span class="nav-number">5.1.</span> <span class="nav-text"> 使用 commitizen</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-commitlint-校验提交"><span class="nav-number">5.2.</span> <span class="nav-text"> 使用 commitlint 校验提交</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-standard-version-进行版本格式管理"><span class="nav-number">6.</span> <span class="nav-text"> 使用 standard-version 进行版本格式管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#semver语义化版本号-规范"><span class="nav-number">6.1.</span> <span class="nav-text"> Semver(语义化版本号) 规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#standard-version"><span class="nav-number">6.2.</span> <span class="nav-text"> standard-version</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用方法"><span class="nav-number">6.3.</span> <span class="nav-text"> 使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-number">6.4.</span> <span class="nav-text"> 配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cli"><span class="nav-number">6.5.</span> <span class="nav-text"> CLI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数"><span class="nav-number">6.6.</span> <span class="nav-text"> 参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#声明周期"><span class="nav-number">6.7.</span> <span class="nav-text"> 声明周期</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章"><span class="nav-number">7.</span> <span class="nav-text"> 参考文章</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">STONE</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> v7.1.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/itstone/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/itstone/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/itstone/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/itstone/js/utils.js?v=7.1.2"></script>
+
+  <script src="/itstone/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/itstone/js/affix.js?v=7.1.2"></script>
+
+  <script src="/itstone/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/itstone/js/scrollspy.js?v=7.1.2"></script>
+<script src="/itstone/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/itstone/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+  <script src="/itstone/js/exturl.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+
+  
+    <script>
+  window.livereOptions = {
+    refer: 'posts/edd825ca/'
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/itstone/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/itstone/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/itstone/js/algolia-search.js?v=7.1.2"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 代码块复制功能 -->
+  
+  <script src="/itstone/lib/clipboard.min.js"></script>
+  <script src="/itstone/js/custom/clipboard-use.js"></script>
+
+</body>
+</html>

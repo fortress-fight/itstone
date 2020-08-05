@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>八九闲谈</title>
+  
+  <subtitle>前端小学生</subtitle>
+  <link href="/itstone/atom.xml" rel="self"/>
+  
+  <link href="https://fortress-fight.github.io/itstone/"/>
+  <updated>2020-08-05T01:24:16.936Z</updated>
+  <id>https://fortress-fight.github.io/itstone/</id>
+  
+  <author>
+    <name>STONE</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>js代码段</title>
+    <link href="https://fortress-fight.github.io/itstone/posts/56e48daa/"/>
+    <id>https://fortress-fight.github.io/itstone/posts/56e48daa/</id>
+    <published>2020-08-05T01:24:12.000Z</published>
+    <updated>2020-08-05T01:24:16.936Z</updated>
+    
+    <summary type="html">
+    
+      &lt;div class=&quot;note default&quot;&gt;
+
+            &lt;ul&gt;&lt;li&gt;简易时间格式化工具函数&lt;/li&gt;&lt;li&gt;设备检测&lt;/li&gt;&lt;li&gt;性能分析&lt;/li&gt;&lt;li&gt;base64 数据的文件下载&lt;/li&gt;&lt;li&gt;图片转换为 base64&lt;/li&gt;&lt;/ul&gt;
+          &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="JavaScript" scheme="https://fortress-fight.github.io/itstone/categories/JavaScript/"/>
+    
+    
+      <category term="代码段" scheme="https://fortress-fight.github.io/itstone/tags/%E4%BB%A3%E7%A0%81%E6%AE%B5/"/>
+    
+      <category term="JavaScript" scheme="https://fortress-fight.github.io/itstone/tags/JavaScript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>typescript 使用记录</title>
+    <link href="https://fortress-fight.github.io/itstone/posts/9f4b0247/"/>
+    <id>https://fortress-fight.github.io/itstone/posts/9f4b0247/</id>
+    <published>2020-08-05T01:23:31.000Z</published>
+    <updated>2020-08-05T01:23:41.970Z</updated>
+    
+    <summary type="html">
+    
+      &lt;div class=&quot;note default&quot;&gt;
+
+            &lt;ul&gt;&lt;li&gt;TS 报错：找不到名称 *** (缺少类型声明的错误提示)&lt;/li&gt;&lt;/ul&gt;
+          &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="TypeScript" scheme="https://fortress-fight.github.io/itstone/categories/TypeScript/"/>
+    
+    
+      <category term="typescript" scheme="https://fortress-fight.github.io/itstone/tags/typescript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>css代码段</title>
+    <link href="https://fortress-fight.github.io/itstone/posts/ccc1be9f/"/>
+    <id>https://fortress-fight.github.io/itstone/posts/ccc1be9f/</id>
+    <published>2020-08-05T01:21:57.000Z</published>
+    <updated>2020-08-05T01:21:57.222Z</updated>
+    
+    <summary type="html">
+    
+      &lt;div class=&quot;note default&quot;&gt;
+
+            &lt;ul&gt;&lt;li&gt;&lt;code&gt;item&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;
+          &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="css" scheme="https://fortress-fight.github.io/itstone/categories/css/"/>
+    
+    
+      <category term="css" scheme="https://fortress-fight.github.io/itstone/tags/css/"/>
+    
+      <category term="代码段" scheme="https://fortress-fight.github.io/itstone/tags/%E4%BB%A3%E7%A0%81%E6%AE%B5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>前端效果收集</title>
+    <link href="https://fortress-fight.github.io/itstone/posts/ab94cb42/"/>
+    <id>https://fortress-fight.github.io/itstone/posts/ab94cb42/</id>
+    <published>2020-08-03T08:18:22.000Z</published>
+    <updated>2020-08-03T08:18:22.902Z</updated>
+    
+    <summary type="html">
+    
+      &lt;div class=&quot;note default&quot;&gt;
+
+            &lt;ul&gt;&lt;li&gt;&lt;code&gt;item&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;
+          &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="effect" scheme="https://fortress-fight.github.io/itstone/categories/effect/"/>
+    
+    
+      <category term="web" scheme="https://fortress-fight.github.io/itstone/tags/web/"/>
+    
+      <category term="effect" scheme="https://fortress-fight.github.io/itstone/tags/effect/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Git 常用操作</title>
+    <link href="https://fortress-fight.github.io/itstone/posts/6ad6570f/"/>
+    <id>https://fortress-fight.github.io/itstone/posts/6ad6570f/</id>
+    <published>2020-07-27T02:15:02.000Z</published>
+    <updated>2020-08-05T01:26:08.669Z</updated>
+    
+    <summary type="html">
+    
+      &lt;div class=&quot;note default&quot;&gt;
+
+            &lt;ul&gt;&lt;li&gt;&lt;code&gt;git update-index --assume-unchanged &amp;lt;filename&amp;gt;&lt;/code&gt; 本地开发总存在一些不想提交到远程的文件&lt;/li&gt;&lt;li&gt;&lt;code&gt;git rm &amp;lt;-r | -n&amp;gt; --cached &amp;lt;filename&amp;gt;&lt;/code&gt; 移除上一次的 commit 中提交了不该提交的信息&lt;/li&gt;&lt;li&gt;&lt;code&gt;git filter-branch --force --index-filter &#39;git rm --cached --ignore-unmatch &amp;lt;filename&amp;gt;&#39; --prune-empty --tag-name-filter cat -- --all&lt;/code&gt; 历史记录中有不想要提交的内容，通过该命令能全部清除&lt;/li&gt;&lt;li&gt;&lt;code&gt;git log --pretty=oneline&lt;/code&gt; 只会留下 commit id (版本号 (用 SHA1 字串表示))和 提交版本时的描述信息&lt;/li&gt;&lt;/ul&gt;
+          &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="Git" scheme="https://fortress-fight.github.io/itstone/categories/Git/"/>
+    
+    
+      <category term="Git" scheme="https://fortress-fight.github.io/itstone/tags/Git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>解析依赖收集</title>
+    <link href="https://fortress-fight.github.io/itstone/posts/f62dac44/"/>
+    <id>https://fortress-fight.github.io/itstone/posts/f62dac44/</id>
+    <published>2020-07-27T02:12:50.000Z</published>
+    <updated>2020-07-27T02:13:09.532Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;知识点：&lt;/p&gt;
+&lt;div class=&quot;note default&quot;&gt;
+
+            &lt;ul&gt;&lt;li&gt;&lt;code&gt;Object.defineProperty&lt;/code&gt;&lt;/li&gt;&lt;li&gt;&lt;code&gt;Proxy&lt;/code&gt;&lt;/li&gt;&lt;li&gt;&lt;code&gt;Reflect&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;
+          &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="JavaScript" scheme="https://fortress-fight.github.io/itstone/categories/JavaScript/"/>
+    
+    
+      <category term="JavaScript" scheme="https://fortress-fight.github.io/itstone/tags/JavaScript/"/>
+    
+      <category term="ES6" scheme="https://fortress-fight.github.io/itstone/tags/ES6/"/>
+    
+      <category term="数据相应" scheme="https://fortress-fight.github.io/itstone/tags/%E6%95%B0%E6%8D%AE%E7%9B%B8%E5%BA%94/"/>
+    
+      <category term="依赖收集" scheme="https://fortress-fight.github.io/itstone/tags/%E4%BE%9D%E8%B5%96%E6%94%B6%E9%9B%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>typescript-工具类型</title>
+    <link href="https://fortress-fight.github.io/itstone/posts/2f4e1b63/"/>
+    <id>https://fortress-fight.github.io/itstone/posts/2f4e1b63/</id>
+    <published>2020-05-09T03:47:41.000Z</published>
+    <updated>2020-05-09T03:47:49.344Z</updated>
+    
+    <summary type="html">
+    
+      &lt;div class=&quot;note default&quot;&gt;
+
+            &lt;ul&gt;&lt;li&gt;&lt;code&gt;infer&lt;/code&gt; 声明一个类型变量并对它进行使用，可以用于函数类型的参数/返回值&lt;/li&gt;&lt;li&gt;&lt;code&gt;Partial&amp;lt;T&amp;gt;&lt;/code&gt; 将某个类型的属性全部变为可选项&lt;/li&gt;&lt;li&gt;&lt;code&gt;Required&amp;lt;T&amp;gt;&lt;/code&gt; 将某个类型的属性全部变为必选&lt;/li&gt;&lt;li&gt;&lt;code&gt;Readonly&amp;lt;T&amp;gt;&lt;/code&gt; 将某个类型的属性全部变为只读&lt;/li&gt;&lt;li&gt;&lt;code&gt;Record&amp;lt;K extends keyof any, T&amp;gt;&lt;/code&gt; 将 K 中所有的属性的值转换为 T 类型&lt;/li&gt;&lt;li&gt;&lt;code&gt;Pick&amp;lt;T, K extends keyof T&amp;gt;&lt;/code&gt; 将类型 T 中的子属性挑出来，变成包含这个类型部分属性的子类型&lt;/li&gt;&lt;li&gt;&lt;code&gt;Omit&amp;lt;T, K extends keyof any&amp;gt;&lt;/code&gt; 将类型 T 中的子属性中属于 K 的部分 挑出来，变成不包含这个类型部分属性的子类型&lt;/li&gt;&lt;li&gt;&lt;code&gt;Exclude&amp;lt;T, U&amp;gt;&lt;/code&gt; 将类型 T 中属于类型 U 的属性移除&lt;/li&gt;&lt;li&gt;&lt;code&gt;Extract&amp;lt;T, U&amp;gt;&lt;/code&gt;将类型 T 中属于类型 U 的属性挑选出来&lt;/li&gt;&lt;li&gt;&lt;code&gt;NonNullable&amp;lt;T&amp;gt;&lt;/code&gt; 过滤掉类型 T 中的 null 和 undefined 类型&lt;/li&gt;&lt;li&gt;&lt;code&gt;ReturnType&amp;lt;T&amp;gt;&lt;/code&gt; 的作用是用于获取函数 T 的返回类型。&lt;/li&gt;&lt;li&gt;&lt;code&gt;InstanceType&amp;lt;T&amp;gt;&lt;/code&gt; 的作用是获取构造函数类型的实例类型。&lt;/li&gt;&lt;li&gt;&lt;code&gt;ThisType&amp;lt;T&amp;gt;&lt;/code&gt; 的作用是用于指定上下文对象的类型。&lt;/li&gt;&lt;li&gt;&lt;code&gt;Parameters&amp;lt;T&amp;gt;&lt;/code&gt; 的作用是用于获得函数的参数类型组成的元组类型。&lt;/li&gt;&lt;li&gt;&lt;code&gt;ConstructorParameters&amp;lt;T&amp;gt;&lt;/code&gt; 的作用是用于获得构造函数的参数类型组成的元组类型。（如果 T 不是函数，则返回的是 never 类型）。&lt;/li&gt;&lt;/ul&gt;
+          &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="TYPESCRIPT" scheme="https://fortress-fight.github.io/itstone/categories/TYPESCRIPT/"/>
+    
+    
+      <category term="速记" scheme="https://fortress-fight.github.io/itstone/tags/%E9%80%9F%E8%AE%B0/"/>
+    
+      <category term="typescript" scheme="https://fortress-fight.github.io/itstone/tags/typescript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>linux命令(lsof) -- 查看文件</title>
+    <link href="https://fortress-fight.github.io/itstone/posts/b4c94c4/"/>
+    <id>https://fortress-fight.github.io/itstone/posts/b4c94c4/</id>
+    <published>2020-05-06T16:00:00.000Z</published>
+    <updated>2020-05-07T09:48:25.564Z</updated>
+    
+    <summary type="html">
+    
+      &lt;div class=&quot;note default&quot;&gt;
+
+            &lt;p&gt;由于没有正常退出程序，导致一些端口占用未被释放，可以通过 &lt;code&gt;lsof&lt;/code&gt; 查看端口是被那个程序占用。如果需要可以关闭程序，释放端口：&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;code&gt;lsof -i:[port]&lt;/code&gt;&lt;/li&gt;&lt;li&gt;&lt;code&gt;kill -9 [PID]&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;
+          &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="linux命令" scheme="https://fortress-fight.github.io/itstone/categories/linux%E5%91%BD%E4%BB%A4/"/>
+    
+    
+      <category term="速记" scheme="https://fortress-fight.github.io/itstone/tags/%E9%80%9F%E8%AE%B0/"/>
+    
+      <category term="linux命令" scheme="https://fortress-fight.github.io/itstone/tags/linux%E5%91%BD%E4%BB%A4/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Node-代码段</title>
+    <link href="https://fortress-fight.github.io/itstone/posts/824ac3d0/"/>
+    <id>https://fortress-fight.github.io/itstone/posts/824ac3d0/</id>
+    <published>2019-09-12T03:54:31.000Z</published>
+    <updated>2020-05-06T06:06:48.388Z</updated>
+    
+    <summary type="html">
+    
+      &lt;div class=&quot;note default&quot;&gt;
+
+            &lt;ul&gt;&lt;li&gt;&lt;code&gt;create_file &amp;amp; create_dir&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;
+          &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="代码段" scheme="https://fortress-fight.github.io/itstone/categories/%E4%BB%A3%E7%A0%81%E6%AE%B5/"/>
+    
+    
+      <category term="Node_代码段" scheme="https://fortress-fight.github.io/itstone/tags/Node-%E4%BB%A3%E7%A0%81%E6%AE%B5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>node-创建文件目录</title>
+    <link href="https://fortress-fight.github.io/itstone/posts/f55a1c3d/"/>
+    <id>https://fortress-fight.github.io/itstone/posts/f55a1c3d/</id>
+    <published>2019-09-12T03:48:26.000Z</published>
+    <updated>2020-05-06T06:06:48.388Z</updated>
+    
+    <summary type="html">
+    
+      &lt;div class=&quot;note default&quot;&gt;
+
+            &lt;ul&gt;&lt;li&gt;使用 Node 按照传入的 JSON 创建一个目录结构，避免了繁琐的文件创建过程&lt;/li&gt;&lt;li&gt;&lt;span class=&quot;exturl&quot; data-url=&quot;aHR0cHM6Ly93d3cubnBtanMuY29tL3BhY2thZ2UvZ2VuZXJhdG9yLWZpbGVz&quot; title=&quot;https://www.npmjs.com/package/generator-files&quot;&gt;npm - generator-files&lt;i class=&quot;fa fa-external-link&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;
+          &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="代码段" scheme="https://fortress-fight.github.io/itstone/categories/%E4%BB%A3%E7%A0%81%E6%AE%B5/"/>
+    
+    
+      <category term="node代码段" scheme="https://fortress-fight.github.io/itstone/tags/node%E4%BB%A3%E7%A0%81%E6%AE%B5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>GitWorkflow</title>
+    <link href="https://fortress-fight.github.io/itstone/posts/edd825ca/"/>
+    <id>https://fortress-fight.github.io/itstone/posts/edd825ca/</id>
+    <published>2019-08-18T10:38:18.000Z</published>
+    <updated>2020-05-07T03:57:54.450Z</updated>
+    
+    <summary type="html">
+    
+      &lt;div class=&quot;note default&quot;&gt;
+
+            &lt;ul&gt;&lt;li&gt;Git 分支管理：&lt;code&gt;github flow&lt;/code&gt;&lt;/li&gt;&lt;li&gt;快速编写合理的 &lt;code&gt;.gitignore&lt;/code&gt;&lt;/li&gt;&lt;li&gt;利用 &lt;code&gt;commitizen&lt;/code&gt; 使用正规的 Git-Commit 规范&lt;/li&gt;&lt;li&gt;利用 &lt;code&gt;commitlint&lt;/code&gt; &lt;code&gt;husky&lt;/code&gt; 进行校验&lt;/li&gt;&lt;/ul&gt;
+          &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="Git" scheme="https://fortress-fight.github.io/itstone/categories/Git/"/>
+    
+    
+      <category term="git" scheme="https://fortress-fight.github.io/itstone/tags/git/"/>
+    
+      <category term="git工作流" scheme="https://fortress-fight.github.io/itstone/tags/git%E5%B7%A5%E4%BD%9C%E6%B5%81/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vim 基础使用</title>
+    <link href="https://fortress-fight.github.io/itstone/posts/280100fb/"/>
+    <id>https://fortress-fight.github.io/itstone/posts/280100fb/</id>
+    <published>2019-08-18T09:58:16.000Z</published>
+    <updated>2020-05-06T06:06:48.388Z</updated>
+    
+    <summary type="html">
+    
+      &lt;div class=&quot;note default&quot;&gt;
+
+            &lt;ul&gt;&lt;li&gt;&lt;code&gt;Vim 操作&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;
+          &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="Editor" scheme="https://fortress-fight.github.io/itstone/categories/Editor/"/>
+    
+    
+      <category term="Editor" scheme="https://fortress-fight.github.io/itstone/tags/Editor/"/>
+    
+      <category term="Vim" scheme="https://fortress-fight.github.io/itstone/tags/Vim/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>TypeScript函数重载</title>
+    <link href="https://fortress-fight.github.io/itstone/posts/a846e40f/"/>
+    <id>https://fortress-fight.github.io/itstone/posts/a846e40f/</id>
+    <published>2019-08-18T09:09:51.000Z</published>
+    <updated>2020-05-06T06:06:48.389Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;知识点：&lt;/p&gt;
+&lt;div class=&quot;note default&quot;&gt;
+
+            &lt;ul&gt;&lt;li&gt;&lt;code&gt;TypeScript函数重载&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;
+          &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="TypeScript" scheme="https://fortress-fight.github.io/itstone/categories/TypeScript/"/>
+    
+    
+      <category term="TypeScript函数重载" scheme="https://fortress-fight.github.io/itstone/tags/TypeScript%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD/"/>
+    
+  </entry>
+  
+</feed>

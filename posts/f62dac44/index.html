@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/itstone/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/itstone/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/itstone/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/itstone/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/itstone/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/itstone/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/itstone/',
+    scheme: 'Gemini',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: true,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '0DJL0Q3VVL',
+      apiKey: 'ea7d5d1a82a048488443101e9ebb1e92',
+      indexName: 'blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="知识点：               Object.definePropertyProxyReflect">
+<meta name="keywords" content="JavaScript,ES6,数据相应,依赖收集">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解析依赖收集">
+<meta property="og:url" content="https://fortress-fight.github.io/itstone/posts/f62dac44/index.html">
+<meta property="og:site_name" content="八九闲谈">
+<meta property="og:description" content="知识点：               Object.definePropertyProxyReflect">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://resources.ffstone.top/resource/image/20190419115116.png">
+<meta property="og:updated_time" content="2020-07-27T02:13:09.532Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="解析依赖收集">
+<meta name="twitter:description" content="知识点：               Object.definePropertyProxyReflect">
+<meta name="twitter:image" content="http://resources.ffstone.top/resource/image/20190419115116.png">
+
+
+
+  <link rel="alternate" href="/itstone/atom.xml" title="八九闲谈" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://fortress-fight.github.io/itstone/posts/f62dac44/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>解析依赖收集 | 八九闲谈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/itstone/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">八九闲谈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">前端小学生</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/itstone/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/itstone/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/itstone/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/itstone/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/itstone/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-schedule">
+
+    
+    
+      
+    
+
+    
+
+    <span class="exturl" data-url="aHR0cHM6Ly90cmVsbG8uY29tL2IvTllGWGdUQlM="><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</span>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/itstone/404/" rel="section"><i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>公益 404</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="algolia-popup popup search-popup">
+  <div class="algolia-search">
+    <div class="algolia-search-input-icon">
+      <i class="fa fa-search"></i>
+    </div>
+    <div class="algolia-search-input" id="algolia-search-input"></div>
+  </div>
+
+  <div class="algolia-results">
+    <div id="algolia-stats"></div>
+    <div id="algolia-hits"></div>
+    <div id="algolia-pagination" class="algolia-pagination"></div>
+  </div>
+
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fortress-fight.github.io/itstone/itstone/posts/f62dac44/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="STONE">
+      <meta itemprop="description" content="好好学习天天向上">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/20747438?s=460&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="八九闲谈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">解析依赖收集
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-07-27 10:12:50 / 修改时间：10:13:09" itemprop="dateCreated datePublished" datetime="2020-07-27T10:12:50+08:00">2020-07-27</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/itstone/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          <span class="post-time">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">字数统计:</span>
+              <span class="post-count">4.1k(字)</span>
+          </span>
+          <span class="post-time">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">阅读时长:</span>
+              <span class="post-count">19(分)</span>
+          </span>
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>知识点：</p>
+<div class="note default">
+
+            <ul><li><code>Object.defineProperty</code></li><li><code>Proxy</code></li><li><code>Reflect</code></li></ul>
+          </div>
+<a id="more"></a>
+<hr>
+<h2 id="介绍"><a class="markdownIt-Anchor" href="#介绍"></a> 介绍</h2>
+<p>依赖收集，是希望收集函数依赖的数据，当数据发生修改的时候，重新执行与其绑定的函数。实现依赖收集的基础就是监控数据修改。</p>
+<h3 id="监控数据修改"><a class="markdownIt-Anchor" href="#监控数据修改"></a> 监控数据修改</h3>
+<p><strong><a href="#objectdefineproperty">#<code>Object.defineProperty</code></a></strong> <span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSmF2YVNjcmlwdC9SZWZlcmVuY2UvR2xvYmFsX09iamVjdHMvT2JqZWN0L2RlZmluZVByb3BlcnR5" title="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">MDN<i class="fa fa-external-link"></i></span></p>
+<div class="note default">
+
+            <p><code>Object.defineProperty(obj, prop, descriptor)</code></p><p>方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性， 并返回这个对象。</p>
+          </div>
+<h2 id="objectdefineproperty"><a class="markdownIt-Anchor" href="#objectdefineproperty"></a> Object.defineProperty</h2>
+<div class="note info">
+
+            <p>ECMAScript 5 ✔ 96.29% ◒ 2.68%<br>IE ✘ 5.5+ ✘ 8+⁴ ◒ 9+² ✔ 10+ Edge ✔ Firefox ◒ 2+ ◒ 4+¹ ✔ 21+ Chrome ◒ 4+ ◒ 19+¹ ✔ 23+ Safari<br>◒ 3.1+ ✔ 6+ Opera ◒ 9+ ◒ 12.1+¹ ✔ 15+</p>
+          </div>
+<div class="note default">
+
+            <p><code>Object.defineProperty(obj, prop, descriptor)</code></p><p>方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性， 并返回这个对象。</p><p><strong>参数</strong></p><ul><li>obj 要在其上定义属性的对象。</li><li>prop 要定义或修改的属性的名称。</li><li>descriptor 将被定义或修改的属性描述符<code>value, enumerable, configurable, writable, set, get</code>。</li></ul><p><strong>返回值</strong></p><ul><li>被传递给函数的对象。</li></ul>
+          </div>
+<hr>
+<p><code>Object.defineProperty</code> 可以精确添加一个新的属性，并对其设置。要对数据实现监控，我们需要理解属性描述符：</p>
+<table>
+<thead>
+<tr>
+<th>描述符</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>设置该属性的属性值</td>
+</tr>
+<tr>
+<td>enumerable</td>
+<td>是否可以枚举</td>
+</tr>
+<tr>
+<td>configurable</td>
+<td>是否可以操作 (表示对象的属性是否可以被删除，以及除 value 和 writable 特性外的其他特性是否可以被修改。)</td>
+</tr>
+<tr>
+<td>writable</td>
+<td>是否可写</td>
+</tr>
+<tr>
+<td>get</td>
+<td>给 <code>getter</code> 提供方法的</td>
+</tr>
+<tr>
+<td>set</td>
+<td>给 <code>setter</code> 提供方法的</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>如果一个描述符同时具有 (value / writable) 和 (get / set) 关键字，将会产生异常</p>
+</blockquote>
+<p>在 VUE 中就是把一个普通 Javascript 对象传给 Vue 实例来作为它的 data 选项，Vue 将遍历它的属性，用 <code>Object.defineProperty</code> 将它们转为 getter/setter。</p>
+<h3 id="示例"><a class="markdownIt-Anchor" href="#示例"></a> 示例</h3>
+<p><strong>创建属性</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> people = &#123;&#125;;</span><br><span class="line"><span class="built_in">Object</span>.defineProperty(people, <span class="string">"name"</span>, &#123;</span><br><span class="line">    value: <span class="string">"小明"</span>,</span><br><span class="line">    enumerable: <span class="literal">false</span>,</span><br><span class="line">    writable: <span class="literal">false</span>,</span><br><span class="line">    configurable: <span class="literal">false</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(people.name); <span class="comment">// 小明</span></span><br><span class="line">people.name = <span class="string">"小白"</span>;</span><br><span class="line"><span class="built_in">console</span>.log(people.name); <span class="comment">// 小白</span></span><br></pre></td></tr></table></figure>
+<p>需要注意的是，描述对象（description）中的属性是具有继承性的，如果没有覆盖其 <code>prototype</code> 上的这些属性，可能存在风险；我们可以通过 <code>Object.create(null)</code> 创建一个空的对象的方式避免这个问题</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> people = &#123;&#125;;</span><br><span class="line"><span class="keyword">let</span> desObj = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</span><br><span class="line">desObj.value = <span class="string">"小明"</span>;</span><br><span class="line"><span class="built_in">Object</span>.defineProperty(people, <span class="string">"name"</span>, desObj);</span><br><span class="line"><span class="built_in">console</span>.log(people.name); <span class="comment">//小明</span></span><br></pre></td></tr></table></figure>
+<p>这些描述符都具有默认值：</p>
+<blockquote><p>当描述符中省略某些字段时，这些字段将使用它们的默认值。拥有布尔值的字段的默认值都是 false。value，get 和 set 字段的默认值为 undefined。一个没有 get/set/value/writable 定义的属性被称为“通用的”，并被“键入”为一个数据描述符。</p>
+<footer><strong>MDN</strong></footer></blockquote>
+<ol start="2">
+<li>
+<p>Getter &amp;&amp; Setter</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">PeopleGroup</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> peoples = [];</span><br><span class="line">    <span class="keyword">var</span> peoplesName = [];</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">setPeoples</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!value.name) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">"The name cant empty"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (peoplesName.includes(value.name)) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(value.name + <span class="string">" Is exist"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        peoples.push(value);</span><br><span class="line">        peoplesName.push(value.name);</span><br><span class="line">        <span class="built_in">console</span>.log(value.name + <span class="string">" 信息设置为 "</span> + <span class="built_in">JSON</span>.stringify(value));</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">Object</span>.defineProperty(<span class="keyword">this</span>, <span class="string">"people"</span>, &#123;</span><br><span class="line">        <span class="keyword">get</span>() &#123;</span><br><span class="line">            <span class="keyword">return</span> peoplesName;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="keyword">set</span>(val) &#123;</span><br><span class="line">            setPeoples(val);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">this</span>.getPeoplesInfo = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> peoples;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> peoples = <span class="keyword">new</span> PeopleGroup();</span><br><span class="line">peoples.people = &#123;</span><br><span class="line">    name: <span class="string">"小明"</span>,</span><br><span class="line">    age: <span class="string">"12"</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">/* 小明 信息设置为 &#123;"name":"小明","age":"12"&#125; */</span></span><br><span class="line">peoples.people = &#123;</span><br><span class="line">    name: <span class="string">"小白"</span>,</span><br><span class="line">    age: <span class="string">"12"</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">/* 小白 信息设置为 &#123;"name":"小白","age":"12"&#125; */</span></span><br><span class="line">peoples.people = &#123;</span><br><span class="line">    name: <span class="string">"小明"</span>,</span><br><span class="line">    age: <span class="string">"12"</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">/* 小明 Is exist */</span></span><br><span class="line"><span class="built_in">console</span>.log(peoples.people);</span><br><span class="line"><span class="comment">/* ["小明", "小白"] */</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">JSON</span>.stringify(peoples.getPeoplesInfo()));</span><br><span class="line"><span class="comment">/* [&#123;"name":"小明","age":"12"&#125;,&#123;"name":"小白","age":"12"&#125;] */</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Array</p>
+<p>对于数组的修改比较特殊，通常我们会使用 <code>push</code> 方法来修改数组，如果需要对修改进行监控我们需要使用描述符 <code>value</code> 重写 <code>push</code></p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> people = &#123;</span><br><span class="line">    name: <span class="string">"小明"</span>,</span><br><span class="line">    friends: [<span class="string">"小白"</span>, <span class="string">"小红"</span>]</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(people.friends, <span class="string">"push"</span>, &#123;</span><br><span class="line">    value(name, age) &#123;</span><br><span class="line">        <span class="keyword">this</span>[<span class="keyword">this</span>.length] = <span class="built_in">arguments</span>[<span class="number">0</span>];</span><br><span class="line">        <span class="built_in">console</span>.log(</span><br><span class="line">            <span class="string">"这里添加了一个新的朋友："</span> +</span><br><span class="line">                <span class="built_in">arguments</span>[<span class="number">0</span>] +</span><br><span class="line">                <span class="string">" 年龄："</span> +</span><br><span class="line">                <span class="built_in">arguments</span>[<span class="number">1</span>]</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">people.friends.push(<span class="string">"小黑"</span>, <span class="number">12</span>);</span><br><span class="line"><span class="comment">// 这里添加了一个新的朋友：小黑 年龄：12</span></span><br></pre></td></tr></table></figure>
+<p>注：示例中严重修改了 <code>push</code> 容易造成误解，不建议这样使用；</p>
+</li>
+</ol>
+<h3 id="proxy"><a class="markdownIt-Anchor" href="#proxy"></a> Proxy</h3>
+<p><code>new Proxy(target, handler)</code></p>
+<p><img src="http://resources.ffstone.top/resource/image/20190419115116.png" alt="20190419115116.png"></p>
+<p>使用描述对象（handle）来包装目标对象（target），用于定义基本操作的自定义行为。最终返回包装后的对象</p>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 目的：当访问对象中不存在的属性名时，返回 false</span></span><br><span class="line"><span class="keyword">const</span> handler = &#123;</span><br><span class="line">    <span class="keyword">get</span>: function(target, name) &#123;</span><br><span class="line">        <span class="keyword">return</span> name <span class="keyword">in</span> target ? target[name] : <span class="keyword">new</span> <span class="built_in">Proxy</span>(&#123;&#125;, handle);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">let</span> p = <span class="keyword">new</span> <span class="built_in">Proxy</span>(</span><br><span class="line">    &#123;</span><br><span class="line">        name: <span class="string">"小明"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    handler</span><br><span class="line">);</span><br><span class="line"><span class="built_in">console</span>.log(p.name); <span class="comment">// 小明</span></span><br><span class="line"><span class="built_in">console</span>.log(p.age); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<p>使用描述对象（handler） 还可以改写 <code>set</code> 行为，这种方式可以对添加的属性进行验证。</p>
+<ol>
+<li>
+<p>利用 Proxy 我们可以改写 defineProperty 中的示例：</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">PeopleGroup</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> peoples = [];</span><br><span class="line">    <span class="keyword">var</span> peoplesName = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> handler = &#123;</span><br><span class="line">        <span class="keyword">set</span>(obj, prop, value) &#123;</span><br><span class="line">            <span class="keyword">if</span> (prop == <span class="string">"people"</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (!value.name) &#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">"The name cant empty"</span>);</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (peoplesName.includes(value.name)) &#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(value.name + <span class="string">" Is exist"</span>);</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                peoples.push(value);</span><br><span class="line">                peoplesName.push(value.name);</span><br><span class="line">                <span class="built_in">console</span>.log(</span><br><span class="line">                    value.name + <span class="string">" 信息设置为 "</span> + <span class="built_in">JSON</span>.stringify(value)</span><br><span class="line">                );</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                obj[prop] = value;</span><br><span class="line">                <span class="comment">// 添加了其它属性</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="keyword">get</span>(obj, prop) &#123;</span><br><span class="line">            <span class="keyword">if</span> (prop == <span class="string">"people"</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> peoplesName;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> obj[prop];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">let</span> new_this = <span class="keyword">new</span> <span class="built_in">Proxy</span>(<span class="keyword">this</span>, handler);</span><br><span class="line"></span><br><span class="line">    new_this.getPeoplesInfo = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> peoples;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> new_this;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> peoples = <span class="keyword">new</span> PeopleGroup();</span><br><span class="line">peoples.people = &#123;</span><br><span class="line">    name: <span class="string">"小明"</span>,</span><br><span class="line">    age: <span class="string">"12"</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">/* 小明 信息设置为 &#123;"name":"小明","age":"12"&#125; */</span></span><br><span class="line">peoples.people = &#123;</span><br><span class="line">    name: <span class="string">"小白"</span>,</span><br><span class="line">    age: <span class="string">"12"</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">/* 小白 信息设置为 &#123;"name":"小白","age":"12"&#125; */</span></span><br><span class="line">peoples.people = &#123;</span><br><span class="line">    name: <span class="string">"小明"</span>,</span><br><span class="line">    age: <span class="string">"12"</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">/* 小明 Is exist */</span></span><br><span class="line"><span class="built_in">console</span>.log(peoples.people);</span><br><span class="line"><span class="comment">/* ["小明", "小白"] */</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">JSON</span>.stringify(peoples.getPeoplesInfo()));</span><br><span class="line"><span class="comment">/* [&#123;"name":"小明","age":"12"&#125;,&#123;"name":"小白","age":"12"&#125;] */</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Array</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> people = &#123;</span><br><span class="line">    name: <span class="string">"小明"</span>,</span><br><span class="line">    friends: [<span class="string">"小白"</span>, <span class="string">"小红"</span>]</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> handler = &#123;</span><br><span class="line">    <span class="keyword">set</span>(target, props, value) &#123;</span><br><span class="line">        <span class="keyword">if</span> (props === <span class="string">"length"</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">JSON</span>.stringify(target) + <span class="string">" 修改了 "</span>);</span><br><span class="line">        target[props] = value;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"修改结果："</span> + <span class="built_in">JSON</span>.stringify(target));</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> proxy_people_friends = <span class="keyword">new</span> <span class="built_in">Proxy</span>(people.friends, handler);</span><br><span class="line">proxy_people_friends.push(<span class="string">"小黑"</span>);</span><br><span class="line"><span class="comment">// ["小白","小红"] 修改了</span></span><br><span class="line"><span class="comment">// 修改结果：["小白","小红","小黑"]</span></span><br></pre></td></tr></table></figure>
+<p>注：这里排除了 <code>length</code> 是因为使用 <code>push</code> 的时候不仅会修改 <code>people.friends</code> 还有修改其 <code>length</code> 属性，会触发两次行为</p>
+</li>
+</ol>
+<p>使用 Proxy 存在一个问题 – 我们如何在劫持的行为中调用 target 本身的行为，比如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> people = &#123;</span><br><span class="line">    name: <span class="string">"小明"</span>,</span><br><span class="line">    age: <span class="number">22</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> handle = &#123;</span><br><span class="line">    <span class="keyword">get</span>(target, key) &#123;</span><br><span class="line">        <span class="keyword">if</span> (key === <span class="string">"info"</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> target.name + <span class="string">"今年"</span> + target.age;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (key === <span class="string">"name"</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"小白"</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> target[key];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> proxy_people = <span class="keyword">new</span> <span class="built_in">Proxy</span>(people, handle);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(proxy_people.info); <span class="comment">// 小明今年22</span></span><br></pre></td></tr></table></figure>
+<p>这里我们希望获得的是代理后的 <code>name</code>，如何操作呢？下面是操作示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> people = &#123;</span><br><span class="line">    name: <span class="string">"小明"</span>,</span><br><span class="line">    age: <span class="number">22</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> handle = &#123;</span><br><span class="line">    <span class="keyword">get</span>(target, key, receiver) &#123;</span><br><span class="line">        <span class="keyword">if</span> (key === <span class="string">"info"</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> receiver.name + <span class="string">"今年"</span> + target.age;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (key === <span class="string">"name"</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"小白"</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> target[key];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> proxy_people = <span class="keyword">new</span> <span class="built_in">Proxy</span>(people, handle);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(proxy_people.info); <span class="comment">// 小白今年22</span></span><br></pre></td></tr></table></figure>
+<p>我们再看个示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> people = &#123;</span><br><span class="line">    <span class="keyword">get</span> info() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name + <span class="string">"今年："</span> + <span class="keyword">this</span>.age;</span><br><span class="line">    &#125;,</span><br><span class="line">    name: <span class="string">"小明"</span>,</span><br><span class="line">    age: <span class="number">12</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> handle = &#123;</span><br><span class="line">    <span class="keyword">get</span>(target, key, receiver) &#123;</span><br><span class="line">        <span class="keyword">if</span> (key === <span class="string">"name"</span>) <span class="keyword">return</span> <span class="string">"小白"</span>;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"receiver[key]"</span>, receiver[key]);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"target[key]"</span>, target[key]);</span><br><span class="line">        <span class="keyword">return</span> target[key];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> proxy_people = <span class="keyword">new</span> <span class="built_in">Proxy</span>(people, handle);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(proxy_people.info); <span class="comment">// RangeError: Maximum call stack size exceeded</span></span><br></pre></td></tr></table></figure>
+<p>可以看到如果继续使用，<code>receiver</code> 获取代理后的属性，就会出现重复调用，这个时候我们就需要使用 <code>Reflect</code> 来解决这个问题了</p>
+<h3 id="reflect"><a class="markdownIt-Anchor" href="#reflect"></a> Reflect</h3>
+<p>Reflect 是一个内置的对象，<strong>它提供拦截 JavaScript 操作的方法</strong>。这些方法与处理器对象（handler）的方法相同。Reflect 的所有属性和方法都是静态的（就像 Math 对象）。</p>
+<ol>
+<li>
+<p>Reflect 相对于 Proxy 来说，提供了操作被代理对象的行为：</p>
+<p>Reflect.set()</p>
+<p><code>Reflect.set(target, propertyKey, value[, receiver])</code></p>
+<p>拦截对象（target）设置值（value）的属性（propertyKey）。最终将会返回一个 <code>boolean</code> 表示是否成功。receiver 表示直接操作的对象</p>
+<p>示例：</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> people = &#123;</span><br><span class="line">    <span class="keyword">get</span> info() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name + <span class="string">"今年："</span> + <span class="keyword">this</span>.age;</span><br><span class="line">    &#125;,</span><br><span class="line">    name: <span class="string">"小明"</span>,</span><br><span class="line">    age: <span class="number">12</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(people.info); <span class="comment">// 小明今年：12</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> handle = &#123;</span><br><span class="line">    <span class="keyword">get</span>(target, key, receiver) &#123;</span><br><span class="line">        <span class="keyword">if</span> (key === <span class="string">"age"</span>) <span class="keyword">return</span> <span class="number">22</span>;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"Reflect："</span>, <span class="built_in">Reflect</span>.get(target, key, receiver));</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"target[key]："</span>, target[key]);</span><br><span class="line">        <span class="comment">/* :two: console.log("receiver[key]：", receiver[key]); */</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> target[key];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> proxyPeople = <span class="keyword">new</span> <span class="built_in">Proxy</span>(people, handle);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* :one: */</span></span><br><span class="line"><span class="built_in">console</span>.log(proxyPeople.info);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Reflect： 小明</span></span><br><span class="line"><span class="comment">// target[key]： 小明</span></span><br><span class="line"><span class="comment">// Reflect： 小明今年：22</span></span><br><span class="line"><span class="comment">// target[key]： 小明今年：12</span></span><br><span class="line"><span class="comment">// 小明今年：12</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>1️⃣ 这里使用的是 <code>proxyPeople.info</code> 直接操作的对象是 <code>proxyPeople</code></li>
+<li>2️⃣ 如果这里对 receiver 进行操作，就会重复调用 get 变成死循环</li>
+</ul>
+<p>可以看出使用 Reflect 可以使得在被代理的对象上使用被代理的方法；</p>
+</li>
+<li>
+<p>Reflect 使我们对于函数的操作变成了函数操作</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> people = &#123;</span><br><span class="line">    <span class="keyword">get</span> info() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name + <span class="string">"今年："</span> + <span class="keyword">this</span>.age;</span><br><span class="line">    &#125;,</span><br><span class="line">    name: <span class="string">"小明"</span>,</span><br><span class="line">    age: <span class="number">12</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> handle = &#123;</span><br><span class="line">    <span class="keyword">get</span>(target, key, receiver) &#123;</span><br><span class="line">        <span class="keyword">if</span> (key === <span class="string">"name"</span>) <span class="keyword">return</span> <span class="string">"小白"</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(target, key, receiver);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> proxy_people = <span class="keyword">new</span> <span class="built_in">Proxy</span>(people, handle);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(proxy_people.info); <span class="comment">// 小白今年：12</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>更好的返回值<br>
+使用 Reflect 可以的到更好的返回值：true / false</p>
+</li>
+<li>
+<p>更可靠的 apply<br>
+我们通常使用 <code>fn.apply(obj, args)</code> 的方式来绑定函数，但是 <code>apply</code> 可能会被修改。这个时候我们可以使用 <code>Function.prototype.apply.call(f, obj, args)</code> 来解决问题，有了 Reflect 后我们可以更加方便的解决这个问题：<code>Reflect.apply(obj, args)</code></p>
+</li>
+</ol>
+<h2 id="进阶"><a class="markdownIt-Anchor" href="#进阶"></a> 进阶</h2>
+<h3 id="proxy-2"><a class="markdownIt-Anchor" href="#proxy-2"></a> Proxy</h3>
+<p><code>new Proxy(target, handler)</code></p>
+<p>handler 可以拦截的方法有：</p>
+<ol>
+<li><code>handler.has()</code>：在判断代理对象是否拥有某个属性时触发该操作，比如在执行 “foo” in proxy 时。</li>
+<li><code>handler.get()</code>：在读取代理对象的某个属性时触发该操作，比如在执行 proxy.foo 时。</li>
+<li><code>handler.set()</code>：在给代理对象的某个属性赋值时触发该操作，比如在执行 proxy.foo = 1 时。</li>
+<li><code>handler.defineProperty()</code>：在定义代理对象某个属性时的属性描述时触发该操作，比如在执行 Object.defineProperty(proxy, “foo”, {}) 时</li>
+<li><code>handler.deleteProperty()</code>：在删除代理对象的某个属性时触发该操作，比如在执行 delete proxy.foo 时。</li>
+<li><code>handler.construct()</code>：在给一个目标对象为构造函数的代理对象构造实例时触发该操作，比如在执行 new proxy() 时。</li>
+<li><code>handler.ownKeys()</code>：在获取代理对象的所有属性键时触发该操作，比如在执行 Object.getOwnPropertyNames(proxy) 时。</li>
+<li><code>handler.apply()</code>：当目标对象为函数，且被调用时触发。</li>
+<li><code>handler.getPrototypeOf()</code>：在读取代理对象的原型时触发该操作，比如在执行 Object.getPrototypeOf(proxy) 时。</li>
+<li><code>handler.setPrototypeOf()</code>：在设置代理对象的原型时触发该操作，比如在执行 Object.setPrototypeOf(proxy, null) 时。</li>
+<li><code>handler.getOwnPropertyDescriptor()</code>：在获取代理对象某个属性的属性描述时触发该操作，比如在执行 Object.getOwnPropertyDescriptor(proxy, “foo”) 时。</li>
+<li><code>handler.isExtensible()</code>：在判断一个代理对象是否是可扩展时触发该操作，比如在执行 Object.isExtensible(proxy) 时。</li>
+<li><code>handler.preventExtensions()</code>：在让一个代理对象不可扩展时触发该操作，比如在执行 Object.preventExtensions(proxy) 时。</li>
+</ol>
+<h3 id="reflect-2"><a class="markdownIt-Anchor" href="#reflect-2"></a> Reflect</h3>
+<p>Reflect 能够代理的方法和 handle 相同</p>
+<h2 id="实践"><a class="markdownIt-Anchor" href="#实践"></a> 实践</h2>
+<h3 id="实现观察者模式"><a class="markdownIt-Anchor" href="#实现观察者模式"></a> 实现观察者模式</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> people = &#123;</span><br><span class="line">    name: <span class="string">"小明"</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">set_proxy</span>(<span class="params">target, observable_fn = function(</span>) </span>&#123;&#125;) &#123;</span><br><span class="line">    <span class="keyword">let</span> observable_arrays = <span class="keyword">new</span> <span class="built_in">Set</span>();</span><br><span class="line">    observable_arrays.add(<span class="function"><span class="keyword">function</span>(<span class="params">target, key, value, receive</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(</span><br><span class="line">            <span class="built_in">JSON</span>.stringify(target) +</span><br><span class="line">                <span class="string">"发生了修改，其属性："</span> +</span><br><span class="line">                key +</span><br><span class="line">                <span class="string">"，改变成："</span> +</span><br><span class="line">                value</span><br><span class="line">        );</span><br><span class="line">    &#125;);</span><br><span class="line">    observable_arrays.add(observable_fn);</span><br><span class="line">    <span class="keyword">let</span> handle = &#123;</span><br><span class="line">        <span class="keyword">set</span>(target, key, value, receive) &#123;</span><br><span class="line">            observable_arrays.forEach(<span class="function"><span class="params">fn</span> =&gt;</span> &#123;</span><br><span class="line">                fn(target, key, value, receive);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Proxy</span>(target, handle);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> proxy_people = set_proxy(people, <span class="function"><span class="keyword">function</span>(<span class="params">target, name, value</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"欢迎"</span> + value);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">proxy_people.name = <span class="string">"小白"</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="使用-proxy-reflect-实现-todo_list"><a class="markdownIt-Anchor" href="#使用-proxy-reflect-实现-todo_list"></a> 使用 proxy &amp; reflect 实现 TODO_List</h3>
+<h3 id="实现依赖收集"><a class="markdownIt-Anchor" href="#实现依赖收集"></a> 实现依赖收集</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实现依赖收集</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dependence_manager</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>() &#123;</span><br><span class="line">        <span class="comment">// 存放依赖项</span></span><br><span class="line">        <span class="keyword">this</span>.dependence_array = <span class="keyword">new</span> <span class="built_in">Set</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加依赖</span></span><br><span class="line">    depend() &#123;</span><br><span class="line">        <span class="keyword">if</span> (Dependence_manager.target) &#123;</span><br><span class="line">            <span class="keyword">this</span>.dependence_array.add(Dependence_manager.target);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加发布行为</span></span><br><span class="line">    notify() &#123;</span><br><span class="line">        <span class="keyword">this</span>.dependence_array.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">dependence</span>) </span>&#123;</span><br><span class="line">            dependence();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Observable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(obj) &#123;</span><br><span class="line">        <span class="keyword">const</span> keys = <span class="built_in">Object</span>.keys(obj);</span><br><span class="line">        keys.forEach(<span class="function"><span class="params">key</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.define_reactive(obj, key, obj[key]);</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">return</span> obj;</span><br><span class="line">    &#125;</span><br><span class="line">    define_reactive(obj, key, val) &#123;</span><br><span class="line">        <span class="keyword">const</span> dependence_manager = <span class="keyword">new</span> Dependence_manager();</span><br><span class="line"></span><br><span class="line">        <span class="built_in">Object</span>.defineProperty(obj, key, &#123;</span><br><span class="line">            <span class="keyword">get</span>() &#123;</span><br><span class="line">                dependence_manager.depend();</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">"get"</span>, key);</span><br><span class="line">                <span class="keyword">return</span> val;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(val)) &#123;</span><br><span class="line">            <span class="built_in">Object</span>.defineProperty(val, <span class="string">"push"</span>, &#123;</span><br><span class="line">                value() &#123;</span><br><span class="line">                    <span class="keyword">this</span>[<span class="keyword">this</span>.length] = <span class="built_in">arguments</span>[<span class="number">0</span>];</span><br><span class="line">                    dependence_manager.notify(<span class="built_in">arguments</span>[<span class="number">0</span>]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">Object</span>.defineProperty(obj, key, &#123;</span><br><span class="line">                <span class="keyword">set</span>(new_value) &#123;</span><br><span class="line">                    val = new_value;</span><br><span class="line">                    dependence_manager.notify();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Watcher</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(obj, key, cb, on_computed_update) &#123;</span><br><span class="line">        <span class="keyword">this</span>.obj = obj;</span><br><span class="line">        <span class="keyword">this</span>.key = key;</span><br><span class="line">        <span class="keyword">this</span>.cb = cb;</span><br><span class="line">        <span class="keyword">this</span>.on_computed_update = on_computed_update;</span><br><span class="line">        <span class="keyword">this</span>.define_computed();</span><br><span class="line">    &#125;</span><br><span class="line">    define_computed() &#123;</span><br><span class="line">        <span class="keyword">const</span> self = <span class="keyword">this</span>;</span><br><span class="line">        <span class="keyword">let</span> result;</span><br><span class="line">        Dependence_manager.target = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            result = self.cb();</span><br><span class="line">            <span class="keyword">this</span>.on_computed_update(result);</span><br><span class="line">        &#125;;</span><br><span class="line">        result = self.cb();</span><br><span class="line"></span><br><span class="line">        <span class="built_in">Object</span>.defineProperty(self.obj, self.key, &#123;</span><br><span class="line">            <span class="keyword">get</span>() &#123;</span><br><span class="line">                Dependence_manager.target = <span class="literal">null</span>;</span><br><span class="line">                <span class="keyword">return</span> result;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="keyword">set</span>() &#123;</span><br><span class="line">                <span class="built_in">console</span>.error(<span class="string">"计算属性无法被赋值！"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> observable_people = <span class="keyword">new</span> Observable(&#123;</span><br><span class="line">    name: <span class="string">"小明"</span>,</span><br><span class="line">    age: <span class="number">22</span>,</span><br><span class="line">    info: <span class="string">""</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Watcher(</span><br><span class="line">    observable_people,</span><br><span class="line">    <span class="string">"info"</span>,</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">let</span> info = observable_people.name + <span class="string">"今年："</span> + observable_people.age;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"info 发生了修改："</span>, info);</span><br><span class="line">        <span class="keyword">return</span> info;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params">new_value</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"complete:"</span>, new_value);</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">observable_people.name = <span class="string">"小白"</span>;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>
+<p>使用 Proxy 的依赖收集</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实现依赖收集</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dependence_manager</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>() &#123;</span><br><span class="line">        <span class="comment">// 存放依赖项</span></span><br><span class="line">        <span class="keyword">this</span>.dependence_array = <span class="keyword">new</span> <span class="built_in">Set</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加依赖</span></span><br><span class="line">    depend(key) &#123;</span><br><span class="line">        <span class="keyword">if</span> (Dependence_manager.target) &#123;</span><br><span class="line">            <span class="keyword">this</span>.dependence_array.add(&#123;</span><br><span class="line">                key: key,</span><br><span class="line">                target: Dependence_manager.target</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加发布行为</span></span><br><span class="line">    notify(key) &#123;</span><br><span class="line">        <span class="keyword">this</span>.dependence_array.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">dependence</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (dependence.key == key) &#123;</span><br><span class="line">                dependence.target();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Observable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(obj) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.define_reactive(obj);</span><br><span class="line">    &#125;</span><br><span class="line">    define_reactive(obj) &#123;</span><br><span class="line">        <span class="keyword">const</span> dependence_manager = <span class="keyword">new</span> Dependence_manager();</span><br><span class="line">        <span class="keyword">const</span> handler = &#123;</span><br><span class="line">            <span class="keyword">get</span>(target, key, receiver) &#123;</span><br><span class="line">                dependence_manager.depend(key);</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(target, key, receiver);</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="keyword">set</span>(target, key, value, receiver) &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">`我的<span class="subst">$&#123;key&#125;</span>属性被修改为<span class="subst">$&#123;value&#125;</span>了！`</span>);</span><br><span class="line">                <span class="built_in">Reflect</span>.set(target, key, value, receiver);</span><br><span class="line">                dependence_manager.notify(key);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Proxy</span>(obj, handler);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Watcher</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(obj, key, cb, on_computed_update) &#123;</span><br><span class="line">        <span class="keyword">this</span>.obj = obj;</span><br><span class="line">        <span class="keyword">this</span>.key = key;</span><br><span class="line">        <span class="keyword">this</span>.cb = cb;</span><br><span class="line">        <span class="keyword">this</span>.on_computed_update = on_computed_update;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.define_computed();</span><br><span class="line">    &#125;</span><br><span class="line">    define_computed() &#123;</span><br><span class="line">        <span class="keyword">const</span> self = <span class="keyword">this</span>;</span><br><span class="line">        <span class="keyword">let</span> result;</span><br><span class="line">        Dependence_manager.target = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            result = self.cb();</span><br><span class="line">            <span class="keyword">this</span>.on_computed_update(result);</span><br><span class="line">        &#125;;</span><br><span class="line">        result = self.cb();</span><br><span class="line">        Dependence_manager.target = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Proxy</span>(self.obj, &#123;</span><br><span class="line">            <span class="keyword">get</span>(target, key, receiver) &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">"2"</span>);</span><br><span class="line">                <span class="keyword">if</span> (key === self.key) &#123;</span><br><span class="line">                    <span class="keyword">return</span> result;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(target, key, receiver);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="keyword">set</span>(target, key, value, receiver) &#123;</span><br><span class="line">                <span class="keyword">if</span> (key === self.key) &#123;</span><br><span class="line">                    <span class="built_in">console</span>.error(<span class="string">"计算属性无法被赋值！"</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="built_in">Reflect</span>.set(target, key, value, receiver);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> observable_people = <span class="keyword">new</span> Observable(&#123;</span><br><span class="line">    name: <span class="string">"小明"</span>,</span><br><span class="line">    age: <span class="number">22</span>,</span><br><span class="line">    job: <span class="string">"student"</span>,</span><br><span class="line">    info: <span class="string">""</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> observable_info_people = <span class="keyword">new</span> Watcher(</span><br><span class="line">    observable_people,</span><br><span class="line">    <span class="string">"info"</span>,</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">let</span> info =</span><br><span class="line">            observable_people.name + <span class="string">"今年："</span> + observable_people.age;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"info 发生了修改："</span>, info);</span><br><span class="line">        <span class="keyword">return</span> info;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params">new_value</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"complete:"</span>, new_value);</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"><span class="keyword">let</span> observable_job_people = <span class="keyword">new</span> Watcher(</span><br><span class="line">    observable_people,</span><br><span class="line">    <span class="string">"age"</span>,</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> observable_people.age &lt; <span class="number">18</span> ? <span class="string">"student"</span> : <span class="string">"programmer"</span>;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params">new_value</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(observable_people.name + <span class="string">"的职业是:"</span>, new_value);</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">observable_people.name = <span class="string">"小白"</span>;</span><br><span class="line">observable_people.age = <span class="number">10</span>;</span><br><span class="line">observable_people.age = <span class="number">15</span>;</span><br><span class="line">observable_people.age = <span class="number">18</span>;</span><br><span class="line">observable_people.age = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// info 发生了修改： 小明今年：22</span></span><br><span class="line"><span class="comment">// 我的name属性被修改为小白了！</span></span><br><span class="line"><span class="comment">// info 发生了修改： 小白今年：22</span></span><br><span class="line"><span class="comment">// complete: 小白今年：22</span></span><br><span class="line"><span class="comment">// 我的age属性被修改为10了！</span></span><br><span class="line"><span class="comment">// info 发生了修改： 小白今年：10</span></span><br><span class="line"><span class="comment">// complete: 小白今年：10</span></span><br><span class="line"><span class="comment">// 小白的职业是: student</span></span><br><span class="line"><span class="comment">// 我的age属性被修改为15了！</span></span><br><span class="line"><span class="comment">// info 发生了修改： 小白今年：15</span></span><br><span class="line"><span class="comment">// complete: 小白今年：15</span></span><br><span class="line"><span class="comment">// 小白的职业是: student</span></span><br><span class="line"><span class="comment">// 我的age属性被修改为18了！</span></span><br><span class="line"><span class="comment">// info 发生了修改： 小白今年：18</span></span><br></pre></td></tr></table></figure>
+<p>注：这里可以看到，每一次修改都会执行回调函数，这会代指在实际使用中会造成性能损耗或者页面重复刷新页面的问题</p>
+</li>
+<li>
+<p>使用异步优化</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实现依赖收集</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dependence_manager</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>() &#123;</span><br><span class="line">        <span class="comment">// 存放依赖项</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.dependence_array = <span class="keyword">new</span> <span class="built_in">Set</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加依赖</span></span><br><span class="line"></span><br><span class="line">    depend(key) &#123;</span><br><span class="line">        <span class="keyword">if</span> (Dependence_manager.target) &#123;</span><br><span class="line">            <span class="keyword">this</span>.dependence_array.add(&#123;</span><br><span class="line">                key: key,</span><br><span class="line">                target: Dependence_manager.target</span><br><span class="line">            &#125;);</span><br><span class="line">            Dependence_manager.target = <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加发布行为</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> notify(key) &#123;</span><br><span class="line">        <span class="keyword">this</span>.dependence_array.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">dependence</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (dependence.key == key) &#123;</span><br><span class="line">                dependence.target(key);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">await</span> Dependence_manager.target_array.clear();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Dependence_manager.target = <span class="literal">null</span>;</span><br><span class="line">Dependence_manager.target_array = <span class="keyword">new</span> <span class="built_in">Set</span>();</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Observable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(obj) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.define_reactive(obj);</span><br><span class="line">    &#125;</span><br><span class="line">    define_reactive(obj) &#123;</span><br><span class="line">        <span class="keyword">const</span> dependence_manager = <span class="keyword">new</span> Dependence_manager();</span><br><span class="line">        <span class="keyword">const</span> handler = &#123;</span><br><span class="line">            <span class="keyword">get</span>(target, key, receiver) &#123;</span><br><span class="line">                dependence_manager.depend(key);</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(target, key, receiver);</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="keyword">set</span>(target, key, value, receiver) &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">`我的<span class="subst">$&#123;key&#125;</span>属性被修改为<span class="subst">$&#123;value&#125;</span>了！`</span>);</span><br><span class="line">                <span class="built_in">Reflect</span>.set(target, key, value, receiver);</span><br><span class="line">                dependence_manager.notify(key);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Proxy</span>(obj, handler);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Watcher</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(obj, key, cb, on_computed_update) &#123;</span><br><span class="line">        <span class="keyword">this</span>.obj = obj;</span><br><span class="line">        <span class="keyword">this</span>.key = key;</span><br><span class="line">        <span class="keyword">this</span>.cb = cb;</span><br><span class="line">        <span class="keyword">this</span>.on_computed_update = on_computed_update;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.define_computed();</span><br><span class="line">    &#125;</span><br><span class="line">    define_computed() &#123;</span><br><span class="line">        <span class="keyword">const</span> self = <span class="keyword">this</span>;</span><br><span class="line">        <span class="keyword">let</span> result;</span><br><span class="line">        Dependence_manager.target = <span class="keyword">async</span> key =&gt; &#123;</span><br><span class="line">            <span class="keyword">await</span> <span class="built_in">console</span>.log(<span class="string">"watch"</span>);</span><br><span class="line">            <span class="comment">// console.log(Dependence_manager.target_array.keys(), key);</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!Dependence_manager.target_array.has(key)) &#123;</span><br><span class="line">                Dependence_manager.target_array.add(key);</span><br><span class="line">                result = self.cb();</span><br><span class="line">                self.on_computed_update(result);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        result = self.cb();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Proxy</span>(self.obj, &#123;</span><br><span class="line">            <span class="keyword">get</span>(target, key, receiver) &#123;</span><br><span class="line">                <span class="keyword">if</span> (key === self.key) &#123;</span><br><span class="line">                    <span class="keyword">return</span> result;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(target, key, receiver);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="keyword">set</span>(target, key, value, receiver) &#123;</span><br><span class="line">                <span class="keyword">if</span> (key === self.key) &#123;</span><br><span class="line">                    <span class="built_in">console</span>.error(<span class="string">"计算属性无法被赋值！"</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="built_in">Reflect</span>.set(target, key, value, receiver);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> observable_people = <span class="keyword">new</span> Observable(&#123;</span><br><span class="line">    name: <span class="string">"小明"</span>,</span><br><span class="line">    age: <span class="number">22</span>,</span><br><span class="line">    job: <span class="string">"student"</span>,</span><br><span class="line">    info: <span class="string">""</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> observable_info_people = <span class="keyword">new</span> Watcher(</span><br><span class="line">    observable_people,</span><br><span class="line">    <span class="string">"info"</span>,</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">let</span> info =</span><br><span class="line">            observable_people.name + <span class="string">"今年："</span> + observable_people.age;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"callback："</span>, info);</span><br><span class="line">        <span class="keyword">return</span> info;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params">new_value</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"complete:"</span>, new_value);</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"><span class="keyword">let</span> observable_job_people = <span class="keyword">new</span> Watcher(</span><br><span class="line">    observable_people,</span><br><span class="line">    <span class="string">"job"</span>,</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> observable_people.age &lt; <span class="number">18</span> ? <span class="string">"student"</span> : <span class="string">"programmer"</span>;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params">new_value</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(observable_people.name + <span class="string">"的职业是:"</span>, new_value);</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">observable_people.name = <span class="string">"小白"</span>;</span><br><span class="line">observable_people.age = <span class="number">10</span>;</span><br><span class="line">observable_people.age = <span class="number">15</span>;</span><br><span class="line">observable_people.age = <span class="number">18</span>;</span><br><span class="line">observable_people.age = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// callback： 小明今年：22</span></span><br><span class="line"><span class="comment">// 我的name属性被修改为小白了！</span></span><br><span class="line"><span class="comment">// watch</span></span><br><span class="line"><span class="comment">// 我的age属性被修改为10了！</span></span><br><span class="line"><span class="comment">// watch</span></span><br><span class="line"><span class="comment">// 我的age属性被修改为15了！</span></span><br><span class="line"><span class="comment">// watch</span></span><br><span class="line"><span class="comment">// 我的age属性被修改为18了！</span></span><br><span class="line"><span class="comment">// watch</span></span><br><span class="line"><span class="comment">// 我的age属性被修改为20了！</span></span><br><span class="line"><span class="comment">// watch</span></span><br><span class="line"><span class="comment">// callback： 小白今年：20</span></span><br><span class="line"><span class="comment">// complete: 小白今年：20</span></span><br><span class="line"><span class="comment">// 小白的职业是: programmer</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="参考文章"><a class="markdownIt-Anchor" href="#参考文章"></a> 参考文章：</h3>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC82MjAxMjM4OA==" title="https://zhuanlan.zhihu.com/p/62012388">实战解析依赖收集<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC82MDEyNjQ3Nw==" title="https://zhuanlan.zhihu.com/p/60126477">深入实践 ES6 Proxy &amp; Reflect<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvemgtQ04vZG9jcy9XZWIvSmF2YVNjcmlwdC9SZWZlcmVuY2UvR2xvYmFsX09iamVjdHMvT2JqZWN0L2RlZmluZVByb3BlcnR5" title="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">MDN<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLnRlY2hicmlkZ2UuY2MvMjAxOC8wNS8yNy9qcy1wcm94eS1yZWZsZWN0Lw==" title="https://blog.techbridge.cc/2018/05/27/js-proxy-reflect/">TechBridge 技術共筆部落格<i class="fa fa-external-link"></i></span></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/itstone/tags/JavaScript/" rel="tag"># JavaScript</a>
+          
+            <a href="/itstone/tags/ES6/" rel="tag"># ES6</a>
+          
+            <a href="/itstone/tags/数据相应/" rel="tag"># 数据相应</a>
+          
+            <a href="/itstone/tags/依赖收集/" rel="tag"># 依赖收集</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/itstone/posts/2f4e1b63/" rel="next" title="typescript-工具类型">
+                <i class="fa fa-chevron-left"></i> typescript-工具类型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/itstone/posts/6ad6570f/" rel="prev" title="Git 常用操作">
+                Git 常用操作 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80NDkyMy8yMTQ0NQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://avatars1.githubusercontent.com/u/20747438?s=460&v=4" alt="STONE">
+            
+              <p class="site-author-name" itemprop="name">STONE</p>
+              <div class="site-description motion-element" itemprop="description">好好学习天天向上</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/itstone/archives/">
+                
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/itstone/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/itstone/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/itstone/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3lvdXJuYW1l" title="GitHub &rarr; https://github.com/yourname"><i class="fa fa-fw fa-github"></i>GitHub</span>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <span class="exturl" data-url="bWFpbHRvOnlvdXJuYW1lQGdtYWlsLmNvbQ==" title="E-Mail &rarr; mailto:yourname@gmail.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text"> 介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#监控数据修改"><span class="nav-number">1.1.</span> <span class="nav-text"> 监控数据修改</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#objectdefineproperty"><span class="nav-number">2.</span> <span class="nav-text"> Object.defineProperty</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#示例"><span class="nav-number">2.1.</span> <span class="nav-text"> 示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#proxy"><span class="nav-number">2.2.</span> <span class="nav-text"> Proxy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reflect"><span class="nav-number">2.3.</span> <span class="nav-text"> Reflect</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进阶"><span class="nav-number">3.</span> <span class="nav-text"> 进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#proxy-2"><span class="nav-number">3.1.</span> <span class="nav-text"> Proxy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reflect-2"><span class="nav-number">3.2.</span> <span class="nav-text"> Reflect</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践"><span class="nav-number">4.</span> <span class="nav-text"> 实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实现观察者模式"><span class="nav-number">4.1.</span> <span class="nav-text"> 实现观察者模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-proxy-reflect-实现-todo_list"><span class="nav-number">4.2.</span> <span class="nav-text"> 使用 proxy &amp; reflect 实现 TODO_List</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现依赖收集"><span class="nav-number">4.3.</span> <span class="nav-text"> 实现依赖收集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文章"><span class="nav-number">4.4.</span> <span class="nav-text"> 参考文章：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">STONE</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <span class="exturl theme-link" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <span class="exturl theme-link" data-url="aHR0cHM6Ly90aGVtZS1uZXh0Lm9yZw==">NexT.Gemini</span> v7.1.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/itstone/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/itstone/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/itstone/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/itstone/js/utils.js?v=7.1.2"></script>
+
+  <script src="/itstone/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/itstone/js/affix.js?v=7.1.2"></script>
+
+  <script src="/itstone/js/schemes/pisces.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/itstone/js/scrollspy.js?v=7.1.2"></script>
+<script src="/itstone/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/itstone/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+  <script src="/itstone/js/exturl.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+
+  
+    <script>
+  window.livereOptions = {
+    refer: 'posts/f62dac44/'
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/itstone/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/itstone/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/itstone/js/algolia-search.js?v=7.1.2"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 代码块复制功能 -->
+  
+  <script src="/itstone/lib/clipboard.min.js"></script>
+  <script src="/itstone/js/custom/clipboard-use.js"></script>
+
+</body>
+</html>
