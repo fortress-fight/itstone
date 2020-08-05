@@ -4,7 +4,7 @@ tags:
     -
 path:
 categories:
-    - []
+    - -
 ---
 
 {% note default %}
