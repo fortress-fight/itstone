@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="八九闲谈">
 <meta property="og:description" content="git update-index --assume-unchanged &amp;lt;filename&amp;gt; 本地开发总存在一些不想提交到远程的文件git rm &amp;lt;-r | -n&amp;gt; --cached &amp;lt;filename&amp;gt; 移除上一次的 commit 中提交了不该提交的信息git filter-branch --force --index-filter">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-09-23T02:35:08.526Z">
+<meta property="og:updated_time" content="2020-09-23T02:37:58.760Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git 常用操作">
 <meta name="twitter:description" content="git update-index --assume-unchanged &amp;lt;filename&amp;gt; 本地开发总存在一些不想提交到远程的文件git rm &amp;lt;-r | -n&amp;gt; --cached &amp;lt;filename&amp;gt; 移除上一次的 commit 中提交了不该提交的信息git filter-branch --force --index-filter">
@@ -465,7 +465,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-09-23 10:35:08" itemprop="dateModified" datetime="2020-09-23T10:35:08+08:00">2020-09-23</time>
+                <time title="修改时间：2020-09-23 10:37:58" itemprop="dateModified" datetime="2020-09-23T10:37:58+08:00">2020-09-23</time>
               
             
           </span>
@@ -504,7 +504,7 @@
                   <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">字数统计:</span>
-              <span class="post-count">670(字)</span>
+              <span class="post-count">672(字)</span>
           </span>
           <span class="post-time">
               &nbsp; | &nbsp;
@@ -579,7 +579,7 @@
 <ol>
 <li>–pretty=oneline [只会留下 commit id (版本号 (用 SHA1 字串表示))和 提交版本时的描述信息]</li>
 </ol>
-<h2 id="git-branch-r-grep-v-while-read-remote-do-git-branch-track-remoteorigin-remote-done"><a class="markdownIt-Anchor" href="#git-branch-r-grep-v-while-read-remote-do-git-branch-track-remoteorigin-remote-done"></a> git branch -r | grep -v ‘-&gt;’ | while read remote; do git branch --track “<span class="katex-error" title="ParseError: KaTeX parse error: Expected &#039;}&#039;, got &#039;#&#039; at position 8: {remote#̲origin/}&quot; &quot;">{remote#origin/}&quot; &quot;</span>remote”; done</h2>
+<h2 id="git-branch-r-grep-v-while-read-remote-do-git-branch-track-remoteorigin-remote-done"><a class="markdownIt-Anchor" href="#git-branch-r-grep-v-while-read-remote-do-git-branch-track-remoteorigin-remote-done"></a> <code>git branch -r | grep -v '\-&gt;' | while read remote; do git branch --track &quot;${remote#origin/}&quot; &quot;$remote&quot;; done</code></h2>
 <p>场景：需要将远程的所有分支映射到本地<br>
 命令：<code>git branch -r | grep -v '\-&gt;' | while read remote; do git branch --track &quot;${remote#origin/}&quot; &quot;$remote&quot;; done</code><br>
 说明：</p>
@@ -902,7 +902,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#git-update-index-assume-unchanged-filename"><span class="nav-number">1.</span> <span class="nav-text"> git update-index --assume-unchanged </span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-rm-r-n-cached-filename"><span class="nav-number">2.</span> <span class="nav-text"> git rm &lt;-r | -n&gt; --cached </span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-filter-branch-force-index-filter-git-rm-cached-ignore-unmatch-filename-prune-empty-tag-name-filter-cat-all"><span class="nav-number">3.</span> <span class="nav-text"> git filter-branch --force --index-filter &#39;git rm --cached --ignore-unmatch ’ --prune-empty --tag-name-filter cat – --all</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-log-prettyoneline"><span class="nav-number">4.</span> <span class="nav-text"> git log --pretty=oneline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-branch-r-grep-v-while-read-remote-do-git-branch-track-remoteorigin-remote-done"><span class="nav-number">5.</span> <span class="nav-text"> git branch -r | grep -v ‘-&gt;’ | while read remote; do git branch --track “{remote#origin/}&quot; &quot;remote”; done</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#git-update-index-assume-unchanged-filename"><span class="nav-number">1.</span> <span class="nav-text"> git update-index --assume-unchanged </span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-rm-r-n-cached-filename"><span class="nav-number">2.</span> <span class="nav-text"> git rm &lt;-r | -n&gt; --cached </span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-filter-branch-force-index-filter-git-rm-cached-ignore-unmatch-filename-prune-empty-tag-name-filter-cat-all"><span class="nav-number">3.</span> <span class="nav-text"> git filter-branch --force --index-filter &#39;git rm --cached --ignore-unmatch ’ --prune-empty --tag-name-filter cat – --all</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-log-prettyoneline"><span class="nav-number">4.</span> <span class="nav-text"> git log --pretty=oneline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-branch-r-grep-v-while-read-remote-do-git-branch-track-remoteorigin-remote-done"><span class="nav-number">5.</span> <span class="nav-text"> git branch -r | grep -v &#39;\-&gt;&#39; | while read remote; do git branch --track &quot;${remote#origin/}&quot; &quot;$remote&quot;; done</span></a></li></ol></div>
             
 
           </div>
