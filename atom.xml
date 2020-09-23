@@ -6,7 +6,7 @@
   <link href="/itstone/atom.xml" rel="self"/>
   
   <link href="https://fortress-fight.github.io/itstone/"/>
-  <updated>2020-08-05T01:24:16.936Z</updated>
+  <updated>2020-08-06T23:35:51.362Z</updated>
   <id>https://fortress-fight.github.io/itstone/</id>
   
   <author>
@@ -15,6 +15,56 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>eslint 使用</title>
+    <link href="https://fortress-fight.github.io/itstone/posts/cd69ee4d/"/>
+    <id>https://fortress-fight.github.io/itstone/posts/cd69ee4d/</id>
+    <published>2020-08-06T14:49:20.000Z</published>
+    <updated>2020-08-06T23:35:51.362Z</updated>
+    
+    <summary type="html">
+    
+      &lt;div class=&quot;note default&quot;&gt;
+
+            &lt;ul&gt;&lt;li&gt;&lt;code&gt;eslint&lt;/code&gt; 安装&lt;/li&gt;&lt;li&gt;&lt;code&gt;eslint &amp;amp; prettier&lt;/code&gt; 的配合使用&lt;/li&gt;&lt;li&gt;&lt;code&gt;eslint &amp;amp; typescript&lt;/code&gt; 的配合使用&lt;/li&gt;&lt;li&gt;私用的 &lt;code&gt;.eslintrc.js&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;
+          &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="cli" scheme="https://fortress-fight.github.io/itstone/categories/cli/"/>
+    
+    
+      <category term="eslint" scheme="https://fortress-fight.github.io/itstone/tags/eslint/"/>
+    
+      <category term="eslint 配置" scheme="https://fortress-fight.github.io/itstone/tags/eslint-%E9%85%8D%E7%BD%AE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vue代码段</title>
+    <link href="https://fortress-fight.github.io/itstone/posts/9a7f1f9f/"/>
+    <id>https://fortress-fight.github.io/itstone/posts/9a7f1f9f/</id>
+    <published>2020-08-06T14:31:18.000Z</published>
+    <updated>2020-08-21T02:02:26.320Z</updated>
+    
+    <summary type="html">
+    
+      &lt;div class=&quot;note default&quot;&gt;
+
+            &lt;ul&gt;&lt;li&gt;Vue hook&lt;/li&gt;&lt;li&gt;Vue 依赖注入&lt;/li&gt;&lt;li&gt;Vue EventBus&lt;/li&gt;&lt;/ul&gt;
+          &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="vue" scheme="https://fortress-fight.github.io/itstone/categories/vue/"/>
+    
+    
+      <category term="代码段" scheme="https://fortress-fight.github.io/itstone/tags/%E4%BB%A3%E7%A0%81%E6%AE%B5/"/>
+    
+      <category term="vue" scheme="https://fortress-fight.github.io/itstone/tags/vue/"/>
+    
+  </entry>
   
   <entry>
     <title>js代码段</title>
@@ -83,9 +133,9 @@
       <category term="css" scheme="https://fortress-fight.github.io/itstone/categories/css/"/>
     
     
-      <category term="css" scheme="https://fortress-fight.github.io/itstone/tags/css/"/>
-    
       <category term="代码段" scheme="https://fortress-fight.github.io/itstone/tags/%E4%BB%A3%E7%A0%81%E6%AE%B5/"/>
+    
+      <category term="css" scheme="https://fortress-fight.github.io/itstone/tags/css/"/>
     
   </entry>
   
@@ -119,13 +169,13 @@
     <link href="https://fortress-fight.github.io/itstone/posts/6ad6570f/"/>
     <id>https://fortress-fight.github.io/itstone/posts/6ad6570f/</id>
     <published>2020-07-27T02:15:02.000Z</published>
-    <updated>2020-08-05T01:26:08.669Z</updated>
+    <updated>2020-09-23T02:35:08.526Z</updated>
     
     <summary type="html">
     
       &lt;div class=&quot;note default&quot;&gt;
 
-            &lt;ul&gt;&lt;li&gt;&lt;code&gt;git update-index --assume-unchanged &amp;lt;filename&amp;gt;&lt;/code&gt; 本地开发总存在一些不想提交到远程的文件&lt;/li&gt;&lt;li&gt;&lt;code&gt;git rm &amp;lt;-r | -n&amp;gt; --cached &amp;lt;filename&amp;gt;&lt;/code&gt; 移除上一次的 commit 中提交了不该提交的信息&lt;/li&gt;&lt;li&gt;&lt;code&gt;git filter-branch --force --index-filter &#39;git rm --cached --ignore-unmatch &amp;lt;filename&amp;gt;&#39; --prune-empty --tag-name-filter cat -- --all&lt;/code&gt; 历史记录中有不想要提交的内容，通过该命令能全部清除&lt;/li&gt;&lt;li&gt;&lt;code&gt;git log --pretty=oneline&lt;/code&gt; 只会留下 commit id (版本号 (用 SHA1 字串表示))和 提交版本时的描述信息&lt;/li&gt;&lt;/ul&gt;
+            &lt;ul&gt;&lt;li&gt;&lt;code&gt;git update-index --assume-unchanged &amp;lt;filename&amp;gt;&lt;/code&gt; 本地开发总存在一些不想提交到远程的文件&lt;/li&gt;&lt;li&gt;&lt;code&gt;git rm &amp;lt;-r | -n&amp;gt; --cached &amp;lt;filename&amp;gt;&lt;/code&gt; 移除上一次的 commit 中提交了不该提交的信息&lt;/li&gt;&lt;li&gt;&lt;code&gt;git filter-branch --force --index-filter &#39;git rm --cached --ignore-unmatch &amp;lt;filename&amp;gt;&#39; --prune-empty --tag-name-filter cat -- --all&lt;/code&gt; 历史记录中有不想要提交的内容，通过该命令能全部清除&lt;/li&gt;&lt;li&gt;&lt;code&gt;git log --pretty=oneline&lt;/code&gt; 只会留下 commit id (版本号 (用 SHA1 字串表示))和 提交版本时的描述信息&lt;/li&gt;&lt;li&gt;&lt;code&gt;git branch -r | grep -v &#39;\-&amp;gt;&#39; | while read remote; do git branch --track &amp;quot;${remote#origin/}&amp;quot; &amp;quot;$remote&amp;quot;; done&lt;/code&gt; 将远程的所有分支映射到本地&lt;/li&gt;&lt;/ul&gt;
           &lt;/div&gt;
     
     </summary>
@@ -186,9 +236,9 @@
       <category term="TYPESCRIPT" scheme="https://fortress-fight.github.io/itstone/categories/TYPESCRIPT/"/>
     
     
-      <category term="速记" scheme="https://fortress-fight.github.io/itstone/tags/%E9%80%9F%E8%AE%B0/"/>
-    
       <category term="typescript" scheme="https://fortress-fight.github.io/itstone/tags/typescript/"/>
+    
+      <category term="速记" scheme="https://fortress-fight.github.io/itstone/tags/%E9%80%9F%E8%AE%B0/"/>
     
   </entry>
   
@@ -222,13 +272,13 @@
     <link href="https://fortress-fight.github.io/itstone/posts/824ac3d0/"/>
     <id>https://fortress-fight.github.io/itstone/posts/824ac3d0/</id>
     <published>2019-09-12T03:54:31.000Z</published>
-    <updated>2020-05-06T06:06:48.388Z</updated>
+    <updated>2020-08-05T05:40:04.654Z</updated>
     
     <summary type="html">
     
       &lt;div class=&quot;note default&quot;&gt;
 
-            &lt;ul&gt;&lt;li&gt;&lt;code&gt;create_file &amp;amp; create_dir&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;
+            &lt;ul&gt;&lt;li&gt;&lt;code&gt;create_file &amp;amp; create_dir&lt;/code&gt;&lt;/li&gt;&lt;li&gt;根据 path 创建文件 若缺少文件或者文件夹将自动创建&lt;/li&gt;&lt;li&gt;分析文件路径&lt;/li&gt;&lt;/ul&gt;
           &lt;/div&gt;
     
     </summary>

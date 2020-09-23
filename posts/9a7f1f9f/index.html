@@ -94,18 +94,18 @@
 
 
 
-  <meta name="description" content="item">
-<meta name="keywords" content="代码段,css">
+  <meta name="description" content="Vue hookVue 依赖注入Vue EventBus">
+<meta name="keywords" content="代码段,vue">
 <meta property="og:type" content="article">
-<meta property="og:title" content="css代码段">
-<meta property="og:url" content="https://fortress-fight.github.io/itstone/posts/ccc1be9f/index.html">
+<meta property="og:title" content="vue代码段">
+<meta property="og:url" content="https://fortress-fight.github.io/itstone/posts/9a7f1f9f/index.html">
 <meta property="og:site_name" content="八九闲谈">
-<meta property="og:description" content="item">
+<meta property="og:description" content="Vue hookVue 依赖注入Vue EventBus">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-08-05T01:21:57.222Z">
+<meta property="og:updated_time" content="2020-08-21T02:02:26.320Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="css代码段">
-<meta name="twitter:description" content="item">
+<meta name="twitter:title" content="vue代码段">
+<meta name="twitter:description" content="Vue hookVue 依赖注入Vue EventBus">
 
 
 
@@ -115,7 +115,7 @@
 
   
   
-  <link rel="canonical" href="https://fortress-fight.github.io/itstone/posts/ccc1be9f/">
+  <link rel="canonical" href="https://fortress-fight.github.io/itstone/posts/9a7f1f9f/">
 
 
 
@@ -125,7 +125,7 @@
   };
 </script>
 
-  <title>css代码段 | 八九闲谈</title>
+  <title>vue代码段 | 八九闲谈</title>
   
 
 
@@ -405,7 +405,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://fortress-fight.github.io/itstone/itstone/posts/ccc1be9f/">
+    <link itemprop="mainEntityOfPage" href="https://fortress-fight.github.io/itstone/itstone/posts/9a7f1f9f/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="STONE">
@@ -422,7 +422,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">css代码段
+          <h1 class="post-title" itemprop="name headline">vue代码段
 
               
             
@@ -448,9 +448,25 @@
                 
               
 
-              <time title="创建时间：2020-08-05 09:21:57" itemprop="dateCreated datePublished" datetime="2020-08-05T09:21:57+08:00">2020-08-05</time>
+              <time title="创建时间：2020-08-06 22:31:18" itemprop="dateCreated datePublished" datetime="2020-08-06T22:31:18+08:00">2020-08-06</time>
             
 
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-08-21 10:02:26" itemprop="dateModified" datetime="2020-08-21T10:02:26+08:00">2020-08-21</time>
+              
             
           </span>
 
@@ -466,7 +482,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/itstone/categories/css/" itemprop="url" rel="index"><span itemprop="name">css</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/itstone/categories/vue/" itemprop="url" rel="index"><span itemprop="name">vue</span></a></span>
 
                 
                 
@@ -488,7 +504,7 @@
                   <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">字数统计:</span>
-              <span class="post-count">375(字)</span>
+              <span class="post-count">496(字)</span>
           </span>
           <span class="post-time">
               &nbsp; | &nbsp;
@@ -496,7 +512,7 @@
                   <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">阅读时长:</span>
-              <span class="post-count">1(分)</span>
+              <span class="post-count">2(分)</span>
           </span>
 
           
@@ -520,42 +536,54 @@
       
         <div class="note default">
 
-            <ul><li><code>item</code></li></ul>
+            <ul><li>Vue hook</li><li>Vue 依赖注入</li><li>Vue EventBus</li></ul>
           </div>
 <a id="more"></a>
 <hr>
-<h2 id="reset-类"><a class="markdownIt-Anchor" href="#reset-类"></a> reset 类</h2>
-<h3 id="浏览器默认样式"><a class="markdownIt-Anchor" href="#浏览器默认样式"></a> 浏览器默认样式</h3>
+<h2 id="vue-hook"><a class="markdownIt-Anchor" href="#vue-hook"></a> Vue hook</h2>
+<p>版本：<code>vue@^2.6.10</code><br>
+介绍：<span class="exturl" data-url="aHR0cHM6Ly9jbi52dWVqcy5vcmcvdjIvZ3VpZGUvY29tcG9uZW50cy1lZGdlLWNhc2VzLmh0bWwjJUU3JUE4JThCJUU1JUJBJThGJUU1JThDJTk2JUU3JTlBJTg0JUU0JUJBJThCJUU0JUJCJUI2JUU0JUJFJUE2JUU1JTkwJUFDJUU1JTk5JUE4" title="https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E7%A8%8B%E5%BA%8F%E5%8C%96%E7%9A%84%E4%BA%8B%E4%BB%B6%E4%BE%A6%E5%90%AC%E5%99%A8">程序化的事件侦听器<i class="fa fa-external-link"></i></span> 在 vue 文档中，只是在事件监听的中对于 hook 的使用简单的提了一句，不过其还是十分有用的。</p>
+<p>使用：</p>
+<pre><code><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 监控声明周期钩子使得更易阻止代码</span></span><br><span class="line"><span class="keyword">this</span>.$once(<span class="string">"hook:beforeDestroy"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;);</span><br></pre></td></tr></table></figure>
+</code></pre>
+<h2 id="vue-依赖注入"><a class="markdownIt-Anchor" href="#vue-依赖注入"></a> Vue 依赖注入</h2>
+<p>版本：<code>vue@^2.6.10</code><br>
+介绍：<span class="exturl" data-url="aHR0cHM6Ly9jbi52dWVqcy5vcmcvdjIvZ3VpZGUvY29tcG9uZW50cy1lZGdlLWNhc2VzLmh0bWwjJUU0JUJFJTlEJUU4JUI1JTk2JUU2JUIzJUE4JUU1JTg1JUE1" title="https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5">依赖注入<i class="fa fa-external-link"></i></span> 依赖注入可以指定数据/方法将其提供给所有的后代组件</p>
+<ul>
+<li>优点：后代元素都可以使用父级注入的属性和方法</li>
+<li>缺点：
 <ol>
-<li>chrome 浏览器中，进行默认填充时 input 会填充黄色背景</li>
+<li>父级组件将会和后代组件强耦合</li>
+<li>后代组件不知道使用的属性或方法来自哪个父级组件</li>
 </ol>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">input</span><span class="selector-pseudo">:-webkit-autofill</span> &#123;</span><br><span class="line">    <span class="attribute">-webkit-box-shadow</span>: <span class="number">0</span> <span class="number">0</span> <span class="number">0px</span> <span class="number">1000px</span> white inset <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>chrome placeholder 默认字体颜色</li>
-</ol>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">input</span><span class="selector-pseudo">::placeholder</span> &#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#ccc</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li>chrome 中 search input 后面的清空图标清除</li>
-</ol>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">input</span><span class="selector-attr">[type="search"]</span><span class="selector-pseudo">::-webkit-search-cancel-button</span> &#123;</span><br><span class="line">    -webkit-appearance: none; //此处只是去掉默认的小×</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol start="4">
-<li>input 的默认样式</li>
-</ol>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">input</span> &#123;</span><br><span class="line">    <span class="attribute">-webkit-appearance</span>: none;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="布局类"><a class="markdownIt-Anchor" href="#布局类"></a> 布局类</h3>
-<ol>
-<li>页面导航 fixed 的时候，元素将会覆盖在滚动条上</li>
-</ol>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-pseudo">:root</span> &#123;</span><br><span class="line">    <span class="attribute">overflow-x</span>: hidden;</span><br><span class="line">    <span class="attribute">overflow-y</span>: auto;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-pseudo">:root</span> <span class="selector-tag">body</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="常用-reset"><a class="markdownIt-Anchor" href="#常用-reset"></a> 常用 reset</h3>
-<ol>
-<li>清除浏览器差异 <span class="exturl" data-url="aHR0cHM6Ly93d3cubnBtanMuY29tL3BhY2thZ2Uvbm9ybWFsaXplLmNzcw==" title="https://www.npmjs.com/package/normalize.css">normalize.css<i class="fa fa-external-link"></i></span></li>
-<li>使用程序员偏好的样式 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2Nzc3Rvb2xzL3Nhbml0aXplLmNzcw==" title="https://github.com/csstools/sanitize.css">sanitize.css<i class="fa fa-external-link"></i></span></li>
-<li>清空浏览器默认样式 <span class="exturl" data-url="aHR0cHM6Ly9tZXllcndlYi5jb20vZXJpYy90b29scy9jc3MvcmVzZXQv" title="https://meyerweb.com/eric/tools/css/reset/">reset<i class="fa fa-external-link"></i></span></li>
-<li>使用 postcss 管理 normalize 与 sanitize 的使用 <span class="exturl" data-url="aHR0cHM6Ly93d3cubnBtanMuY29tL3BhY2thZ2UvcG9zdGNzcy1ub3JtYWxpemU=" title="https://www.npmjs.com/package/postcss-normalize">postcss-normalize<i class="fa fa-external-link"></i></span></li>
-<li>自用 reset 样式</li>
-</ol>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">    <span class="attribute">font-family</span>: AvenirMedium, Arial, <span class="string">"微软雅黑"</span>;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1.8</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">i</span> &#123;</span><br><span class="line">    <span class="attribute">font-style</span>: normal;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">p</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: inherit;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">ul</span> &#123;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">li</span> &#123;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">list-style</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">a</span><span class="selector-attr">[herf=""]</span> &#123;</span><br><span class="line">    <span class="attribute">cursor</span>: default;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">input</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: inherit;</span><br><span class="line">    <span class="attribute">line-height</span>: inherit;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">color</span>: inherit;</span><br><span class="line">    <span class="attribute">border</span>: none;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">outline</span>: none;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">-webkit-appearance</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">input</span><span class="selector-pseudo">:-webkit-autofill</span> &#123;</span><br><span class="line">    <span class="attribute">-webkit-box-shadow</span>: <span class="number">0</span> <span class="number">0</span> <span class="number">0px</span> <span class="number">1000px</span> white inset <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">input</span><span class="selector-pseudo">::placeholder</span> &#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#ccc</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">input</span><span class="selector-attr">[type="search"]</span><span class="selector-pseudo">::-webkit-search-cancel-button</span> &#123;</span><br><span class="line">    -webkit-appearance: none; //此处只是去掉默认的小×</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">input</span><span class="selector-pseudo">:active</span>,</span><br><span class="line"><span class="selector-tag">input</span><span class="selector-pseudo">:focus</span> &#123;</span><br><span class="line">    <span class="attribute">border</span>: none;</span><br><span class="line">    <span class="attribute">outline</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">img</span> &#123;</span><br><span class="line">    <span class="attribute">vertical-align</span>: top;</span><br><span class="line">    <span class="attribute">max-width</span>: <span class="number">100%</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">content</span>: normal <span class="meta">!important</span>;</span><br><span class="line">    <span class="attribute">vertical-align</span>: top;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">a</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: inline-block;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">text-decoration</span>: none;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">color</span>: inherit;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">svg</span> &#123;</span><br><span class="line">    <span class="attribute">vertical-align</span>: middle;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">button</span> &#123;</span><br><span class="line">    <span class="attribute">outline</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">video</span> &#123;</span><br><span class="line">    <span class="attribute">vertical-align</span>: middle;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>使用：</p>
+<pre><code><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 父级组件定义 provide</span></span><br><span class="line">provide: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        getMap: <span class="keyword">this</span>.getMap</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 后代组件定义 inject</span></span><br><span class="line">inject: [<span class="string">'getMap'</span>]</span><br></pre></td></tr></table></figure>
+</code></pre>
+<p>补充:</p>
+<ul>
+<li>
+<p>provide 和 inject 绑定并不是可响应的。这是刻意为之的。然而，如果你传入了一个可监听的对象，那么其对象的 property 还是可响应的。</p>
+</li>
+<li>
+<p>可以将 inject 的值，用于 props 和 data</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Child = &#123;</span><br><span class="line">    inject: [<span class="string">"foo"</span>],</span><br><span class="line">    props: &#123;</span><br><span class="line">        bar: &#123;</span><br><span class="line">            <span class="keyword">default</span>() &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">this</span>.foo;</span><br><span class="line">            &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>可以对 inject 的值使其变成可选项</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Child = &#123;</span><br><span class="line">    inject: &#123;</span><br><span class="line">        foo: &#123; <span class="attr">default</span>: <span class="string">"foo"</span> &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>如果它需要从一个不同名字的 property 注入，则使用 from 来表示其源 property</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Child = &#123;</span><br><span class="line">    inject: &#123;</span><br><span class="line">        foo: &#123;</span><br><span class="line">            <span class="keyword">from</span>: <span class="string">"bar"</span>,</span><br><span class="line">            <span class="keyword">default</span>: <span class="string">"foo"</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="vue-eventbus"><a class="markdownIt-Anchor" href="#vue-eventbus"></a> Vue EventBus</h2>
+<p>vue 中事件的传递</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">broadcast</span>(<span class="params">component: any, componentName: string, eventName: string, params</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// debugger;</span></span><br><span class="line">    component.$children.forEach(<span class="function">(<span class="params">child</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> name = child.$options.componentName;</span><br><span class="line">        <span class="keyword">if</span> (componentName) &#123;</span><br><span class="line">            <span class="keyword">if</span> (name === componentName &amp;&amp; child[eventName]) &#123;</span><br><span class="line">                child[eventName].apply(child, params);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                broadcast.apply(child, [child, componentName, eventName, params]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (child[eventName]) &#123;</span><br><span class="line">                child[eventName].apply(child, params);</span><br><span class="line">            &#125;</span><br><span class="line">            broadcast.apply(child, [child, componentName, eventName, params]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">dispatch</span>(<span class="params">component, componentName, eventName, params = []</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> parent = component.$parent || component.$root;</span><br><span class="line">    <span class="keyword">var</span> name = parent.$options.componentName;</span><br><span class="line">    <span class="keyword">while</span> (parent &amp;&amp; (!name || name !== componentName)) &#123;</span><br><span class="line">        parent = parent.$parent;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (parent) &#123;</span><br><span class="line">            name = parent.$options.componentName;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (parent) &#123;</span><br><span class="line">        parent.$emit.apply(parent, [eventName].concat(params));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -584,7 +612,7 @@
           
             <a href="/itstone/tags/代码段/" rel="tag"># 代码段</a>
           
-            <a href="/itstone/tags/css/" rel="tag"># css</a>
+            <a href="/itstone/tags/vue/" rel="tag"># vue</a>
           
         </div>
       
@@ -597,8 +625,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/itstone/posts/ab94cb42/" rel="next" title="前端效果收集">
-                <i class="fa fa-chevron-left"></i> 前端效果收集
+              <a href="/itstone/posts/56e48daa/" rel="next" title="js代码段">
+                <i class="fa fa-chevron-left"></i> js代码段
               </a>
             
           </div>
@@ -607,8 +635,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/itstone/posts/9f4b0247/" rel="prev" title="typescript 使用记录">
-                typescript 使用记录 <i class="fa fa-chevron-right"></i>
+              <a href="/itstone/posts/cd69ee4d/" rel="prev" title="eslint 使用">
+                eslint 使用 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -868,7 +896,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#reset-类"><span class="nav-number">1.</span> <span class="nav-text"> reset 类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#浏览器默认样式"><span class="nav-number">1.1.</span> <span class="nav-text"> 浏览器默认样式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#布局类"><span class="nav-number">1.2.</span> <span class="nav-text"> 布局类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用-reset"><span class="nav-number">1.3.</span> <span class="nav-text"> 常用 reset</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#vue-hook"><span class="nav-number">1.</span> <span class="nav-text"> Vue hook</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vue-依赖注入"><span class="nav-number">2.</span> <span class="nav-text"> Vue 依赖注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vue-eventbus"><span class="nav-number">3.</span> <span class="nav-text"> Vue EventBus</span></a></li></ol></div>
             
 
           </div>
@@ -1032,7 +1060,7 @@
   
     <script>
   window.livereOptions = {
-    refer: 'posts/ccc1be9f/'
+    refer: 'posts/9a7f1f9f/'
   };
   (function(d, s) {
     var j, e = d.getElementsByTagName(s)[0];

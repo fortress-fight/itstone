@@ -94,18 +94,18 @@
 
 
 
-  <meta name="description" content="create_file &amp;amp; create_dir">
+  <meta name="description" content="create_file &amp;amp; create_dir根据 path 创建文件 若缺少文件或者文件夹将自动创建分析文件路径">
 <meta name="keywords" content="Node_代码段">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Node-代码段">
 <meta property="og:url" content="https://fortress-fight.github.io/itstone/posts/824ac3d0/index.html">
 <meta property="og:site_name" content="八九闲谈">
-<meta property="og:description" content="create_file &amp;amp; create_dir">
+<meta property="og:description" content="create_file &amp;amp; create_dir根据 path 创建文件 若缺少文件或者文件夹将自动创建分析文件路径">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-05-06T06:06:48.388Z">
+<meta property="og:updated_time" content="2020-08-05T05:40:04.654Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Node-代码段">
-<meta name="twitter:description" content="create_file &amp;amp; create_dir">
+<meta name="twitter:description" content="create_file &amp;amp; create_dir根据 path 创建文件 若缺少文件或者文件夹将自动创建分析文件路径">
 
 
 
@@ -465,7 +465,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-05-06 14:06:48" itemprop="dateModified" datetime="2020-05-06T14:06:48+08:00">2020-05-06</time>
+                <time title="修改时间：2020-08-05 13:40:04" itemprop="dateModified" datetime="2020-08-05T13:40:04+08:00">2020-08-05</time>
               
             
           </span>
@@ -504,7 +504,7 @@
                   <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">字数统计:</span>
-              <span class="post-count">74(字)</span>
+              <span class="post-count">331(字)</span>
           </span>
           <span class="post-time">
               &nbsp; | &nbsp;
@@ -536,13 +536,17 @@
       
         <div class="note default">
 
-            <ul><li><code>create_file &amp; create_dir</code></li></ul>
+            <ul><li><code>create_file &amp; create_dir</code></li><li>根据 path 创建文件 若缺少文件或者文件夹将自动创建</li><li>分析文件路径</li></ul>
           </div>
 <a id="more"></a>
 <hr>
 <h2 id="node-代码段"><a class="markdownIt-Anchor" href="#node-代码段"></a> Node-代码段</h2>
 <h3 id="create_file-create_dir"><a class="markdownIt-Anchor" href="#create_file-create_dir"></a> create_file &amp; create_dir</h3>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> create_dir = <span class="function"><span class="params">path</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        fs.statSync(path, (err, state) =&gt; &#123;</span><br><span class="line">            <span class="keyword">if</span> (!state.isDirectory()) &#123;</span><br><span class="line">                fs.mkdirSync(path);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        fs.mkdirSync(path);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> create_file = <span class="function"><span class="params">path</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        fs.statSync(path, (err, state) =&gt; &#123;</span><br><span class="line">            <span class="keyword">if</span> (!state.isFile()) &#123;</span><br><span class="line">                fs.writeFileSync(path, <span class="string">""</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        fs.writeFileSync(path, <span class="string">""</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> create_dir = <span class="function">(<span class="params">path</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        fs.statSync(path, (err, state) =&gt; &#123;</span><br><span class="line">            <span class="keyword">if</span> (!state.isDirectory()) &#123;</span><br><span class="line">                fs.mkdirSync(path);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        fs.mkdirSync(path);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> create_file = <span class="function">(<span class="params">path</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        fs.statSync(path, (err, state) =&gt; &#123;</span><br><span class="line">            <span class="keyword">if</span> (!state.isFile()) &#123;</span><br><span class="line">                fs.writeFileSync(path, <span class="string">""</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        fs.writeFileSync(path, <span class="string">""</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="分析文件路径"><a class="markdownIt-Anchor" href="#分析文件路径"></a> 分析文件路径</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> glob = <span class="built_in">require</span>(<span class="string">"glob"</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">"path"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 分析文件路径，获取 文件名、扩展名、文件路径、文件夹路径</span></span><br><span class="line"><span class="comment"> * @param &#123;string&#125; file_path 文件路径</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">analysis_path</span>(<span class="params">file_path</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> files = glob.sync(file_path);</span><br><span class="line">    <span class="keyword">let</span> result = [];</span><br><span class="line">    files.forEach(<span class="function">(<span class="params">_path</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> dirname = path.dirname(_path);</span><br><span class="line">        <span class="keyword">const</span> extname = path.extname(_path);</span><br><span class="line">        <span class="keyword">const</span> basename = path.basename(_path, extname);</span><br><span class="line">        <span class="keyword">const</span> pathname = path.join(dirname, basename);</span><br><span class="line">        result.push(&#123;</span><br><span class="line">            dirname,</span><br><span class="line">            extname,</span><br><span class="line">            basename,</span><br><span class="line">            pathname,</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="根据-path-创建文件"><a class="markdownIt-Anchor" href="#根据-path-创建文件"></a> 根据 path 创建文件</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">"fs"</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">"path"</span>);</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 如果文件不存在就创建文件</span></span><br><span class="line"><span class="comment"> * @param &#123;string&#125; path 文件路径</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sync_create_file</span>(<span class="params">path</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> path_detail = path.split(<span class="string">"/"</span>);</span><br><span class="line">    path_detail.pop();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> will_make_path = [];</span><br><span class="line">    <span class="keyword">let</span> root_param = path_detail.shift();</span><br><span class="line">    <span class="keyword">if</span> (root_param) will_make_path.push(root_param);</span><br><span class="line"></span><br><span class="line">    path_detail.forEach(<span class="function">(<span class="params">path</span>) =&gt;</span> &#123;</span><br><span class="line">        will_make_path.push(path);</span><br><span class="line">        create_dir(will_make_path.join(<span class="string">"/"</span>));</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        fs.statSync(path, (err, state) =&gt; &#123;</span><br><span class="line">            <span class="keyword">if</span> (!state.isFile()) &#123;</span><br><span class="line">                fs.writeFileSync(path, <span class="string">""</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        fs.writeFileSync(path, <span class="string">""</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">create_dir</span>(<span class="params">path_str</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!fs.existsSync(path_str)) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                fs.statSync(path_str, (err, state) =&gt; &#123;</span><br><span class="line">                    <span class="keyword">if</span> (!state.isDirectory()) &#123;</span><br><span class="line">                        fs.mkdirSync(path_str);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">                fs.mkdirSync(path_str);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -670,7 +674,7 @@
                 
                   <a href="/itstone/archives/">
                 
-                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -709,7 +713,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">9</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -770,7 +780,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">19</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">22</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -841,7 +857,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#node-代码段"><span class="nav-number">1.</span> <span class="nav-text"> Node-代码段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#create_file-create_dir"><span class="nav-number">1.1.</span> <span class="nav-text"> create_file &amp; create_dir</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#node-代码段"><span class="nav-number">1.</span> <span class="nav-text"> Node-代码段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#create_file-create_dir"><span class="nav-number">1.1.</span> <span class="nav-text"> create_file &amp; create_dir</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分析文件路径"><span class="nav-number">1.2.</span> <span class="nav-text"> 分析文件路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#根据-path-创建文件"><span class="nav-number">1.3.</span> <span class="nav-text"> 根据 path 创建文件</span></a></li></ol></li></ol></div>
             
 
           </div>
